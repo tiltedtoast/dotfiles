@@ -20,14 +20,12 @@ $HOME/.volta/bin/volta install pm2
 # Bun
 curl -fsSL https://bun.sh/install | bash
 
-
 # GitHub CLI
 sudo mkdir -p -m 755 /etc/apt/keyrings && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
 && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
 && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
 && sudo apt update \
 && sudo apt install gh -y
-
 
 # LLVM
 sudo apt install lsb-release wget software-properties-common gnupg -y
@@ -40,7 +38,6 @@ sudo ln -sf /usr/bin/clang++-$LLVM_VERSION /usr/bin/clang++
 sudo ln -sf /usr/bin/ld.lld-$LLVM_VERSION /usr/bin/ld.lld
 sudo ln -sf /usr/bin/clang-format-$LLVM_VERSION /usr/bin/clang-format
 
-
 # Mold Linker
 mkdir -p $HOME/3rd-party
 git clone https://github.com/rui314/mold.git $HOME/3rd-party/mold
@@ -51,7 +48,6 @@ sudo ../install-build-deps.sh
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
 cmake --build . -j $(nproc)
 sudo cmake --build . --target install
-
 
 # Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
