@@ -1,4 +1,4 @@
-HISTFILE=~/.zsh_history
+HISTFILE=$HOME/.zsh_history
 HISTSIZE=500000
 SAVEHIST=500000
 setopt appendhistory
@@ -19,7 +19,7 @@ export ZSH="$HOME/.zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-eval "$(oh-my-posh init zsh --config ~/powerline_custom.omp.json)"
+eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
 eval "$(zoxide init --cmd cd zsh)"
 
 export VOLTA_HOME="$HOME/.volta"
@@ -158,13 +158,13 @@ export EDITOR='code'
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# alias zshconfig="mate $HOME/.zshrc"
+# alias ohmyzsh="mate $HOME/.oh-my-zsh"
 
 alias ls=eza
 alias grep=rg
 alias l='eza -laah --colour=always --icons=always --group-directories-first -s name --time-style "+%d %b %y %X"'
-alias s='source ~/.zshrc'
+alias s='source $HOME/.zshrc'
 alias c=clear
 alias gst='git status'
 alias rgi='rg --ignore-case'
@@ -210,7 +210,7 @@ function cargo-new-tokio {
 export CC="clang"
 
 bindkey '^H' backward-kill-word  # Ctrl + Backspace
-bindkey '^[[3;5~' kill-word      # Ctrl + Delete
+bindkey '^[[3;5$HOME' kill-word      # Ctrl + Delete
 
 
 # bun completions
@@ -225,9 +225,9 @@ export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
 alias -g -- -h='-h 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
 
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-colored-man-pages/colored-man-pages.plugin.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.zsh/zsh-colored-man-pages/colored-man-pages.plugin.zsh
+source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 # Wasmer
