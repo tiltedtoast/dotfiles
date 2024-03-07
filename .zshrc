@@ -226,7 +226,7 @@ alias -g -- -h='-h 2>&1 | bat --language=help --style=plain --paging=never --the
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-colored-man-pages/zsh-colored-man-pages.zsh
+source ~/.zsh/zsh-colored-man-pages/colored-man-pages.plugin.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
