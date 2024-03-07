@@ -2,7 +2,7 @@
 
 ```shell
 sudo apt update
-sudo apt upgrade -y 
+sudo apt upgrade -y
 sudo apt install -y unzip git zsh stow curl wget cmake imagemagick libssl-dev
 
 # Oh My Posh
@@ -13,9 +13,9 @@ curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | 
 
 # Volta
 curl https://get.volta.sh | bash
-$(which volta) install node@latest
-$(which volta) install pnpm
-$(which volta) install pm2
+$HOME/.volta/bin/volta install node@latest
+$HOME/.volta/bin/volta install pnpm
+$HOME/.volta/bin/volta install pm2
 
 # Bun
 curl -fsSL https://bun.sh/install | bash
