@@ -1,11 +1,11 @@
 [core]
 	editor = "/mnt/c/Users/tim/AppData/Local/Programs/Microsoft VS Code/bin/code" --wait
-	sshCommand = ssh -i "/home/tim/.ssh/github" -o IdentitiesOnly=yes
+	sshCommand = ssh -i "/home/tim/.ssh/git" -o IdentitiesOnly=yes
 
 [user]
 	name = Tim
 	email = 57221600+TiltedToast@users.noreply.github.com
-	signingkey = /home/tim/.ssh/github.pub
+	signingkey = /home/tim/.ssh/git.pub
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

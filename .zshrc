@@ -20,7 +20,7 @@ export ZSH="$HOME/.zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
-eval "$(zoxide init --cmd cd zsh)"
+eval "$($(which zoxide) init --cmd cd zsh)"
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
@@ -235,5 +235,4 @@ export WASMER_DIR="/home/tim/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
 setopt interactivecomments
 export CXX=clang++
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 alias tldr='tldr --theme ocean'

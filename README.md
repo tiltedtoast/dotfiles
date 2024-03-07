@@ -3,7 +3,7 @@
 ```shell
 sudo apt update
 sudo apt upgrade -y
-sudo apt install -y unzip git zsh stow curl wget cmake imagemagick libssl-dev
+sudo apt install -y unzip git zsh stow curl wget cmake imagemagick libssl-dev fzf
 
 # Oh My Posh
 curl -s https://ohmyposh.dev/install.sh | sudo bash -s
@@ -44,6 +44,8 @@ sudo ln -sf /usr/bin/clangd-$LLVM_VERSION /usr/bin/clangd
 sudo ln -sf /usr/bin/clang++-$LLVM_VERSION /usr/bin/clang++
 sudo ln -sf /usr/bin/ld.lld-$LLVM_VERSION /usr/bin/ld.lld
 sudo ln -sf /usr/bin/clang-format-$LLVM_VERSION /usr/bin/clang-format
+export CC=clang
+export CXX=clang++
 
 # Mold Linker
 mkdir -p $HOME/3rd-party
@@ -60,11 +62,13 @@ sudo cmake --build . --target install
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 . $HOME/.cargo/env
 cargo install cargo-binstall
-cargo binstall eza
-cargo binstall ripgrep
-cargo binstall bat
-cargo binstall fd-find
-cargo binstall sd
+cargo binstall -y eza
+cargo binstall -y ripgrep --features 'pcre2'
+cargo binstall -y bat
+cargo binstall -y fd-find
+cargo binstall -y sd
+
+bat cache --build
 ```
 
 ## Set up the dotfiles
@@ -72,8 +76,19 @@ cargo binstall sd
 ### DON'T FORGET TO SET UP SSH KEYS FIRST
 
 ```shell
-git clone git@github.com:TiltedToast/dotfiles.git $HOME/dotfiles
+echo '
+[core]
+    sshCommand = ssh -i "$HOME/.ssh/git" -o IdentitiesOnly=yes
+' > $HOME/.gitconfig
+
+sudo chmod 700 $HOME/.ssh
+sudo chmod 600 $HOME/.ssh/git
+sudo chmod 644 $HOME/.ssh/git.pub
+
+git clone --recurse-submodules git@github.com:TiltedToast/dotfiles.git $HOME/dotfiles
 cd $HOME/dotfiles
+
+rm -rf $HOME/.gitconfig $HOME/.bashrc $Home/.zshrc
 ```
 
 #### Then, apply the dotfiles
