@@ -29,7 +29,7 @@ sudo mkdir -p -m 755 /etc/apt/keyrings && wget -qO- https://cli.github.com/packa
 
 # LLVM
 sudo apt install lsb-release wget software-properties-common gnupg -y
-bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 LLVM_VERSION=$(echo $(ls /usr/bin | /usr/bin/grep clang | /usr/bin/grep -oP '\d{2}') | tr ' ' '\n' | sort -n | tail -1)
 sudo apt install clang-format-$LLVM_VERSION
 sudo ln -sf /usr/bin/clang-$LLVM_VERSION /usr/bin/clang
