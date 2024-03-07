@@ -27,6 +27,13 @@ sudo mkdir -p -m 755 /etc/apt/keyrings && wget -qO- https://cli.github.com/packa
 && sudo apt update \
 && sudo apt install gh -y
 
+# Python
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install python3.12
+curl -sSL https://bootstrap.pypa.io/get-pip.py | python3.12
+
 # LLVM
 sudo apt install lsb-release wget software-properties-common gnupg -y
 sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
