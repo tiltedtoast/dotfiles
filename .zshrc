@@ -210,7 +210,7 @@ function cargo-new-tokio {
 export CC="clang"
 
 bindkey '^H' backward-kill-word  # Ctrl + Backspace
-bindkey '^[[3;5$HOME' kill-word      # Ctrl + Delete
+bindkey '^[[3;5~' kill-word      # Ctrl + Delete
 
 
 # bun completions
