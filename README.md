@@ -32,7 +32,7 @@ sudo apt install -y software-properties-common
 echo -ne '\n'| sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
 sudo apt install -y python3.12 python3.12-dev
-curl -sSL https://bootstrap.pypa.io/get-pip.py | python3.12
+curl -sSL https://bootstrap.pypa.io/get-pip.py | python3.12 
 
 # LLVM
 sudo apt install lsb-release wget software-properties-common gnupg -y
