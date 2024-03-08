@@ -28,10 +28,10 @@ sudo mkdir -p -m 755 /etc/apt/keyrings && wget -qO- https://cli.github.com/packa
 && sudo apt install gh -y
 
 # Python
-sudo apt install software-properties-common
-sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install -y software-properties-common
+echo -ne '\n'| sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
-sudo apt install python3.12
+sudo apt install -y python3.12 python3.12-dev
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python3.12
 
 # LLVM
