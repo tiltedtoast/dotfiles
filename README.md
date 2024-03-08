@@ -4,29 +4,36 @@
 sudo apt update
 sudo apt upgrade -y
 sudo apt install -y unzip git zsh stow curl wget cmake imagemagick libssl-dev fzf
+
 # Oh My Posh
 curl -s https://ohmyposh.dev/install.sh | sudo bash -s
+
 # Zoxide
 curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+
 # Volta
 curl https://get.volta.sh | bash
 $HOME/.volta/bin/volta install node@latest
 $HOME/.volta/bin/volta install pnpm
 $HOME/.volta/bin/volta install pm2
+
 # Bun
 curl -fsSL https://bun.sh/install | bash
+
 # GitHub CLI
 sudo mkdir -p -m 755 /etc/apt/keyrings && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
 && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
 && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
 && sudo apt update \
 && sudo apt install gh -y
+
 # Python
 sudo apt install -y software-properties-common
 echo -ne '\n'| sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
 sudo apt install -y python3.12 python3.12-dev
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python3.12
+
 # LLVM
 sudo apt install lsb-release wget software-properties-common gnupg -y
 sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
@@ -37,6 +44,7 @@ sudo ln -sf /usr/bin/clangd-$LLVM_VERSION /usr/bin/clangd
 sudo ln -sf /usr/bin/clang++-$LLVM_VERSION /usr/bin/clang++
 sudo ln -sf /usr/bin/ld.lld-$LLVM_VERSION /usr/bin/ld.lld
 sudo ln -sf /usr/bin/clang-format-$LLVM_VERSION /usr/bin/clang-format
+
 # Mold Linker
 mkdir -p $HOME/3rd-party
 git clone https://github.com/rui314/mold.git $HOME/3rd-party/mold
@@ -47,6 +55,7 @@ sudo ../install-build-deps.sh
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
 cmake --build . -j $(nproc)
 sudo cmake --build . --target install
+
 # Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 . $HOME/.cargo/env
@@ -56,6 +65,7 @@ cargo binstall -y ripgrep --features 'pcre2'
 cargo binstall -y bat
 cargo binstall -y fd-find
 cargo binstall -y sd
+
 bat cache --build
 ```
 
