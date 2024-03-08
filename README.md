@@ -62,7 +62,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 rustup toolchain install nightly
 cargo install cargo-binstall
 cargo binstall -y eza
-cargo binstall -y ripgrep --features 'pcre2'
+cargo binstall -y ripgrep
 cargo binstall -y bat
 cargo binstall -y fd-find
 cargo binstall -y sd
