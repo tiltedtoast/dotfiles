@@ -235,3 +235,6 @@ export WASMER_DIR="/home/tim/.wasmer"
 setopt interactivecomments
 export CXX=clang++
 alias tldr='tldr --theme ocean'
+
+# Turso
+export PATH="/home/tim/.turso:$PATH"
