@@ -7,7 +7,6 @@ setopt SHARE_HISTORY
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$PATH:/usr/local/pypy3.10-v7.3.15-linux64/bin
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
