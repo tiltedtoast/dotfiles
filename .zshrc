@@ -7,6 +7,8 @@ setopt SHARE_HISTORY
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -32,7 +34,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
 
 # pnpm
-export PNPM_HOME="/home/tim/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
@@ -42,10 +44,8 @@ export PATH=$PATH:/usr/local/go/bin
 
 export PATH=$PATH:/usr/bin/FlameGraph
 
-[ -f "/home/tim/.ghcup/env" ] && source "/home/tim/.ghcup/env" # ghcup-envexport
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-envexport
 
-export PATH="/home/tim/.local/bin:$PATH"
-export PATH="/home/tim/go/bin:$PATH"
 
 
 # Set list of themes to pick from when loading at random
@@ -213,11 +213,11 @@ bindkey '^[[3;5~' kill-word      # Ctrl + Delete
 
 
 # bun completions
-[ -s "/home/tim/.bun/_bun" ] && source "/home/tim/.bun/_bun"
-export MODULAR_HOME="/home/tim/.modular"
-export PATH="/home/tim/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+export MODULAR_HOME="$HOME/.modular"
+export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
 
-export PATH="/home/tim/.dotnet/:home/tim/.dotnet/tools:$PATH"
+export PATH="$HOME/.dotnet/:$HOME/.dotnet/tools:$PATH"
 
 export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
 
@@ -230,11 +230,11 @@ source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 # Wasmer
-export WASMER_DIR="/home/tim/.wasmer"
+export WASMER_DIR="$HOME/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
 setopt interactivecomments
 export CXX=clang++
 alias tldr='tldr --theme ocean'
 
 # Turso
-export PATH="/home/tim/.turso:$PATH"
+export PATH="$HOME/.turso:$PATH"
