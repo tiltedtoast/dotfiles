@@ -188,6 +188,7 @@ alias ci='cargo install'
 alias where='which'
 alias e=explorer.exe
 alias watch=watch_mode
+alias code='code -r'
 
 watch_mode() {
     fd -t file --search-path $1 | entr $(which $(ps -p $$ -o comm=)) -c $2
