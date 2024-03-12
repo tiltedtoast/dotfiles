@@ -237,4 +237,7 @@ alias tldr='tldr --theme ocean'
 
 # Turso
 export PATH="$HOME/.turso:$PATH"
+
 export PATH="$HOME/.cache/rebar3/bin:$PATH"
+export DENO_INSTALL="$HOME/.deno"
+export PATH=$HOME/.deno/bin:$PATH
