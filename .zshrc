@@ -37,8 +37,6 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
-export PATH="/usr/lib/linux-tools/5.15.0-67-generic:$PATH"
-
 export PATH=$PATH:/usr/local/go/bin
 
 export PATH=$PATH:/usr/bin/FlameGraph
@@ -189,6 +187,11 @@ alias cip='cargo install --path .'
 alias ci='cargo install'
 alias where='which'
 alias e=explorer.exe
+alias watch=watch_mode
+
+watch_mode() {
+    fd -t file --search-path $1 | entr $(which $(ps -p $$ -o comm=)) -c $2
+}
 
 function cargo-new {
     cargo new --bin $1
