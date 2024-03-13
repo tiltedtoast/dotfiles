@@ -36,7 +36,7 @@ curl -sSL https://bootstrap.pypa.io/get-pip.py | python3.12
 
 # LLVM
 sudo apt install lsb-release wget software-properties-common gnupg -y
-echo -ne '\n'| sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+echo -ne '\n' | sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 LLVM_VERSION=$(echo $(ls /usr/bin | /usr/bin/grep clang | /usr/bin/grep -oP '\d{2}') | tr ' ' '\n' | sort -n | tail -1)
 sudo apt install clang-format-$LLVM_VERSION
 sudo ln -sf /usr/bin/clang-$LLVM_VERSION /usr/bin/clang
