@@ -1,0 +1,37 @@
+{
+  "cache": {
+    "database_names": {
+      "data": [
+        {
+          "dbid": "53385441-e127-4db6-bfc3-df6b1cc7804e",
+          "group": "default",
+          "hostname": "hifumi-tiltedtoast.turso.io",
+          "name": "hifumi",
+          "primaryregion": "fra",
+          "regions": [
+            "fra"
+          ],
+          "sleeping": false,
+          "version": "0.23.6"
+        }
+      ],
+      "expiration": 1710421846
+    },
+    "database_token": {
+      "53385441-e127-4db6-bfc3-df6b1cc7804e": {
+        "expiration": 1710441875,
+        "data": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTA1OTMwNzUsImlhdCI6MTcxMDQyMDI3NSwiaWQiOiI1MzM4NTQ0MS1lMTI3LTRkYjYtYmZjMy1kZjZiMWNjNzgwNGUifQ.GyWsO7ijbRatPs7zJoBdyMCummZJfyvm18TPxpe9uHTbccwgJojKRqPm2400aTFjKuJV13rsRKx0dY6kkI4FDA"
+      }
+    },
+    "token_valid": {
+      "eyjhbgcioijsuzi1niisimnhdci6imnsx0i3zdrqrdiymkfbqsisimtpzci6imluc18yyza4r3zneehymlncc3l0d2padm95cedjeduilcj0exaioijkv1qifq_eyjlehaioje3mtewmjq3nzisimlhdci6mtcxmdqxotk3miwiaxnzijoiahr0chm6ly9jbgvyay50dxjzby50zwnoiiwianrpijoimmjhmtc3njc2ogq3otlhmdq1zmuilcjuymyioje3mta0mtk5njcsinn1yii6invzzxjfmmmwovrln3fcnunyetfimxpxtlb6dzqwthfoin0_rwerc876v7hlbst5ziquwt3wwwtns-pysbob7ds_pzcerffgrpofrksy3yj5oqbuswf-wcwuiectjf95v4e7hoeof3lapkksumf-9oddop5321o8v7ifnzmlcxabgtj_pbiizyowmtpbzq7scre-o05xexbqtkxa2npgvirht-23x0uamongcs_s3lgmn3std8nzqftxopunpjj1lebduwexd0li5orpk1fuvksfo84owqbholu9aeitpktc4pvrvdimkqazqlnpzwarez1vn-6xwv3fn9iskha93bfrb48rn94fxlcywxikpyeljaotrkz75gsriy9y31b8yt98cw": {
+        "data": true,
+        "expiration": 1711024772
+      }
+    }
+  },
+  "config": {
+    "last_update_check": 1710419955
+  },
+  "config-path": ""
+}

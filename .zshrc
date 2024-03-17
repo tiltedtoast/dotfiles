@@ -248,3 +248,4 @@ export PATH=$HOME/.deno/bin:$PATH
 
 export JAVA_HOME="$HOME/3rd-party/graalvm"
 export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$PATH:/home/tim/.local/share/coursier/bin"
