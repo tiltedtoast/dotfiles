@@ -189,6 +189,10 @@ alias where='which'
 alias e=explorer.exe
 alias watch=watch_mode
 alias code='code -r'
+alias suggest="gh copilot suggest"
+alias explain="gh copilot explain"
+alias tldr='tldr --theme ocean'
+
 
 watch_mode() {
     fd -t file --search-path $1 | entr $(which $(ps -p $$ -o comm=)) -c $2
@@ -237,7 +241,6 @@ export WASMER_DIR="$HOME/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
 setopt interactivecomments
 export CXX=clang++
-alias tldr='tldr --theme ocean'
 
 # Turso
 export PATH="$HOME/.turso:$PATH"
