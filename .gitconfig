@@ -21,3 +21,11 @@
     helper = "/usr/bin/gh auth git-credential"
 [init]
 	defaultBranch = main
+[rerere]
+	enabled = true
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[maintenance]
+	repo = /home/tim/projects/hifumi
