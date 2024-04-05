@@ -1,6 +1,7 @@
 [core]
 	editor = code --wait
 	sshCommand = ssh -i "~/.ssh/git" -o IdentitiesOnly=yes
+	excludesfile = /home/tim/.gitignore
 
 [user]
 	name = Tim
