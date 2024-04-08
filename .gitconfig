@@ -2,7 +2,6 @@
 	editor = code --wait
 	sshCommand = ssh -i "~/.ssh/git" -o IdentitiesOnly=yes
 	excludesfile = /home/tim/.gitignore
-
 [user]
 	name = Tim
 	email = 57221600+TiltedToast@users.noreply.github.com
@@ -30,3 +29,7 @@
 	sort = -committerdate
 [maintenance]
 	repo = /home/tim/projects/hifumi
+[merge]
+    autoStash = true
+[rebase]
+	autoStash = true
