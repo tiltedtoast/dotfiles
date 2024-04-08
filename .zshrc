@@ -94,8 +94,9 @@ alias tldr='tldr --theme ocean'
 
 
 gfomo() {
-    git fetch origin ${1:-main} &&
-    git merge origin/${1:-main};
+    main_branch=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4)
+    git fetch origin $main_branch &&
+    git merge origin/$main_branch;
 }
 
 watch_mode() {
