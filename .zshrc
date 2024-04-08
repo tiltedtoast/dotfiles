@@ -91,7 +91,12 @@ alias code='code -r'
 alias suggest="gh copilot suggest"
 alias explain="gh copilot explain"
 alias tldr='tldr --theme ocean'
-alias gfomo='git fetch origin main && git merge origin/main'
+
+
+gfomo() {
+    git fetch origin ${1:-main} &&
+    git merge origin/${1:-main};
+}
 
 watch_mode() {
     fd -t file --search-path $1 | entr $(which $(ps -p $$ -o comm=)) -c $2
