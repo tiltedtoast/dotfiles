@@ -50,7 +50,7 @@ sudo ln -sf /usr/bin/clang-format-$LLVM_VERSION /usr/bin/clang-format
 mkdir -p $HOME/3rd-party
 git clone --branch stable https://github.com/rui314/mold.git $HOME/3rd-party/mold
 cd mold
-./install-build-deps.sh
+sudo ./install-build-deps.sh
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ -B build
 cmake --build build -j$(nproc)
 sudo cmake --build build --target install
