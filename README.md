@@ -48,14 +48,12 @@ sudo ln -sf /usr/bin/clang-format-$LLVM_VERSION /usr/bin/clang-format
 
 # Mold Linker
 mkdir -p $HOME/3rd-party
-git clone https://github.com/rui314/mold.git $HOME/3rd-party/mold
-mkdir $HOME/3rd-party/mold/build
-cd $HOME/3rd-party/mold/build
-git checkout v2.4.1
-sudo ../install-build-deps.sh
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ ..
-cmake --build . -j $(nproc)
-sudo cmake --build . --target install
+git clone --branch stable https://github.com/rui314/mold.git $HOME/3rd-party/mold
+cd mold
+./install-build-deps.sh
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ -B build
+cmake --build build -j$(nproc)
+sudo cmake --build build --target install
 
 # Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
