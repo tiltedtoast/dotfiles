@@ -91,7 +91,7 @@ alias watch=watch_mode
 alias code='code -r'
 alias suggest="gh copilot suggest"
 alias explain="gh copilot explain"
-
+alias update="sudo apt update && sudo apt upgrade -y"
 gfomo() {
     main_branch=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4)
     git fetch origin $main_branch &&
@@ -171,3 +171,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
