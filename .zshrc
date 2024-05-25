@@ -134,7 +134,7 @@ export PATH="$HOME/.dotnet/:$HOME/.dotnet/tools:$PATH"
 
 export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
 
-alias -g -- --h='--help 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
+alias -g -- -h='--help 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
 
 
