@@ -10,6 +10,9 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="/usr/local/cuda/bin:$PATH"
+export ZVM_INSTALL="$HOME/.zvm/self"
+export PATH="$PATH:$HOME/.zvm/bin"
+export PATH="$PATH:$ZVM_INSTALL/"
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -131,8 +134,9 @@ export PATH="$HOME/.dotnet/:$HOME/.dotnet/tools:$PATH"
 
 export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
 
-alias -g -- -h='-h 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
+alias -g -- --h='--help 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
+
 
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh/zsh-colored-man-pages/colored-man-pages.plugin.zsh

@@ -203,3 +203,5 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 . "/home/tim/.cargo/env"
+export PATH=/home/tim/.night.zig/latest:$PATH
+export PATH=/home/tim/.night.zig/nz:$PATH
