@@ -6,8 +6,8 @@ setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.local/bin:$PATH"
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/go/bin:$PATH"
 export PATH="/usr/local/cuda/bin:$PATH"
 export ZVM_INSTALL="$HOME/.zvm/self"
