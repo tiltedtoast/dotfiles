@@ -21,7 +21,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 export ZSH="$HOME/.zsh"
 
 eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
-eval "$($(which zoxide) init --cmd cd zsh)"
+eval "$(zoxide init --cmd cd zsh)"
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
@@ -94,7 +94,7 @@ alias watch=watch_mode
 alias code='code -r'
 alias suggest="gh copilot suggest"
 alias explain="gh copilot explain"
-alias update="sudo apt update && sudo apt upgrade -y"
+alias update="sudo nala update && sudo nala upgrade -y"
 gfomo() {
     main_branch=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4)
     git fetch origin $main_branch &&
