@@ -13,6 +13,7 @@ export PATH="/usr/local/cuda/bin:$PATH"
 export ZVM_INSTALL="$HOME/.zvm/self"
 export PATH="$PATH:$HOME/.zvm/bin"
 export PATH="$PATH:$ZVM_INSTALL/"
+export PATH="$HOME/3rd-party/depot_tools:$PATH"
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
