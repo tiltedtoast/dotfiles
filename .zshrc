@@ -181,4 +181,4 @@ export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
 export LD=/usr/local/bin/mold
 
 export PATH="$PATH:$HOME/3rd-party/swift/usr/bin"
-ip link set dev eth2 mtu 1350
+ip link set dev eth2 mtu 1350 &> /dev/null
