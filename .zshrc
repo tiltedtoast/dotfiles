@@ -131,8 +131,11 @@ bindkey '^[[3;5~' kill-word      # Ctrl + Delete
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
+export MAX_PATH=$(modular config max.path)
+export PATH="$MAX_PATH/bin:$PATH"
 
 export PATH="$HOME/.dotnet/:$HOME/.dotnet/tools:$PATH"
 
