@@ -187,7 +187,7 @@ export LD=/usr/local/bin/mold
 
 export PATH="$PATH:$HOME/3rd-party/swift/usr/bin"
 
-export SURFSHARK_ADAPTER="eth0"
+export SURFSHARK_ADAPTER="eth2"
 
 if [ -n "$WSL_INTEROP" ]; then
     ip a | rg $SURFSHARK_ADAPTER &> /dev/null && sudo ip link set dev $SURFSHARK_ADAPTER mtu 1350 &> /dev/null

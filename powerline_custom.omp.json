@@ -25,7 +25,7 @@
                 {
                     "background": "#0087d8",
                     "foreground": "#100e23",
-                    "powerline_symbol": "\ue0b0",
+                    "powerline_symbol": "",
                     "properties": {
                         "style": "full"
                     },
@@ -36,17 +36,17 @@
                 {
                     "background": "#149b45",
                     "foreground": "#193549",
-                    "powerline_symbol": "\ue0b0",
+                    "powerline_symbol": "",
                     "style": "powerline",
                     "template": " {{ .HEAD }} ",
                     "type": "git"
                 },
                 {
-                    "background": "#906cff",
+                    "background": "#8d75d6",
                     "foreground": "#100e23",
-                    "powerline_symbol": "\ue0b0",
+                    "powerline_symbol": "",
                     "style": "powerline",
-                    "template": " {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} ",
+                    "template": "  {{ .Full }} ",
                     "type": "python"
                 }
             ],
