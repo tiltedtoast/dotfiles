@@ -194,3 +194,8 @@ if [ -n "$WSL_INTEROP" ]; then
 fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
+
+export VCPKG_ROOT="$HOME/vcpkg"
+export VCPKG_DEFAULT_TRIPLET="x64-linux"
+
+export GHIDRA_ROOT="$HOME/3rd-party/ghidra"
