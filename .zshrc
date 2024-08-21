@@ -97,7 +97,7 @@ alias watch=watch_mode
 alias code='code -r'
 alias suggest="gh copilot suggest"
 alias explain="gh copilot explain"
-alias update="sudo nala upgrade -y"
+alias update="sudo nala full-upgrade -y"
 
 gfomo() {
     main_branch=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4)
