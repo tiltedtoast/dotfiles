@@ -101,7 +101,7 @@ alias explain="gh copilot explain"
 
 if [[ -f /etc/os-release ]]; then
     . /etc/os-release
-    if [[ "$ID" == "Ubuntu" ]]; then
+    if [[ "$ID" == "ubuntu" ]]; then
         alias update="sudo nala full-upgrade -y"
     elif [[ "$ID" == "arch" ]]; then
         alias update="sudo pacman -Syu"
