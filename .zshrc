@@ -11,7 +11,7 @@ setopt HIST_IGNORE_DUPS
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/go/bin:$PATH"
-export PATH="/usr/local/cuda/bin:$PATH"
+export PATH="/usr/local/cuda/bin:/opt/cuda/bin:$PATH"
 export ZVM_INSTALL="$HOME/.zvm/self"
 export PATH="$PATH:$HOME/.zvm/bin"
 export PATH="$PATH:$ZVM_INSTALL/"
@@ -192,7 +192,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/cuda/lib64:/usr/lib:/opt/cuda/lib:$LD_LIBRARY_PATH"
 export LD=mold
 
 export PATH="$PATH:$HOME/3rd-party/swift/usr/bin"
