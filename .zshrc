@@ -213,6 +213,3 @@ export VCPKG_DEFAULT_TRIPLET="x64-linux"
 
 export GHIDRA_ROOT="$HOME/3rd-party/ghidra"
 
-if [[ -v WSL_DISTRO_NAME ]]; then
-    sudo ln -sf /mnt/wslg/.X11-unix/X0 /tmp/.X11-unix/X0
-fi
