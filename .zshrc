@@ -105,9 +105,10 @@ if [[ -f /etc/os-release ]]; then
         alias update="sudo nala full-upgrade -y"
     elif [[ "$ID" == "arch" ]]; then
         alias update="sudo pacman -Syu"
+        export MESA_INSTALLDIR="$HOME/3rd-party/AUR/mesa-git/pkg/mesa-git/usr"
+        export VK_DRIVER_FILES="$MESA_INSTALLDIR/share/vulkan/icd.d/dzn_icd.x86_64.json"
     fi
 fi
-
 
 gfomo() {
     main_branch=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4)
@@ -193,7 +194,9 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/cuda/lib64:/usr/lib:/opt/cuda/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$HOME/3rd-party/AUR/mesa-git/pkg/mesa-git/usr/lib:$LD_LIBRARY_PATH"
 export LD=mold
+export LIBRARY_PATH="$LD_LIBRARY_PATH"
 
 export PATH="$PATH:$HOME/3rd-party/swift/usr/bin"
 
@@ -209,3 +212,7 @@ export VCPKG_ROOT="$HOME/vcpkg"
 export VCPKG_DEFAULT_TRIPLET="x64-linux"
 
 export GHIDRA_ROOT="$HOME/3rd-party/ghidra"
+
+if [[ -v WSL_DISTRO_NAME ]]; then
+    sudo ln -sf /mnt/wslg/.X11-unix/X0 /tmp/.X11-unix/X0
+fi
