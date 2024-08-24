@@ -97,7 +97,17 @@ alias watch=watch_mode
 alias code='code -r'
 alias suggest="gh copilot suggest"
 alias explain="gh copilot explain"
-alias update="sudo nala full-upgrade -y"
+
+
+if [[ -f /etc/os-release ]]; then
+    . /etc/os-release
+    if [[ "$ID" == "Ubuntu" ]]; then
+        alias update="sudo nala full-upgrade -y"
+    elif [[ "$ID" == "arch" ]]; then
+        alias update="sudo pacman -Syu"
+    fi
+fi
+
 
 gfomo() {
     main_branch=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4)
@@ -183,7 +193,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
-export LD=/usr/local/bin/mold
+export LD=mold
 
 export PATH="$PATH:$HOME/3rd-party/swift/usr/bin"
 
