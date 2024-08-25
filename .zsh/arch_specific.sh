@@ -2,6 +2,8 @@ alias update="sudo pacman -Syu"
 export MESA_INSTALLDIR="$HOME/3rd-party/AUR/mesa-git/pkg/mesa-git/usr"
 export VK_DRIVER_FILES="$MESA_INSTALLDIR/share/vulkan/icd.d/dzn_icd.x86_64.json"
 
+# source /usr/share/doc/pkgfile/command-not-found.zsh
+
 function command_not_found_handler {
     local purple='\e[1;35m' bright='\e[0;1m' green='\e[1;32m' reset='\e[0m'
     printf 'zsh: command not found: %s\n' "$1"
