@@ -30,3 +30,5 @@ function command_not_found_handler {
     fi
     return 127
 }
+
+print -n ']2;Arch'
