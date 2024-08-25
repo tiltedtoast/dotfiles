@@ -113,7 +113,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export SURFSHARK_ADAPTER="eth2"
+export SURFSHARK_ADAPTER="eth0"
 
 if [ -n "$WSL_INTEROP" ]; then
     ip a | rg $SURFSHARK_ADAPTER &> /dev/null && sudo ip link set dev $SURFSHARK_ADAPTER mtu 1350 &> /dev/null
