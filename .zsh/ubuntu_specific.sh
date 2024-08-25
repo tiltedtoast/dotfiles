@@ -1,0 +1,1 @@
+alias update="sudo nala full-upgrade -y"

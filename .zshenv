@@ -1,7 +1,79 @@
 . "$HOME/.cargo/env"
 
-# Added by Radicle.
-export PATH="$PATH:/home/tim/.radicle/bin"
+export HISTFILE=$HOME/.zsh_history
+export HISTSIZE=500000
+export SAVEHIST=500000
 
 # Added by Radicle.
 export PATH="$PATH:/home/tim/.radicle/bin"
+
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-envexport
+
+# Bash-style time formatting
+TIMEFMT=$'real\t%E\nuser\t%U\nsys\t%S'
+
+export PATH="$HOME/.local/bin:$PATH"
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/go/bin:$PATH"
+export PATH="/usr/local/cuda/bin:/opt/cuda/bin:$PATH"
+export ZVM_INSTALL="$HOME/.zvm/self"
+export PATH="$PATH:$HOME/.zvm/bin"
+export PATH="$PATH:$ZVM_INSTALL/"
+export PATH="$HOME/3rd-party/depot_tools:$PATH"
+
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+export VOLTA_FEATURE_PNPM=1
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+export PATH=$PATH:/usr/local/go/bin
+
+export PATH=$PATH:/usr/bin/FlameGraph
+
+export EDITOR='code'
+
+export MODULAR_HOME="$HOME/.modular"
+export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
+export MAX_PATH="$MODULAR_HOME/pkg/packages.modular.com_max"
+export PATH="$MAX_PATH/bin:$PATH"
+
+export PATH="$HOME/.dotnet/:$HOME/.dotnet/tools:$PATH"
+
+export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
+
+export CC=clang
+export CXX=clang++
+
+# Turso
+export PATH="$HOME/.turso:$PATH"
+
+export PATH="$HOME/.cache/rebar3/bin:$PATH"
+export DENO_INSTALL="$HOME/.deno"
+export PATH=$HOME/.deno/bin:$PATH
+
+export JAVA_HOME="$HOME/3rd-party/graalvm"
+export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="/home/tim/.local/share/coursier/bin:$PATH"
+
+export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/cuda/lib64:/usr/lib:/opt/cuda/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$HOME/3rd-party/AUR/mesa-git/pkg/mesa-git/usr/lib:$LD_LIBRARY_PATH"
+export LD=mold
+export LIBRARY_PATH="$LD_LIBRARY_PATH"
+
+export PATH="$PATH:$HOME/3rd-party/swift/usr/bin"
+
+export VCPKG_ROOT="$HOME/vcpkg"
+export VCPKG_DEFAULT_TRIPLET="x64-linux"
+
+export WASMER_DIR="$HOME/.wasmer"
+[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
+
+export GHIDRA_ROOT="$HOME/3rd-party/ghidra"

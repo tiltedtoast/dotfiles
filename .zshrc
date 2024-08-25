@@ -1,24 +1,23 @@
-HISTFILE=$HOME/.zsh_history
-HISTSIZE=500000
-SAVEHIST=500000
-
 setopt appendhistory
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
 
-# If you come from bash you might have to change your $PATH.
-export PATH="$HOME/.local/bin:$PATH"
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="$HOME/go/bin:$PATH"
-export PATH="/usr/local/cuda/bin:/opt/cuda/bin:$PATH"
-export ZVM_INSTALL="$HOME/.zvm/self"
-export PATH="$PATH:$HOME/.zvm/bin"
-export PATH="$PATH:$ZVM_INSTALL/"
-export PATH="$HOME/3rd-party/depot_tools:$PATH"
-
 autoload -Uz compinit && compinit
+
+# Enable case-insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+# Enable completions with sudo
+zstyle ':completion::complete:*' gain-privileges 1
+
+# Make sure completions are regenerated after installing new packages
+zstyle ':completion:*' rehash true
+
+# Close shell with ctrl+d regardless of if the command line is empty or not
+exit_zsh() { exit }
+zle -N exit_zsh
+bindkey '^D' exit_zsh
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.zsh"
@@ -26,26 +25,10 @@ export ZSH="$HOME/.zsh"
 eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
 eval "$(zoxide init --cmd cd zsh)"
 
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
-export VOLTA_FEATURE_PNPM=1
 
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
 
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
-
-export PATH=$PATH:/usr/local/go/bin
-
-export PATH=$PATH:/usr/bin/FlameGraph
-
-[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-envexport
-
+# Fix paste being super slow
 pasteinit() {
   OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
   zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
@@ -61,52 +44,16 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
-TIMEFMT=$'real\t%E\nuser\t%U\nsys\t%S'
 
-export EDITOR='code'
-
-alias ls=eza
-alias l='eza -laah --colour=always --icons=always --group-directories-first -s name --time-style "+%d %b %y %X"'
-alias s='source $HOME/.zshrc'
-alias c=clear
-alias gst='git status'
-alias rgi='rg --ignore-case'
-alias cat='bat --theme "OneDark" --paging=never'
-alias gcam='git add . && git commit -m'
-alias gam='git add --all && git commit --amend --no-edit'
-alias gc='git commit -m'
-alias gco='git checkout'
-alias gp='git push'
-alias gpl='git pull'
-alias gsta='git stash'
-alias rgi='rg --ignore-case'
-alias wiki='wiki-tui'
-alias drs='danbooru-rs'
-alias dgo='danbooru-go'
-alias cnew=cargo-new
-alias cnewtokio=cargo-new-tokio
-alias cb='cargo build'
-alias cbr='cargo build --release'
-alias cr='cargo run'
-alias crr='cargo run --release'
-alias cip='cargo install --path .'
-alias ci='cargo install'
-alias where='which'
-alias e=explorer.exe
-alias watch=watch_mode
-alias code='code -r'
-alias suggest="gh copilot suggest"
-alias explain="gh copilot explain"
+source $HOME/.zsh/aliases.sh
 
 
 if [[ -f /etc/os-release ]]; then
     . /etc/os-release
     if [[ "$ID" == "ubuntu" ]]; then
-        alias update="sudo nala full-upgrade -y"
+        source $HOME/.zsh/ubuntu_specific.sh
     elif [[ "$ID" == "arch" ]]; then
-        alias update="sudo pacman -Syu"
-        export MESA_INSTALLDIR="$HOME/3rd-party/AUR/mesa-git/pkg/mesa-git/usr"
-        export VK_DRIVER_FILES="$MESA_INSTALLDIR/share/vulkan/icd.d/dzn_icd.x86_64.json"
+        source $HOME/.zsh/arch_specific.sh
     fi
 fi
 
@@ -135,25 +82,12 @@ function cargo-new-tokio {
     code .
 }
 
-export CC="clang"
 
 bindkey '^H' backward-kill-word  # Ctrl + Backspace
 bindkey '^[[3;5~' kill-word      # Ctrl + Delete
 
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-export MODULAR_HOME="$HOME/.modular"
-export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
-export MAX_PATH="$MODULAR_HOME/pkg/packages.modular.com_max"
-export PATH="$MAX_PATH/bin:$PATH"
 
-export PATH="$HOME/.dotnet/:$HOME/.dotnet/tools:$PATH"
-
-export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
-
-alias -g -- -h='-h 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
-alias -g -- --help='--help 2>&1 | bat --language=help --style=plain --paging=never --theme="OneDark"'
 
 
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -161,22 +95,8 @@ source $HOME/.zsh/zsh-colored-man-pages/colored-man-pages.plugin.zsh
 source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Wasmer
-export WASMER_DIR="$HOME/.wasmer"
-[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
-setopt interactivecomments
-export CXX=clang++
 
-# Turso
-export PATH="$HOME/.turso:$PATH"
 
-export PATH="$HOME/.cache/rebar3/bin:$PATH"
-export DENO_INSTALL="$HOME/.deno"
-export PATH=$HOME/.deno/bin:$PATH
-
-export JAVA_HOME="$HOME/3rd-party/graalvm"
-export PATH="$JAVA_HOME/bin:$PATH"
-export PATH="/home/tim/.local/share/coursier/bin:$PATH"
-. "$HOME/.cargo/env"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -193,13 +113,6 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/cuda/lib64:/usr/lib:/opt/cuda/lib:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$HOME/3rd-party/AUR/mesa-git/pkg/mesa-git/usr/lib:$LD_LIBRARY_PATH"
-export LD=mold
-export LIBRARY_PATH="$LD_LIBRARY_PATH"
-
-export PATH="$PATH:$HOME/3rd-party/swift/usr/bin"
-
 export SURFSHARK_ADAPTER="eth2"
 
 if [ -n "$WSL_INTEROP" ]; then
@@ -208,8 +121,5 @@ fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
 
-export VCPKG_ROOT="$HOME/vcpkg"
-export VCPKG_DEFAULT_TRIPLET="x64-linux"
 
-export GHIDRA_ROOT="$HOME/3rd-party/ghidra"
 
