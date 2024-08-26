@@ -13,15 +13,16 @@
                 {
                     "type": "os",
                     "style": "diamond",
-                    "leading_diamond": "",
+                    "leading_diamond": "<transparent,background></>",
+                    "trailing_diamond": "",
                     "foreground": "#26C6DA",
                     "background": "#546E7A",
                     "template": " {{ if .WSL }}WSL {{ end }}{{ .Icon }} "
                 },
                 {
                     "type": "shell",
-                    "style": "powerline",
-                    "powerline_symbol": "",
+                    "style": "diamond",
+                    "trailing_diamond": "",
                     "foreground": "#ffffff",
                     "background": "#0077c2",
                     "properties": {
@@ -33,27 +34,27 @@
                 {
                     "background": "#0087d8",
                     "foreground": "#100e23",
-                    "powerline_symbol": "",
+                    "trailing_diamond": "",
                     "properties": {
                         "style": "full"
                     },
-                    "style": "powerline",
+                    "style": "diamond",
                     "template": " {{ .Path }} ",
                     "type": "path"
                 },
                 {
                     "background": "#149b45",
                     "foreground": "#193549",
-                    "powerline_symbol": "",
-                    "style": "powerline",
+                    "trailing_diamond": "",
+                    "style": "diamond",
                     "template": " {{ .HEAD }} ",
                     "type": "git"
                 },
                 {
                     "background": "#8d75d6",
                     "foreground": "#100e23",
-                    "powerline_symbol": "",
-                    "style": "powerline",
+                    "trailing_diamond": "",
+                    "style": "diamond",
                     "template": "  {{ .Full }} ",
                     "type": "python"
                 }
