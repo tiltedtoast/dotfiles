@@ -11,6 +11,13 @@
                     "type": "root"
                 },
                 {
+                    "type": "os",
+                    "style": "powerline",
+                    "foreground": "#26C6DA",
+                    "background": "#546E7A",
+                    "template": " {{ .Icon }} "
+                },
+                {
                     "type": "shell",
                     "style": "powerline",
                     "powerline_symbol": "",
