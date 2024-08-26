@@ -31,4 +31,4 @@ function command_not_found_handler {
     return 127
 }
 
-print -n ']2;Arch'
+print -n ']2;Arch btw'
