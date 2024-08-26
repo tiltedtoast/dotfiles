@@ -5,6 +5,12 @@
             "alignment": "left",
             "segments": [
                 {
+                    "foreground": "#FFEE58",
+                    "style": "plain",
+                    "template": " \uf0e7 ",
+                    "type": "root"
+                },
+                {
                     "type": "shell",
                     "style": "powerline",
                     "powerline_symbol": "",
@@ -15,12 +21,6 @@
                             "pwsh": "PS"
                         }
                     }
-                },
-                {
-                    "foreground": "#FFEE58",
-                    "style": "plain",
-                    "template": " \uf0e7 ",
-                    "type": "root"
                 },
                 {
                     "background": "#0087d8",
