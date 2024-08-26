@@ -113,10 +113,12 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export SURFSHARK_ADAPTER="eth0"
+export SURFSHARK_ADAPTERS="eth0 eth2"
 
 if [ -n "$WSL_INTEROP" ]; then
-    ip a | rg $SURFSHARK_ADAPTER &> /dev/null && sudo ip link set dev $SURFSHARK_ADAPTER mtu 1350 &> /dev/null
+    for adapter in $SURFSHARK_ADAPTERS; do
+        ip a | rg $adapter &> /dev/null && sudo ip link set dev $adapter mtu 1350 &> /dev/null
+    done
 fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
