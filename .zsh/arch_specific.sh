@@ -1,6 +1,5 @@
 alias update="sudo pacman -Syu"
-export MESA_INSTALLDIR="$HOME/3rd-party/AUR/mesa-git/pkg/mesa-git/usr"
-export VK_DRIVER_FILES="$MESA_INSTALLDIR/share/vulkan/icd.d/dzn_icd.x86_64.json"
+export VK_DRIVER_FILES="/usr/share/vulkan/icd.d/dzn_icd.x86_64.json"
 
 # source /usr/share/doc/pkgfile/command-not-found.zsh
 
