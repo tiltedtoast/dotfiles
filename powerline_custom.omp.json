@@ -15,7 +15,7 @@
                     "style": "powerline",
                     "foreground": "#26C6DA",
                     "background": "#546E7A",
-                    "template": " {{ .Icon }} "
+                    "template": " {{ if .WSL }}WSL {{ end }}{{ .Icon }} "
                 },
                 {
                     "type": "shell",
