@@ -41,8 +41,7 @@ pastefinish() {
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;5D" backward-word
+
 
 
 source $HOME/.zsh/aliases.sh
@@ -82,10 +81,11 @@ function cargo-new-tokio {
     code .
 }
 
-
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
 bindkey '^H' backward-kill-word  # Ctrl + Backspace
 bindkey '^[[3;5~' kill-word      # Ctrl + Delete
-
+bindkey  "^[[3~"  delete-char
 
 
 
@@ -123,3 +123,6 @@ pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
 
 
 
+
+# bun completions
+[ -s "/home/tim/.bun/_bun" ] && source "/home/tim/.bun/_bun"
