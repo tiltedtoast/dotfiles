@@ -11,9 +11,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # Enable completions with sudo
 zstyle ':completion::complete:*' gain-privileges 1
 
-# Make sure completions are regenerated after installing new packages
-zstyle ':completion:*' rehash true
-
 # Close shell with ctrl+d regardless of if the command line is empty or not
 exit_zsh() { exit }
 zle -N exit_zsh
