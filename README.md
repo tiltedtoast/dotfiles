@@ -7,7 +7,7 @@ sudo apt install nala
 sudo nala install -y unzip git zsh stow curl wget cmake imagemagick libssl-dev fzf
 
 # Oh My Posh
-curl -s https://ohmyposh.dev/install.sh | sudo bash -s
+curl -s https://ohmyposh.dev/install.sh | sudo bash -s -- -d ~/.local/bin
 
 # Zoxide
 curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
