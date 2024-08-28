@@ -77,3 +77,5 @@ export WASMER_DIR="$HOME/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
 
 export GHIDRA_ROOT="$HOME/3rd-party/ghidra"
+export BAT_THEME="OneDark"
+
