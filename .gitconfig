@@ -2,6 +2,7 @@
 	editor = code --wait
 	sshCommand = ssh -i "~/.ssh/git" -o IdentitiesOnly=yes
 	excludesfile = ~/.gitignore
+	pager = delta
 [user]
 	name = Tim
 	email = 57221600+TiltedToast@users.noreply.github.com
@@ -31,7 +32,14 @@
 	repo = ~/projects/hifumi
 [merge]
     autoStash = true
+    conflictstyle = diff3
 [rebase]
 	autoStash = true
 [pull]
 	rebase = true
+[diff]
+	colorMoved = default
+[delta]
+	navigate = true
+[interactive]
+	diffFilter = delta --color-only
