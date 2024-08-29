@@ -125,5 +125,4 @@ pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
 
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-. "$HOME/.atuin/bin/env"
 

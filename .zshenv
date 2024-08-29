@@ -79,3 +79,4 @@ export WASMER_DIR="$HOME/.wasmer"
 export GHIDRA_ROOT="$HOME/3rd-party/ghidra"
 export BAT_THEME="OneDark"
 
+. "$HOME/.atuin/bin/env"
