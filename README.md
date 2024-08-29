@@ -6,6 +6,9 @@ sudo apt upgrade -y
 sudo apt install nala
 sudo nala install -y git-delta unzip git zsh stow curl wget cmake imagemagick libssl-dev fzf
 
+# Atuin
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+
 # Oh My Posh
 curl -s https://ohmyposh.dev/install.sh | sudo bash -s -- -d ~/.local/bin
 

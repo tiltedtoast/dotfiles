@@ -205,3 +205,8 @@ unset __conda_setup
 . "/home/tim/.cargo/env"
 export PATH=/home/tim/.night.zig/latest:$PATH
 export PATH=/home/tim/.night.zig/nz:$PATH
+
+. "$HOME/.atuin/bin/env"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"

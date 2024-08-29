@@ -21,7 +21,7 @@ export ZSH="$HOME/.zsh"
 
 eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
 eval "$(zoxide init --cmd cd zsh)"
-
+eval "$(atuin init zsh)"
 
 
 
@@ -124,3 +124,6 @@ pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
 
 
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+. "$HOME/.atuin/bin/env"
+

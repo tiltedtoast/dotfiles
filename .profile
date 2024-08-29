@@ -38,3 +38,5 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 test -r /home/tim/.opam/opam-init/init.sh && . /home/tim/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 . "$HOME/.rye/env"
 . "/home/tim/.cargo/env"
+
+. "$HOME/.atuin/bin/env"
