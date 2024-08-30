@@ -47,3 +47,7 @@ rehash_precmd() {
 add-zsh-hook -Uz precmd rehash_precmd
 
 print -n ']2;Arch'
+
+function aur-clone() {
+    git clone ssh://aur@aur.archlinux.org/$1.git
+}
