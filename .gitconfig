@@ -25,7 +25,7 @@
 [rerere]
 	enabled = true
 [column]
-	ui = auto
+	ui = never
 [branch]
 	sort = -committerdate
 [maintenance]
