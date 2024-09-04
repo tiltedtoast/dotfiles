@@ -1,4 +1,6 @@
-alias update="yay -Syu"
+alias update="sudo pacman -Syu"
+alias yayupdate="yay -Syu"
+
 export VK_DRIVER_FILES="/usr/share/vulkan/icd.d/dzn_icd.x86_64.json"
 
 # source /usr/share/doc/pkgfile/command-not-found.zsh
