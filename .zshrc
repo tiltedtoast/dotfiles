@@ -126,3 +126,6 @@ pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 
+
+# bun completions
+[ -s "/home/ubuntu/.bun/_bun" ] && source "/home/ubuntu/.bun/_bun"
