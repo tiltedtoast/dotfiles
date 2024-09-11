@@ -127,5 +127,7 @@ pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
 
 
 
+. "$HOME/.cargo/env"
+
 # bun completions
-[ -s "/home/ubuntu/.bun/_bun" ] && source "/home/ubuntu/.bun/_bun"
+[ -s "/home/tim/.bun/_bun" ] && source "/home/tim/.bun/_bun"
