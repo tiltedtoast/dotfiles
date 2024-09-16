@@ -116,6 +116,7 @@ if [ -n "$WSL_INTEROP" ]; then
     for adapter in ${SURFSHARK_ADAPTERS[@]}; do
         ip a | rg $adapter &> /dev/null && sudo ip link set dev $adapter mtu 1350 &> /dev/null
     done
+    export $(dbus-launch)
 fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
