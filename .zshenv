@@ -76,7 +76,7 @@ export VCPKG_DEFAULT_TRIPLET="x64-linux"
 export WASMER_DIR="$HOME/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
 
-export GHIDRA_ROOT="$HOME/3rd-party/ghidra"
+export GHIDRA_ROOT="/opt/ghidra"
 export BAT_THEME="OneDark"
 
 . "$HOME/.atuin/bin/env"
