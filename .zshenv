@@ -59,7 +59,7 @@ export PATH="$HOME/.cache/rebar3/bin:$PATH"
 export DENO_INSTALL="$HOME/.deno"
 export PATH=$HOME/.deno/bin:$PATH
 
-export JAVA_HOME="$HOME/3rd-party/graalvm"
+export JAVA_HOME="/usr/lib/jvm/default"
 export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="/home/tim/.local/share/coursier/bin:$PATH"
 
