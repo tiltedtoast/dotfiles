@@ -79,3 +79,4 @@ export GHIDRA_ROOT="/opt/ghidra"
 export BAT_THEME="OneDark"
 
 . "$HOME/.atuin/bin/env"
+export PATH="$PATH:$HOME/.modular/bin"
