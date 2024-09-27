@@ -64,7 +64,6 @@ export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="/home/tim/.local/share/coursier/bin:$PATH"
 
 export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/cuda/lib64:/usr/lib:/opt/cuda/lib:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$HOME/3rd-party/AUR/mesa-git/pkg/mesa-git/usr/lib:$LD_LIBRARY_PATH"
 export LD=mold
 export LIBRARY_PATH="$LD_LIBRARY_PATH"
 
