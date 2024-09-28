@@ -17,6 +17,7 @@
 [gpg]
 	format = ssh
 [alias]
+	wt = worktree
 	logline = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [credential]
     helper = "/usr/bin/gh auth git-credential"
