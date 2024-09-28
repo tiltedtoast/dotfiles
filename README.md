@@ -60,7 +60,7 @@ cmake --build build -j$(nproc)
 sudo cmake --build build --target install
 
 # Nano Syntax Highlighting
-curl https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh | sh
+curl https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh | sudo sh
 
 # Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
