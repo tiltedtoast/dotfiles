@@ -59,6 +59,9 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=c++ -B build
 cmake --build build -j$(nproc)
 sudo cmake --build build --target install
 
+# Nano Syntax Highlighting
+curl https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh | sh
+
 # Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 . $HOME/.cargo/env
