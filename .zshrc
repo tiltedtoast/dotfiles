@@ -117,7 +117,7 @@ if [ -n "$WSL_INTEROP" ]; then
         ip a | rg $adapter &> /dev/null && sudo ip link set dev $adapter mtu 1350 &> /dev/null
     done
     export $(dbus-launch)
-    eval $(opam env --switch=default)
+    eval $(opam env)
 fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
