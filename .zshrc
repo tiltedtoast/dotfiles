@@ -117,6 +117,7 @@ if [ -n "$WSL_INTEROP" ]; then
         ip a | rg $adapter &> /dev/null && sudo ip link set dev $adapter mtu 1350 &> /dev/null
     done
     export $(dbus-launch)
+    eval $(opam env --switch=default)
 fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
@@ -132,4 +133,3 @@ pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
 
 # bun completions
 [ -s "/home/tim/.bun/_bun" ] && source "/home/tim/.bun/_bun"
-eval $(opam env --switch=default)
