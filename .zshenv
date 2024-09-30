@@ -81,3 +81,4 @@ export BAT_THEME="OneDark"
 . "$HOME/.atuin/bin/env"
 export PATH="$PATH:$HOME/.modular/bin"
 export PATH="/opt/rocm/bin:$PATH"
+export HIP_PLATFORM='nvidia'
