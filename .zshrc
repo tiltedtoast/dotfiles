@@ -21,7 +21,7 @@ export ZSH="$HOME/.zsh"
 
 eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
 eval "$(zoxide init --cmd cd zsh)"
-eval "$(atuin init zsh)"
+eval "$(atuin init --disable-up-arrow zsh)"
 
 
 
