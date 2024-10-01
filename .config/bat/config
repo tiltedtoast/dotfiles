@@ -1,6 +1,6 @@
 --theme="OneDark"
 --map-syntax "*.cu:C++"
 --map-syntax "*.hip:C++"
---map-syntax "pacman.conf:INI"
+--map-syntax "pacman.conf:Git Config"
 --map-syntax "**/chromium/**/*.conf:XML"
 
