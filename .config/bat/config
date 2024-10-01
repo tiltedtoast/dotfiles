@@ -2,3 +2,5 @@
 --map-syntax "*.cu:C++"
 --map-syntax "*.hip:C++"
 --map-syntax "pacman.conf:INI"
+--map-syntax "**/chromium/**/*.conf:XML"
+
