@@ -7,6 +7,3 @@
 [submodule ".zsh/zsh-autosuggestions"]
 	path = .zsh/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
-[submodule ".nano"]
-	path = .nano
-	url = https://github.com/scopatz/nanorc.git
