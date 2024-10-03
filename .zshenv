@@ -82,3 +82,6 @@ export BAT_THEME="OneDark"
 export PATH="$PATH:$HOME/.modular/bin"
 export PATH="/opt/rocm/bin:$PATH"
 export HIP_PLATFORM='nvidia'
+
+export ANDROID_HOME="/opt/android-sdk"
+export NDK_HOME="/opt/android-ndk"
