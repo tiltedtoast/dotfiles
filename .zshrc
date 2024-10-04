@@ -2,6 +2,7 @@ setopt appendhistory
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
+unsetopt BEEP
 
 fpath=(~/.zsh/completions $fpath)
 
