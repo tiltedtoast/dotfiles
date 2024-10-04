@@ -3,6 +3,8 @@ setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
 
+fpath=(~/.zsh/completions $fpath)
+
 autoload -Uz compinit && compinit
 
 # Enable case-insensitive completion
