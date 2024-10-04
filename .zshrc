@@ -4,7 +4,9 @@ setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
 unsetopt BEEP
 
-fpath=(~/.zsh/completions $fpath)
+if [[ ! "$fpath" =~ .*"$HOME/.zsh/completions".* ]]; then
+  fpath=(~/.zsh/completions $fpath)
+fi
 
 autoload -Uz compinit && compinit
 
