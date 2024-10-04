@@ -31,6 +31,10 @@ alias code='code -r'
 alias suggest="gh copilot suggest"
 alias explain="gh copilot explain"
 
+man() {
+    /usr/bin/man $@ | bat --language=Manpage --style=plain
+}
+
 
 create_mold_wrapper() {
     local tool=$1

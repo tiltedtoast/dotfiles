@@ -1,9 +1,6 @@
 [submodule "zsh-syntax-highlighting"]
 	path = .zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
-[submodule ".zsh/zsh-colored-man-pages"]
-	path = .zsh/zsh-colored-man-pages
-	url = https://github.com/ael-code/zsh-colored-man-pages
 [submodule ".zsh/zsh-autosuggestions"]
 	path = .zsh/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions

@@ -88,7 +88,6 @@ bindkey "^[[3~"  delete-char
 
 
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $HOME/.zsh/zsh-colored-man-pages/colored-man-pages.plugin.zsh
 source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Wasmer
