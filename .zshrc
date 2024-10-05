@@ -122,6 +122,13 @@ if [ -n "$WSL_INTEROP" ]; then
     done
     export $(dbus-launch)
     eval $(opam env)
+    if [[ ! -e /usr/local/bin/explorer.exe ]]; then
+      sudo ln -s /mnt/c/windows/explorer.exe /usr/local/bin/explorer.exe
+    fi
+
+    if [[ ! -e /usr/local/bin/code ]]; then
+        sudo ln -s "/mnt/c/Users/tim/AppData/Local/Programs/Microsoft VS Code/bin/code" /usr/local/bin/code
+    fi
 fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
