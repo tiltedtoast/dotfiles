@@ -130,6 +130,17 @@ if [ -n "$WSL_INTEROP" ]; then
     if [[ ! -e /usr/local/bin/code ]]; then
         sudo ln -s "/mnt/c/Users/tim/AppData/Local/Programs/Microsoft VS Code/bin/code" /usr/local/bin/code
     fi
+
+    if [[ ! -e /usr/local/bin/ssh ]]; then
+        sudo ln -s "/mnt/c/windows/system32/openssh/ssh.exe" /usr/local/bin/ssh
+    fi
+
+    if [[ ! -e /usr/local/bin/ssh-add ]]; then
+        sudo ln -s "/mnt/c/windows/system32/openssh/ssh-add.exe" /usr/local/bin/ssh-add
+    fi
+
+    alias ssh="/mnt/c/windows/system32/openssh/ssh.exe"
+    alias ssh-add="/mnt/c/windows/system32/openssh/ssh-add.exe"
 fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
