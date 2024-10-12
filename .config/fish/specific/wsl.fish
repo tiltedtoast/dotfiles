@@ -8,8 +8,7 @@ for adapter in $SURFSHARK_ADAPTERS
 end
 
 
-# wrap_env_command (dbus-launch)
-# set -x (dbus-launch)
+bass (dbus-launch)
 eval (opam env)
 
 pgrep -f wait-forever.sh >/dev/null || nohup ./wait-forever.sh &>/dev/null
