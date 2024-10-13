@@ -123,24 +123,24 @@ if [ -n "$WSL_INTEROP" ]; then
     export $(dbus-launch)
     (command -v opam >/dev/null 2>&1 && eval $(opam env)) >/dev/null 2>&1 || true
 
-    if [[ ! -e /usr/local/bin/explorer.exe ]]; then
-      sudo ln -s /mnt/c/windows/explorer.exe /usr/local/bin/explorer.exe
+    if [[ ! -e ~/.local/bin/explorer.exe ]]; then
+      ln -s /mnt/c/windows/explorer.exe ~/.local/bin/explorer.exe
     fi
 
-    if [[ ! -e /usr/local/bin/code ]]; then
-        sudo ln -s "/mnt/c/Users/tim/AppData/Local/Programs/Microsoft VS Code/bin/code" /usr/local/bin/code
+    if [[ ! -e ~/.local/bin/code ]]; then
+        ln -s "/mnt/c/Users/tim/AppData/Local/Programs/Microsoft VS Code/bin/code" ~/.local/bin/code
     fi
 
-    if [[ ! -e /usr/local/bin/ssh ]]; then
-        sudo ln -s "/mnt/c/windows/system32/openssh/ssh.exe" /usr/local/bin/ssh
+    if [[ ! -e ~/.local/bin/ssh ]]; then
+        sudo ln -s "/mnt/c/windows/system32/openssh/ssh.exe" ~/.local/bin/ssh
     fi
 
-    if [[ ! -e /usr/local/bin/ssh-add ]]; then
-        sudo ln -s "/mnt/c/windows/system32/openssh/ssh-add.exe" /usr/local/bin/ssh-add
+    if [[ ! -e ~/.local/bin/ssh-add ]]; then
+        ln -s "/mnt/c/windows/system32/openssh/ssh-add.exe" ~/.local/bin/ssh-add
     fi
 
-    if [[ ! -e /usr/local/bin/op-ssh-sign-wsl ]]; then
-        sudo ln -s "/mnt/c/Users/tim/AppData/Local/1Password/app/8/op-ssh-sign-wsl" /usr/local/bin/op-ssh-sign-wsl
+    if [[ ! -e ~/.local/bin/op-ssh-sign-wsl ]]; then
+        ln -s "/mnt/c/Users/tim/AppData/Local/1Password/app/8/op-ssh-sign-wsl" ~/.local/bin/op-ssh-sign-wsl
     fi
 
     alias op="/mnt/c/Users/tim/scoop/shims/op.exe"
