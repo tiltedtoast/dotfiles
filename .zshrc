@@ -132,7 +132,7 @@ if [ -n "$WSL_INTEROP" ]; then
     fi
 
     if [[ ! -e ~/.local/bin/ssh ]]; then
-        sudo ln -s "/mnt/c/windows/system32/openssh/ssh.exe" ~/.local/bin/ssh
+        ln -s "/mnt/c/windows/system32/openssh/ssh.exe" ~/.local/bin/ssh
     fi
 
     if [[ ! -e ~/.local/bin/ssh-add ]]; then

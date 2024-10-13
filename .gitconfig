@@ -1,6 +1,6 @@
 [core]
     editor = code --wait
-    sshCommand = /usr/local/bin/ssh
+    sshCommand = ~/.local/bin/ssh
     excludesfile = ~/.gitignore
     pager = delta
 [user]
