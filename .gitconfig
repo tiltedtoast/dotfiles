@@ -18,7 +18,7 @@
     format = ssh
 
 [gpg "ssh"]
-  program = "/mnt/c/Users/tim/AppData/Local/1Password/app/8/op-ssh-sign-wsl"
+  program = "/usr/local/bin/op-ssh-sign-wsl"
 [alias]
     wt = worktree
     logline = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
