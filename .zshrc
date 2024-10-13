@@ -139,6 +139,7 @@ if [ -n "$WSL_INTEROP" ]; then
         sudo ln -s "/mnt/c/windows/system32/openssh/ssh-add.exe" /usr/local/bin/ssh-add
     fi
 
+    alias op="/mnt/c/Users/tim/scoop/shims/op.exe"
     alias ssh="/mnt/c/windows/system32/openssh/ssh.exe"
     alias ssh-add="/mnt/c/windows/system32/openssh/ssh-add.exe"
 fi
