@@ -2,5 +2,6 @@
 --map-syntax "*.cu:C++"
 --map-syntax "*.hip:C++"
 --map-syntax "pacman.conf:Git Config"
+--map-syntax "paru.conf:Git Config"
 --map-syntax "**/chromium/**/*.conf:XML"
 
