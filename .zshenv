@@ -85,4 +85,4 @@ export HIP_PLATFORM='nvidia'
 
 export ANDROID_HOME="/opt/android-sdk"
 export NDK_HOME="/opt/android-ndk"
-export PAGER="moar"
+# export PAGER="moar"
