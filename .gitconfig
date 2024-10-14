@@ -1,6 +1,5 @@
 [core]
     editor = code --wait
-    sshCommand = ~/.local/bin/ssh
     excludesfile = ~/.gitignore
     pager = delta
 [user]
@@ -16,9 +15,6 @@
     gpgsign = true
 [gpg]
     format = ssh
-
-[gpg "ssh"]
-  program = "/home/tim/.local/bin/op-ssh-sign-wsl"
 [alias]
     wt = worktree
     logline = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
@@ -32,8 +28,6 @@
     ui = never
 [branch]
     sort = -committerdate
-[maintenance]
-    repo = ~/projects/hifumi
 [merge]
     autoStash = true
     conflictstyle = diff3
@@ -47,3 +41,9 @@
     navigate = true
 [interactive]
     diffFilter = delta --color-only
+
+[includeIf "gitdir:/home/tim/"]
+    path = ~/.config/git/.gitconfig-wsl
+
+[includeIf "gitdir:/home/ubuntu"]
+    path = ~/.config/git/.gitconfig-non-wsl

@@ -1,0 +1,4 @@
+[core]
+    sshCommand = ~/.local/bin/ssh
+[gpg "ssh"]
+    program = "/home/tim/.local/bin/op-ssh-sign-wsl"
