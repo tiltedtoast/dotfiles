@@ -1,2 +1,4 @@
 [core]
-    sshCommand = ssh -i ~/.ssh/git
+    sshCommand = ssh -i "~/.ssh/git" -o IdentitiesOnly=yes
+[user]
+    signingkey = ~/.ssh/git.pub
