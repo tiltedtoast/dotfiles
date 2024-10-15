@@ -36,7 +36,7 @@
                     "foreground": "#100e23",
                     "trailing_diamond": "",
                     "properties": {
-                        "style": "full"
+                        "style": "unique"
                     },
                     "style": "diamond",
                     "template": " {{ .Path }} ",
