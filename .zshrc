@@ -121,6 +121,7 @@ if [ -n "$WSL_INTEROP" ]; then
         ip a | rg $adapter &> /dev/null && sudo ip link set dev $adapter mtu 1350 &> /dev/null
     done
     export $(dbus-launch)
+    export GALLIUM_DRIVER=d3d12
     (command -v opam >/dev/null 2>&1 && eval $(opam env)) >/dev/null 2>&1 || true
 
     if [[ ! -e ~/.local/bin/explorer.exe ]]; then
