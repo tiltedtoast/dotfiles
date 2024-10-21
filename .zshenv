@@ -86,3 +86,6 @@ export HIP_PLATFORM='nvidia'
 export ANDROID_HOME="/opt/android-sdk"
 export NDK_HOME="/opt/android-ndk"
 export PAGER="moar"
+
+# Force Tensorflow to only use the vram it needs to avoid crippling performance
+export TF_FORCE_GPU_ALLOW_GROWTH=true
