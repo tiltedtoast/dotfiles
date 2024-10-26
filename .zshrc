@@ -25,6 +25,7 @@ bindkey '^D' exit_zsh
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.zsh"
 
+eval "$(direnv hook zsh)"
 eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(atuin init --disable-up-arrow zsh)"
