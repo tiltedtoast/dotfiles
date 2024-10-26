@@ -2,6 +2,7 @@ setopt appendhistory
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
+setopt INTERACTIVE_COMMENTS
 unsetopt BEEP
 
 if [[ ! "$fpath" =~ .*"$HOME/.zsh/completions".* ]]; then
