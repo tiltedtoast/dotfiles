@@ -5,7 +5,9 @@ setopt HIST_IGNORE_DUPS
 setopt INTERACTIVE_COMMENTS
 unsetopt BEEP
 
-if [[ ! "$fpath" =~ .*"$HOME/.zsh/completions".* ]]; then
+export ZSH="$HOME/.zsh"
+
+if [[ ! "$fpath" =~ .*"$ZSH/completions".* ]]; then
   fpath=(~/.zsh/completions $fpath)
 fi
 
@@ -23,7 +25,6 @@ zle -N exit_zsh
 bindkey '^D' exit_zsh
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.zsh"
 
 eval "$(direnv hook zsh)"
 eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
@@ -48,15 +49,16 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 
 
 
-source $HOME/.zsh/aliases.sh
+source $ZSH/aliases.sh
+source $ZSH/hooks.sh
 
 
 if [[ -f /etc/os-release ]]; then
     . /etc/os-release
     if [[ "$ID" == "ubuntu" ]]; then
-        source $HOME/.zsh/ubuntu_specific.sh
+        source $ZSH/ubuntu_specific.sh
     elif [[ "$ID" == "arch" ]]; then
-        source $HOME/.zsh/arch_specific.sh
+        source $ZSH/arch_specific.sh
     fi
 fi
 
@@ -94,8 +96,8 @@ bindkey "^[[3~"  delete-char
 
 
 
-source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Wasmer
 
@@ -116,39 +118,9 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export SURFSHARK_ADAPTERS=(eth0 eth2)
 
 if [ -n "$WSL_INTEROP" ]; then
-    for adapter in ${SURFSHARK_ADAPTERS[@]}; do
-        ip a | rg $adapter &> /dev/null && sudo ip link set dev $adapter mtu 1350 &> /dev/null
-    done
-    export $(dbus-launch)
-    export GALLIUM_DRIVER=d3d12
-    (command -v opam >/dev/null 2>&1 && eval $(opam env)) >/dev/null 2>&1 || true
-
-    if [[ ! -e ~/.local/bin/explorer.exe ]]; then
-      ln -s /mnt/c/windows/explorer.exe ~/.local/bin/explorer.exe
-    fi
-
-    if [[ ! -e ~/.local/bin/code ]]; then
-        ln -s "/mnt/c/Users/tim/AppData/Local/Programs/Microsoft VS Code/bin/code" ~/.local/bin/code
-    fi
-
-    if [[ ! -e ~/.local/bin/ssh ]]; then
-        ln -s "/mnt/c/windows/system32/openssh/ssh.exe" ~/.local/bin/ssh
-    fi
-
-    if [[ ! -e ~/.local/bin/ssh-add ]]; then
-        ln -s "/mnt/c/windows/system32/openssh/ssh-add.exe" ~/.local/bin/ssh-add
-    fi
-
-    if [[ ! -e ~/.local/bin/op-ssh-sign-wsl ]]; then
-        ln -s "/mnt/c/Users/tim/AppData/Local/1Password/app/8/op-ssh-sign-wsl" ~/.local/bin/op-ssh-sign-wsl
-    fi
-
-    alias op="/mnt/c/Users/tim/scoop/shims/op.exe"
-    alias ssh="/mnt/c/windows/system32/openssh/ssh.exe"
-    alias ssh-add="/mnt/c/windows/system32/openssh/ssh-add.exe"
+    source $ZSH/wsl_specific.sh
 fi
 
 pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
