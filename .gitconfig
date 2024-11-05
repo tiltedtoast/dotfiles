@@ -41,6 +41,9 @@
 [interactive]
     diffFilter = delta --color-only
 
+[includeIf "gitdir:/home/tim/projects/uni/"]
+    path = ~/.config/git/.gitconfig-uni
+
 [includeIf "gitdir:/home/tim/"]
     path = ~/.config/git/.gitconfig-wsl
 
