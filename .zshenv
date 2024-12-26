@@ -89,4 +89,6 @@ export PAGER="moar"
 
 # Force Tensorflow to only use the vram it needs to avoid crippling performance
 export TF_FORCE_GPU_ALLOW_GROWTH=true
+
 export MAKEFLAGS="-j$(($(nproc) - 2))"
+export NINJAFLAGS="-j$(($(nproc) - 2))"

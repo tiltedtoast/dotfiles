@@ -136,3 +136,4 @@ pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
 
 # bun completions
 [ -s "/home/tim/.bun/_bun" ] && source "/home/tim/.bun/_bun"
+export PATH="$PATH:/home/tim/.modular/bin"
