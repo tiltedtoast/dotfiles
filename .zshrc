@@ -7,6 +7,26 @@ unsetopt BEEP
 
 export ZSH="$HOME/.zsh"
 
+[[ -r ~/3rd-party/znap/znap.zsh ]] ||
+    git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/3rd-party/znap
+source ~/3rd-party/znap/znap.zsh
+
+zstyle ':znap:*' repos-dir ~/3rd-party/znap-plugins
+
+znap source zsh-users/zsh-syntax-highlighting
+znap source zsh-users/zsh-autosuggestions
+
+znap install zsh-users/zsh-completions
+
+znap eval direnv 'direnv hook zsh'
+znap eval omp "oh-my-posh init zsh --config $HOME/powerline_custom.omp.json"
+znap eval zoxide "zoxide init --cmd cd zsh"
+znap eval atuin "atuin init --disable-up-arrow zsh"
+
+source $ZSH/aliases.sh
+source $ZSH/hooks.sh
+
+
 if [[ ! "$fpath" =~ .*"$ZSH/completions".* ]]; then
   fpath=(~/.zsh/completions $fpath)
 fi
@@ -26,13 +46,6 @@ bindkey '^D' exit_zsh
 
 # Path to your oh-my-zsh installation.
 
-eval "$(direnv hook zsh)"
-eval "$(oh-my-posh init zsh --config $HOME/powerline_custom.omp.json)"
-eval "$(zoxide init --cmd cd zsh)"
-eval "$(atuin init --disable-up-arrow zsh)"
-
-
-
 # Fix paste being super slow
 pasteinit() {
   OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
@@ -45,13 +58,6 @@ pastefinish() {
 
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
-
-
-
-
-source $ZSH/aliases.sh
-source $ZSH/hooks.sh
-
 
 if [[ -f /etc/os-release ]]; then
     . /etc/os-release
@@ -94,15 +100,6 @@ bindkey '^[[3;5~' kill-word      # Ctrl + Delete
 bindkey "^[[3~"  delete-char
 
 
-
-
-source $ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# Wasmer
-
-
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -123,14 +120,7 @@ if [ -n "$WSL_INTEROP" ]; then
     source $ZSH/wsl_specific.sh
 fi
 
-pgrep -f wait-forever.sh > /dev/null || nohup ./wait-forever.sh &> /dev/null &!
-
-
-
-
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-
 
 . "$HOME/.cargo/env"
 
