@@ -4,4 +4,6 @@
 --map-syntax "pacman.conf:Git Config"
 --map-syntax "paru.conf:Git Config"
 --map-syntax "**/chromium/**/*.conf:XML"
+--map-syntax "*.🔥:Python"
+--map-syntax "*.mojo:Python"
 
