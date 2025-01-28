@@ -92,5 +92,3 @@ export TF_FORCE_GPU_ALLOW_GROWTH=true
 
 export MAKEFLAGS="-j$(($(nproc) - 2))"
 export NINJAFLAGS="-j$(($(nproc) - 2))"
-
-export PATH="$HOME/3rd-party/syclomatic/bin:$PATH"
