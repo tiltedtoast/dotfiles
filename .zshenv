@@ -63,6 +63,7 @@ export JAVA_HOME="/usr/lib/jvm/default"
 export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="/home/tim/.local/share/coursier/bin:$PATH"
 
+export LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="/usr/lib/wsl/lib:/usr/local/lib:/usr/local/cuda/lib64:/usr/lib:/opt/cuda/lib:$LD_LIBRARY_PATH"
 export LD=mold
 export LIBRARY_PATH="$LD_LIBRARY_PATH"
