@@ -8,7 +8,8 @@ for adapter in ${SURFSHARK_ADAPTERS[@]}; do
     (command -v opam >/dev/null 2>&1 && eval $(opam env)) >/dev/null 2>&1 || true
 
     if [[ ! -e ~/.local/bin/explorer.exe ]]; then
-      ln -s /mnt/c/windows/explorer.exe ~/.local/bin/explorer.exe
+      # ln -s /mnt/c/windows/explorer.exe ~/.local/bin/explorer.exe
+        ln -s /mnt/c/Users/tim/AppData/Local/Voidstar/FilePilot/FPilot.exe ~/.local/bin/explorer.exe
     fi
 
     if [[ ! -e ~/.local/bin/code ]]; then
