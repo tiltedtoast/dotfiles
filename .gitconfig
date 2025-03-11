@@ -17,8 +17,6 @@
 [alias]
     wt = worktree
     logline = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-[credential]
-    helper = "gh auth git-credential"
 [init]
     defaultBranch = main
 [rerere]
@@ -40,6 +38,11 @@
     navigate = true
 [interactive]
     diffFilter = delta --color-only
+
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = !/usr/bin/gh auth git-credential
 
 [includeIf "gitdir:/home/tim/projects/uni/"]
     path = ~/.config/git/.gitconfig-uni
