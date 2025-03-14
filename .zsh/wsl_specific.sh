@@ -24,5 +24,4 @@ if [[ ! -e ~/.local/bin/op-ssh-sign-wsl ]]; then
 fi
 
 alias explorer.exe="/mnt/c/windows/explorer.exe"
-alias code="/mnt/c/Users/tim/AppData/Local/Programs/Microsoft VS Code/bin/code"
 alias op="/mnt/c/Users/tim/AppData/Local/Microsoft/WinGet/Links/op.exe"
