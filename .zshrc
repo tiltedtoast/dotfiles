@@ -65,6 +65,8 @@ if [[ -f /etc/os-release ]]; then
         source $ZSH/ubuntu_specific.sh
     elif [[ "$ID" == "arch" ]]; then
         source $ZSH/arch_specific.sh
+    elif [[ "$ID" == "endeavouros" ]]; then
+        source $ZSH/arch_specific.sh
     fi
 fi
 
