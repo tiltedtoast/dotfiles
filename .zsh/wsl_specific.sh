@@ -4,7 +4,7 @@ for adapter in ${SURFSHARK_ADAPTERS[@]}; do
     ip a | rg $adapter &> /dev/null && sudo ip link set dev $adapter mtu 1350 &> /dev/null
 done
 
-command -v dbus-launch && export $(dbus-launch)
+command -v dbus-launch > /dev/null && export $(dbus-launch)
 export GALLIUM_DRIVER=d3d12
 export LIBVA_DRIVERS_PATH=/usr/lib/dri
 export LIBVA_DRIVER_NAME=d3d12
