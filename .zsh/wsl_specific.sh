@@ -16,5 +16,13 @@ if [[ ! -e ~/.local/bin/code ]]; then
     ln -s "/mnt/c/Users/tim/AppData/Local/Programs/Microsoft VS Code/bin/code" ~/.local/bin/code
 fi
 
+if [[ ! -e ~/.local/bin/cmd.exe ]]; then
+    ln -s "/mnt/c/Windows/System32/cmd.exe" ~/.local/bin/cmd.exe
+fi
+
+if [[ ! -e ~/.local/bin/op-ssh-sign ]]; then
+    ln -s "/mnt/c/Users/tim/AppData/Local/1Password/app/8/op-ssh-sign-wsl" ~/.local/bin/op-ssh-sign
+fi
+
 alias explorer.exe="/mnt/c/windows/explorer.exe"
 alias op="/mnt/c/Users/tim/AppData/Local/Microsoft/WinGet/Links/op.exe"
