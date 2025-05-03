@@ -5,6 +5,7 @@
 [user]
     name = Tim
     email = 57221600+TiltedToast@users.noreply.github.com
+    signingkey = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDqx0tLA7QXADw0+TctSgUFNuxJblkz3pexO+sVDCsZpzAnsdgU6tu7i8amDWfuCCVJSyFqL07xID7z6nmPoPJsE5Zy2IHB/smF5dpBQBTc+eQFCxqOawov4HBn8wcngScIa5+sWJ/orTtk3Zjtgk/TacyU/v4tOeMMPmfzer3U/AhNML6YDBg9Ikc79na/MaJHwsVXTwEidWnKenEq9tcv3Q/pf1e4ucbUOciLGu1UnvN/OtY6hxCUlPqTJ+HFGJw0e6eW+Nd/MyOe0G4W67qvrJGZdjK4PJZ93hq6p3EMtvMLyabhiV7q2jCtcprmuMrvKr8+/B+mt5JXna5uQcyJC2+CQ4S1fE3qS3bfsVaHGvjOunvATQiQJkqimQcQW6Fiedy1yyAS0fkVa6asWjyfG5ghkhbwelcCNN8FMrAnEzJndQ2Mn5NNIfe5kWjHqlIA63Wj0e++6I9Y29g2ybidyRgtHny5ai7mGZKrov8lrUgx9uIHfvArBTqPy6AHHUs=
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
@@ -46,9 +47,3 @@
 
 [includeIf "gitdir:/home/tim/projects/uni/"]
     path = ~/.config/git/.gitconfig-uni
-
-[includeIf "gitdir:/home/tim/"]
-    path = ~/.config/git/.gitconfig-wsl
-
-[includeIf "gitdir:/home/ubuntu/"]
-    path = ~/.config/git/.gitconfig-non-wsl
