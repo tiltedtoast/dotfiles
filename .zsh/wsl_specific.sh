@@ -10,6 +10,8 @@ export LIBVA_DRIVERS_PATH=/usr/lib/dri
 export LIBVA_DRIVER_NAME=d3d12
 export VDPAU_DRIVER=d3d12
 
+export GTK_THEME=Adwaita-dark
+
 eval "$(wsl2-ssh-agent)"
 
 if [[ ! -e ~/.local/bin/code ]]; then
