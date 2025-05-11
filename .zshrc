@@ -68,6 +68,8 @@ if [[ -f /etc/os-release ]]; then
     elif [[ "$ID" == "endeavouros" ]]; then
         source $ZSH/arch_specific.sh
         source $ZSH/endeavouros_specific.sh
+    elif [[ "$ID" == "nixos" ]]; then
+        source $ZSH/nixos_specific.sh
     fi
 fi
 
