@@ -6,7 +6,6 @@ done
 
 command -v dbus-launch > /dev/null && export $(dbus-launch)
 export GALLIUM_DRIVER=d3d12
-export LIBVA_DRIVERS_PATH=/usr/lib/dri
 export LIBVA_DRIVER_NAME=d3d12
 export VDPAU_DRIVER=d3d12
 

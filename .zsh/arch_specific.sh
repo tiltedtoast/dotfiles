@@ -6,6 +6,7 @@ listfiles() {
 }
 
 export VK_DRIVER_FILES="/usr/share/vulkan/icd.d/dzn_icd.x86_64.json"
+export LIBVA_DRIVERS_PATH=/usr/lib/dri
 
 # source /usr/share/doc/pkgfile/command-not-found.zsh
 
