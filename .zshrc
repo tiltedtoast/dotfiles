@@ -19,7 +19,7 @@ znap source zsh-users/zsh-autosuggestions
 znap install zsh-users/zsh-completions
 
 znap eval direnv 'direnv hook zsh'
-znap eval omp "oh-my-posh init zsh --config $HOME/powerline_custom.omp.json"
+znap eval omp "oh-my-posh init zsh --config $HOME/powerline_custom.omp.json" &> /dev/null
 znap eval zoxide "zoxide init --cmd cd zsh"
 znap eval atuin "atuin init --disable-up-arrow zsh"
 
@@ -125,7 +125,7 @@ fi
 
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-. "$HOME/.cargo/env"
+[ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # bun completions
 [ -s "/home/tim/.bun/_bun" ] && source "/home/tim/.bun/_bun"

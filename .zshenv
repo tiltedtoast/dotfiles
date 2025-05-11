@@ -1,5 +1,3 @@
-. "$HOME/.cargo/env"
-
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=500000
 export SAVEHIST=500000
@@ -79,7 +77,8 @@ export WASMER_DIR="$HOME/.wasmer"
 export GHIDRA_ROOT="/opt/ghidra"
 export BAT_THEME="OneDark"
 
-. "$HOME/.atuin/bin/env"
+[ -s "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
+
 export PATH="$PATH:$HOME/.modular/bin"
 export PATH="/opt/rocm/bin:$PATH"
 export HIP_PLATFORM='nvidia'
