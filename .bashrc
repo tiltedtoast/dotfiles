@@ -112,7 +112,7 @@ if ! shopt -oq posix; then
         . /etc/bash_completion
     fi
 fi
-. "$HOME/.cargo/env"
+[ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 export PATH="$HOME/miku_db_backupper/target/release:$PATH"
 
@@ -202,11 +202,8 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-. "/home/tim/.cargo/env"
 export PATH=/home/tim/.night.zig/latest:$PATH
 export PATH=/home/tim/.night.zig/nz:$PATH
 
-. "$HOME/.atuin/bin/env"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
-eval "$(atuin init bash)"
