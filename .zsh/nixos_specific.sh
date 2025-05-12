@@ -1,6 +1,6 @@
 export NIXPKGS_ALLOW_UNFREE=1
 
-CUDA_ROOT=$(nix --extra-experimental-features nix-command --extra-experimental-features flakes eval --impure --raw nixpkgs#cudaPackages.cudatoolkit)
+CUDA_ROOT=$(nix --extra-experimental-features 'nix-command flakes' eval --impure --raw github:NixOS/nixpkgs/nixos-unstable#cudaPackages.cudatoolkit)
 
 export PATH="$CUDA_ROOT/bin:$PATH"
 
