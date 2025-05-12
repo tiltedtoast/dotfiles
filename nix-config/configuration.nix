@@ -16,37 +16,21 @@ let
   };
 in
 {
-  imports = [ ];
+  imports = [
+    ./common/security.nix
+  ];
 
-  nix.settings.trusted-users = [ "root" "tim" ];
+  nix.settings.trusted-users = [
+    "root"
+    "tim"
+  ];
   networking.hostName = "nixos-wsl";
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
 
-  security.sudo = {
-    enable = true;
-    extraRules = [
-      {
-        users = [ "tim" ];
-        commands = [ "ALL" ];
-      }
-      {
-        users = [ "tim" ];
-        commands = [
-          {
-            command = "/run/current-system/sw/bin/ip";
-            options = [ "NOPASSWD" ];
-          }
-          {
-            command = "/run/current-system/sw/bin/ln";
-            options = [ "NOPASSWD" ];
-          }
-        ];
-      }
-    ];
-  };
+
 
   systemd.services.link-wslg-runtime = {
     enable = true;
