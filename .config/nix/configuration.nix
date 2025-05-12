@@ -20,7 +20,6 @@ in
 
   nix.settings.trusted-users = [ "root" "tim" ];
   networking.hostName = "nixos-wsl";
-  nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -178,9 +177,9 @@ in
 
   nixpkgs.overlays = [
     (final: prev: {
-      #            mesa = unstable.mesa;
-      #            libGL = unstable.mesa;
-      #            libglvnd = unstable.libglvnd;
+      # mesa = unstable.mesa;
+      # libGL = unstable.mesa;
+      # libglvnd = unstable.libglvnd;
     })
   ];
 
@@ -226,5 +225,5 @@ in
     extraGroups = [ "docker" ];
   };
 
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "24.11";
 }
