@@ -161,6 +161,7 @@ in
       cudatoolkit
 
       unstable.ffmpeg-full
+      unstable.nixd
       docker
       turso-cli
       clinfo
