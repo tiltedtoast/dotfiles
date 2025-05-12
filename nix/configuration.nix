@@ -225,9 +225,5 @@ in
     extraGroups = [ "docker" ];
   };
 
-  #    wsl.enable = true;
-  #    wsl.defaultUser = "tim";
-  #    wsl.wslConf.interop.appendWindowsPath = false;
-
   system.stateVersion = "24.11"; # Did you read the comment?
 }
