@@ -10,6 +10,14 @@ export PATH="$PATH:/home/tim/.radicle/bin"
 # Bash-style time formatting
 TIMEFMT=$'real\t%E\nuser\t%U\nsys\t%S'
 
+if [[ -f /etc/os-release ]]; then
+    . /etc/os-release
+    if [[ "$ID" != "nixos" ]]; then
+        export JAVA_HOME="/usr/lib/jvm/default"
+        export PATH="$JAVA_HOME/bin:$PATH"
+    fi
+fi
+
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/go/bin:$PATH"
@@ -57,8 +65,7 @@ export PATH="$HOME/.cache/rebar3/bin:$PATH"
 export DENO_INSTALL="$HOME/.deno"
 export PATH=$HOME/.deno/bin:$PATH
 
-export JAVA_HOME="/usr/lib/jvm/default"
-export PATH="$JAVA_HOME/bin:$PATH"
+
 export PATH="/home/tim/.local/share/coursier/bin:$PATH"
 
 export LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/lib:$LD_LIBRARY_PATH"
