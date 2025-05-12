@@ -165,6 +165,8 @@ in
       "${unstable.stdenv.cc.cc.lib}/lib"
       "${unstable.cudatoolkit}/lib"
       "${unstable.cudaPackages.cuda_cudart.static}/lib"
+      "${unstable.llvmPackages_20.libcxx}/lib"
+      "${unstable.llvmPackages_20.libunwind}/lib"
     ];
 
     CPATH = [
