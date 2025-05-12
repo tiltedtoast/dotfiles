@@ -18,6 +18,7 @@ in
 {
   imports = [ ];
 
+  nix.settings.trusted-users = [ "root" "tim" ];
   networking.hostName = "nixos-wsl";
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
