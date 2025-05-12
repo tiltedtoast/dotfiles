@@ -10,9 +10,7 @@ let
         config.allowUnfree = true;
     };
 in {
-    imports = [
-        ./cachix.nix
-    ];
+    imports = [];
 
     networking.hostName = "nixos-wsl";
     nixpkgs.config.allowUnfree = true;
@@ -33,7 +31,7 @@ in {
               ];
             }
         ];
-    };  
+    };
 
     systemd.services.link-wslg-runtime = {
         enable        = true;
@@ -51,9 +49,9 @@ in {
         };
     };
 
-    environment.systemPackages = 
-    with pkgs; 
-    with unstable.llvmPackages_20; 
+    environment.systemPackages =
+    with pkgs;
+    with unstable.llvmPackages_20;
     with unstable.cudaPackages;
     [
         cachix
@@ -91,7 +89,7 @@ in {
         containerd
         unstable.fastfetch
         openssl
-        pkg-config        
+        pkg-config
         direnv
         unstable.gleam
         git-filter-repo
@@ -113,13 +111,14 @@ in {
         valgrind
         wl-clipboard
         hex
+        unstable.nixfmt-rfc-style
 
         clang-tools
         clang-manpages
         openmp
         clangUseLLVM
         bintools-unwrapped
-    
+
         unstable.bear
         unstable.tokei
         unstable.eza
@@ -167,7 +166,7 @@ in {
 #            libglvnd = unstable.libglvnd;
         })
     ];
-    
+
     environment.variables = {
         LIBVA_DRIVERS_PATH = "${unstable.mesa}/lib/dri";
         VK_DRIVER_FILES = "${unstable.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
@@ -177,7 +176,7 @@ in {
         OCL_ICD_FILENAMES = "${unstable.pocl}/etc/OpenCL/vendors/pocl.icd";
 
         JAVA_HOME = "${unstable.jdk24}";
-        
+
         LD_LIBRARY_PATH = [
             "${unstable.stdenv.cc.cc.lib}/lib"
             "${unstable.cudatoolkit}/lib"
@@ -202,9 +201,9 @@ in {
     users.defaultUserShell = pkgs.zsh;
 
     programs.nix-ld.enable = true;
-  
-    virtualisation.docker.enable = true;    
-  
+
+    virtualisation.docker.enable = true;
+
     users.users.tim = {
       isNormalUser = true;
       extraGroups = [ "docker" ];
@@ -213,6 +212,6 @@ in {
 #    wsl.enable = true;
 #    wsl.defaultUser = "tim";
 #    wsl.wslConf.interop.appendWindowsPath = false;
-    
+
     system.stateVersion = "24.11"; # Did you read the comment?
 }
