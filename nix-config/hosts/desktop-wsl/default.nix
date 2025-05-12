@@ -95,6 +95,7 @@ in
       wl-clipboard
       hex
       unstable.nixfmt-rfc-style
+      unstable.mpi
 
       clang-tools
       clang-manpages
