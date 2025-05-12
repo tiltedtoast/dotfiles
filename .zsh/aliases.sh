@@ -31,9 +31,19 @@ alias code='code -r'
 alias suggest="gh copilot suggest"
 alias explain="gh copilot explain"
 
-man() {
-    /usr/bin/man $@ | bat --language=Manpage --style=plain
+
+
+create_man_wrapper() {
+    local man_path=$(command -v man)
+    eval "
+    man() {
+        $man_path \"\$@\" | bat --language=Manpage --style=plain
+    }
+    "
 }
+
+create_man_wrapper
+
 
 
 create_mold_wrapper() {
