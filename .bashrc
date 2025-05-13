@@ -1,11 +1,11 @@
+#!/usr/bin/env bash
 # If not running interactively, don't do anything
 case $- in
 *i*) ;;
 *) return ;;
 esac
 
-eval "$(oh-my-posh init bash --config ~/powerline_custom.omp.json)"
-eval "$(opam env)"
+eval "$(oh-my-posh init bash --config ~/powerline_custom.omp.json)" &> /dev/null
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
