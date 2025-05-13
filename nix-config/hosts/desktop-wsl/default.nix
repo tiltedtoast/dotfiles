@@ -96,6 +96,7 @@ in
       hex
       unstable.nixfmt-rfc-style
       unstable.mpi
+      unstable.mpi.dev
 
       clang-tools
       clang-manpages
