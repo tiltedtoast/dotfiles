@@ -189,7 +189,7 @@ in
 
   programs.nix-ld.enable = true;
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker.enable = false;
 
   users.users.tim = {
     isNormalUser = true;
