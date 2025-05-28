@@ -40,3 +40,5 @@ test -r /home/tim/.opam/opam-init/init.sh && . /home/tim/.opam/opam-init/init.sh
 . "/home/tim/.cargo/env"
 
 . "$HOME/.atuin/bin/env"
+
+. "$HOME/.local/share/../bin/env"

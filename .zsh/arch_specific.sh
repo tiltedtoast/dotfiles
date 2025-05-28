@@ -2,7 +2,7 @@ alias update="sudo pacman -Syu"
 alias yayupdate="yay -Syu"
 
 listfiles() {
-    pacman -Ql "$1" | awk '{print $2}'
+    pacman -Qlq "$1"
 }
 
 export VK_DRIVER_FILES="/usr/share/vulkan/icd.d/dzn_icd.x86_64.json"
