@@ -15,8 +15,6 @@
     gpgsign = true
 [gpg]
     format = ssh
-[gpg "ssh"]
-  program = "op-ssh-sign"
 [alias]
     wt = worktree
     logline = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
@@ -49,3 +47,6 @@
 
 [includeIf "gitdir:/home/tim/projects/uni/"]
     path = ~/.config/git/.gitconfig-uni
+
+[includeIf "gitdir:/home/ubuntu"]
+    path = ~/.config/git/.gitconfig-server
