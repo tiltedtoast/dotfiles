@@ -132,6 +132,3 @@ fi
 # bun completions
 [ -s "/home/tim/.bun/_bun" ] && source "/home/tim/.bun/_bun"
 export PATH="$PATH:/home/tim/.modular/bin"
-
-
-. "$HOME/.local/share/../bin/env"
