@@ -5,7 +5,7 @@
 [user]
     name = Tim
     email = 57221600+TiltedToast@users.noreply.github.com
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPsuU+Rg+TC1KPcooUpCGZg+gAvugJjRd0y+dMz1XwoD
+    signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPsuU+Rg+TC1KPcooUpCGZg+gAvugJjRd0y+dMz1XwoD
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
