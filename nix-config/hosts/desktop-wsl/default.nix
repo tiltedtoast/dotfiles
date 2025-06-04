@@ -116,18 +116,9 @@ in
       unstable.vulkan-loader
       sd
 
-      cuda_gdb
-      libcublas
-      cuda_nvcc
-      tensorrt
-      cuda_opencl
-      cuda_nvtx
-      cuda_nvrtc
-      cuda_nvprof
-      cuda_cupti
-      cuda_cccl
-      cuda_cudart
-      cudatoolkit
+      cuda_gdb libcublas cuda_nvcc tensorrt
+      cuda_opencl cuda_nvtx cuda_nvrtc cuda_nvprof
+      cuda_cupti cuda_cccl cuda_cudart cudatoolkit
 
       unstable.ffmpeg-full
       unstable.nixd
@@ -138,6 +129,8 @@ in
       unstable.mesa
       unstable.libgcc
       volta
+
+      (pkgs.callPackage ../../pkgs/wsl2-ssh-agent/default.nix {})
     ];
 
   hardware.graphics.extraPackages = [
