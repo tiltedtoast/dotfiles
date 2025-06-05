@@ -6,3 +6,5 @@ export NIXPKGS_ALLOW_UNFREE=1
 
 alias nixos-switch="sudo nixos-rebuild switch --flake $HOME/dotfiles/nix-config"
 alias flake-update="sudo nix flake update --flake $HOME/dotfiles/nix-config"
+
+alias update="flake-update && nixos-switch"

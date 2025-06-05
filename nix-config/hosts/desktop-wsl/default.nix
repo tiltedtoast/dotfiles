@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   inputs,
   ...
@@ -14,6 +13,8 @@ let
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
+
+  pocl-cuda = import ../../pkgs/pocl { inherit unstable lib; };
 in
 {
   imports = [
@@ -116,9 +117,18 @@ in
       unstable.vulkan-loader
       sd
 
-      cuda_gdb libcublas cuda_nvcc tensorrt
-      cuda_opencl cuda_nvtx cuda_nvrtc cuda_nvprof
-      cuda_cupti cuda_cccl cuda_cudart cudatoolkit
+      cuda_gdb
+      libcublas
+      cuda_nvcc
+      tensorrt
+      cuda_opencl
+      cuda_nvtx
+      cuda_nvrtc
+      cuda_nvprof
+      cuda_cupti
+      cuda_cccl
+      cuda_cudart
+      cudatoolkit
 
       unstable.ffmpeg-full
       unstable.nixd
@@ -130,11 +140,11 @@ in
       unstable.libgcc
       volta
 
-      (pkgs.callPackage ../../pkgs/wsl2-ssh-agent/default.nix {})
+      (pkgs.callPackage ../../pkgs/wsl2-ssh-agent/default.nix { })
     ];
 
   hardware.graphics.extraPackages = [
-    unstable.pocl
+    pocl-cuda
   ];
 
   nixpkgs.overlays = [
@@ -151,7 +161,7 @@ in
     VK_ICD_FILENAMES = "${unstable.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
     VK_LAYER_PATH = "${unstable.mesa}/share/vulkan/explicit_layer.d";
     LIBGL_DRIVERS_PATH = "${unstable.mesa}/lib/dri";
-    OCL_ICD_FILENAMES = "${unstable.pocl}/etc/OpenCL/vendors/pocl.icd";
+    OCL_ICD_FILENAMES = "${pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
 
     JAVA_HOME = "${unstable.jdk24}";
 
@@ -187,6 +197,12 @@ in
   users.users.tim = {
     isNormalUser = true;
     extraGroups = [ "docker" ];
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
   };
 
   system.stateVersion = "24.11";

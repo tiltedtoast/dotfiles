@@ -25,7 +25,7 @@
               wsl.defaultUser = "tim";
               wsl.wslConf.interop.appendWindowsPath = false;
             }
-            ./hosts/desktop-wsl/default.nix
+            ./hosts/desktop-wsl
           ];
         };
       };
