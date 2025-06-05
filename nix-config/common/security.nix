@@ -19,10 +19,6 @@
             command = "/run/current-system/sw/bin/ip";
             options = [ "NOPASSWD" ];
           }
-          {
-            command = "/run/current-system/sw/bin/ln";
-            options = [ "NOPASSWD" ];
-          }
         ];
       }
     ];

@@ -18,7 +18,7 @@ let
 in
 {
   imports = [
-    ../../common/security.nix
+    ../../common
     ./services.nix
   ];
 

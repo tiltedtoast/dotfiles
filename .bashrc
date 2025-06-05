@@ -207,5 +207,3 @@ export PATH=/home/tim/.night.zig/nz:$PATH
 
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
-
-. "$HOME/.local/share/../bin/env"
