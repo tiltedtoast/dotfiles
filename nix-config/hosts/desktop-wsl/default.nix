@@ -185,6 +185,12 @@ in
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
 
     CUDA_PATH = "${unstable.cudatoolkit}";
+    CUDA_ROOT = "${unstable.cudatoolkit}";
+  };
+
+  # Thanks for trying to access /run/current-system/sw/bin/../nvvm/bin/cicc
+  environment.shellAliases = {
+    nvcc = "${unstable.cudaPackages.cudatoolkit}/bin/nvcc";
   };
 
   programs.zsh.enable = true;
