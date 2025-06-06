@@ -81,7 +81,7 @@ in
       gtk3
       gtk2
       hyperfine
-      unstable.jdk24
+      unstable.jdk
       jq
       kmod
       lz4
@@ -163,7 +163,7 @@ in
     LIBGL_DRIVERS_PATH = "${unstable.mesa}/lib/dri";
     OCL_ICD_FILENAMES = "${pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
 
-    JAVA_HOME = "${unstable.jdk24}";
+    JAVA_HOME = "${unstable.jdk}";
 
     LD_LIBRARY_PATH = [
       "${unstable.stdenv.cc.cc.lib}/lib"
