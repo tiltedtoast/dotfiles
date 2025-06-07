@@ -202,13 +202,25 @@ in
 
   users.users.tim = {
     isNormalUser = true;
-    extraGroups = [ "docker" ];
+    extraGroups = [
+      "docker"
+      "wheel"
+      "networkmanager"
+      "video"
+      "render"
+    ];
+  };
+
+  wsl = {
+    enable = true;
+    defaultUser = "tim";
+    wslConf.interop.appendWindowsPath = false;
   };
 
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 30d";
+    options = "--delete-older-than 7d";
   };
 
   system.stateVersion = "24.11";

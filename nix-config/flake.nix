@@ -20,11 +20,6 @@
           specialArgs = { inherit inputs; };
           modules = [
             nixos-wsl.nixosModules.default
-            {
-              wsl.enable = true;
-              wsl.defaultUser = "tim";
-              wsl.wslConf.interop.appendWindowsPath = false;
-            }
             ./hosts/desktop-wsl
           ];
         };
