@@ -4,7 +4,7 @@ export NIXPKGS_ALLOW_UNFREE=1
 
 #export PATH="$CUDA_ROOT/bin:$PATH"
 
-alias nixos-switch="sudo nixos-rebuild switch --flake $HOME/dotfiles/nix-config"
-alias flake-update="sudo nix flake update --flake $HOME/dotfiles/nix-config"
+alias nixos-switch="nh os switch"
+alias flake-update="sudo nix flake update --flake $NH_FLAKE"
 
-alias update="flake-update && nixos-switch"
+alias update="nh os switch --update"

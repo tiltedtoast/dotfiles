@@ -186,10 +186,12 @@ in
 
     CUDA_PATH = "${unstable.cudatoolkit}";
     CUDA_ROOT = "${unstable.cudatoolkit}";
+
+    NH_FLAKE = "/home/tim/dotfiles/nix-config";
   };
 
-  # Thanks for trying to access /run/current-system/sw/bin/../nvvm/bin/cicc
   environment.shellAliases = {
+    # Thanks for trying to access /run/current-system/sw/bin/../nvvm/bin/cicc
     nvcc = "${unstable.cudaPackages.cudatoolkit}/bin/nvcc";
   };
 
@@ -211,16 +213,16 @@ in
     ];
   };
 
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 4d --keep 3";
+  };
+
   wsl = {
     enable = true;
     defaultUser = "tim";
     wslConf.interop.appendWindowsPath = false;
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
   };
 
   system.stateVersion = "24.11";
