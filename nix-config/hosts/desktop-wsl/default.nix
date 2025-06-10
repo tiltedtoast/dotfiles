@@ -155,6 +155,8 @@ in
     })
   ];
 
+  programs.direnv.enable = true;
+
   environment.variables = {
     LIBVA_DRIVERS_PATH = "${unstable.mesa}/lib/dri";
     VK_DRIVER_FILES = "${unstable.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
