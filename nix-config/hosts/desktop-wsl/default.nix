@@ -195,6 +195,8 @@ in
   environment.shellAliases = {
     # Thanks for trying to access /run/current-system/sw/bin/../nvvm/bin/cicc
     nvcc = "${unstable.cudaPackages.cudatoolkit}/bin/nvcc";
+
+    nix-shell = "nix-shell --command zsh";
   };
 
   programs.zsh.enable = true;
@@ -217,8 +219,14 @@ in
 
   programs.nh = {
     enable = true;
-    clean.enable = true;
-    clean.extraArgs = "--keep-since 4d --keep 3";
+    #clean.enable = true;
+    #clean.extraArgs = "--keep-since 4d --keep 3";
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
   };
 
   wsl = {
