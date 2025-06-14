@@ -74,7 +74,6 @@ in
       openssl
       pkg-config
       direnv
-      unstable.gleam
       git-filter-repo
       unstable.go
       gtk4
