@@ -96,6 +96,7 @@ in
       unstable.nixfmt-rfc-style
       unstable.mpi
       unstable.mpi.dev
+      age
 
       clang-tools
       clang-manpages
