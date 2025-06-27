@@ -1,4 +1,4 @@
-## Install the required software
+## Install the required software (this should be changed but i'm lazy)
 
 ```shell
 sudo apt update
@@ -78,22 +78,19 @@ bat cache --build
 
 ## Set up the dotfiles
 
-### DON'T FORGET TO SET UP SSH KEYS FIRST
-
 ```shell
-echo '
-[core]
-    sshCommand = ssh -i "$HOME/.ssh/git" -o IdentitiesOnly=yes
-' > $HOME/.gitconfig
-
-sudo chmod 700 $HOME/.ssh
-sudo chmod 600 $HOME/.ssh/git
-sudo chmod 644 $HOME/.ssh/git.pub
-
 git clone --recurse-submodules git@github.com:TiltedToast/dotfiles.git $HOME/dotfiles
 cd $HOME/dotfiles
 
-rm -rf $HOME/.gitconfig $HOME/.bashrc $Home/.zshrc
+rm -rf $HOME/.gitconfig $HOME/.bashrc $HOME/.zshrc
+```
+
+### Now, decrypt all the secrets
+
+```shell
+find . -name "*.age" -type f | while read -r file; do
+    age-decrypt "$file" "${file%.age}"
+done
 ```
 
 #### Then, apply the dotfiles

@@ -2,3 +2,4 @@
 .gitmodules
 README.md
 nix-config
+\.age$
