@@ -1,2 +1,5 @@
 flake.lock linguist-language=JSON
+
+# treat ALL .age files as binary (no text diffs / no CRLF conversion)
+*.age    -text    -diff
 *.age linguist-generated=true
