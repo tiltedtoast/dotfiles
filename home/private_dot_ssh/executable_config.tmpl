@@ -1,0 +1,50 @@
+Host hifumi
+    HostName {{ .hifumi_ip }}
+    User ubuntu
+    Port 42069
+    ForwardAgent yes
+
+Host ttvproxy
+    HostName {{ .ttv_proxy_ip }}
+    User root
+    Port 42069
+
+Host wsl
+    HostName 127.0.0.1
+    User tim
+
+Host hf.co
+    HostName hf.co
+    User git
+
+Host aur.archlinux.org
+    HostName aur.archlinux.org
+    User aur
+    IdentityFile ~/.ssh/git.pub
+    IdentitiesOnly yes
+
+Host gitlab.rlp.net
+    HostName gitlab.rlp.net
+    User git
+
+Host hpcgate
+    HostName hpcgate.zdv.uni-mainz.de
+    User {{ .uni_username }}
+    ForwardX11 yes
+    IdentityFile ~/.ssh/mogon.pub
+    IdentitiesOnly yes
+
+Host mogon
+    HostName mogon
+    User {{ .uni_username }}
+    ProxyJump hpcgate
+    ForwardX11 yes
+    IdentityFile ~/.ssh/mogon.pub
+    IdentitiesOnly yes
+
+Host mogon-nhr
+    HostName mogon-nhr-01
+    User {{ .uni_username }}
+    ProxyJump hpcgate
+    ForwardX11 yes
+    IdentityFile ~/.ssh/mogon.pub
