@@ -33,7 +33,12 @@
   {{- $ttvProxyIp = promptStringOnce . "ttv_proxy_ip" "Enter ttv proxy ip:" -}}
 {{- end -}}
 
+encryption = "age"
 sourceDir = "~/dotfiles"
+
+[age]
+    recipient = "age1rlt3vawkmy5ag8t6xv56q97yxky45x0jy3pdksm8v28squl52y4su58cgf"
+    identity = "~/dotfiles/age-key.txt"
 
 [onepassowrd]
     prompt = false
