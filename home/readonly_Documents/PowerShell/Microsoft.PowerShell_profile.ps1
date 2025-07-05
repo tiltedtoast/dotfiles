@@ -1,0 +1,347 @@
+using namespace System.Management.Automation
+using namespace System.Management.Automation.Language
+
+oh-my-posh init pwsh --config "$env:USERPROFILE\powerline_custom.omp.json" | Invoke-Expression
+
+$env:PATH = "$env:USERPROFILE\scoop\shims;$env:PATH2;$env:PATH"
+$env:RCLONE_CONFIG = "$env:USERPROFILE\scoop\persist\rclone\rclone.conf"
+$env:BAT_THEME = "OneDark"
+
+$env:PSModulePath += ";$env:USERPROFILE\PowerShell-Modules"
+
+if (Get-Alias gc -ErrorAction SilentlyContinue) {
+    Remove-Alias gc -Force
+}
+if (Get-Alias rm -ErrorAction SilentlyContinue) {
+    Remove-Alias rm -Force
+}
+if (Get-Alias gp -ErrorAction SilentlyContinue) {
+    Remove-Alias gp -Force
+}
+if (Get-Alias cat -ErrorAction SilentlyContinue) {
+    Remove-Alias cat -Force
+}
+if (Get-Alias ls -ErrorAction SilentlyContinue) {
+    Remove-Alias ls -Force
+}
+if (Get-Alias where -ErrorAction SilentlyContinue) {
+    Remove-Alias where -Force
+}
+if (Get-Alias mv -ErrorAction SilentlyContinue) {
+    Remove-Alias mv -Force
+}
+if (Get-Alias cp -ErrorAction SilentlyContinue) {
+    Remove-Alias cp -Force
+}
+
+Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+
+Set-Alias gst gitstatus
+Set-Alias c clear
+Set-Alias gc git_commit
+Set-Alias l eza_pretty
+Set-Alias ls eza
+Set-Alias gcam git_add_commit
+Set-Alias s source_profile
+Set-Alias gp git_push
+Set-Alias rgi rg_case_insensitive
+Set-Alias wiki wiki_tui_search
+Set-Alias drs danbooru-rs
+Set-Alias dgo danbooru-go
+Set-Alias gpl git_pull
+Set-Alias cnew cargo_new
+Set-Alias cnewtokio cargo_new_tokio
+Set-Alias cat bat_with_theme
+Set-Alias gco git_checkout
+Set-Alias gsta git_stash
+Set-Alias cb cargo_build_debug
+Set-Alias cbr cargo_build_release
+Set-Alias cr cargo_run_debug
+Set-Alias crr cargo_run_release
+Set-Alias cip cargo_install_local
+Set-Alias ci cargo_install
+Set-Alias where where_alias
+Set-Alias volat volta
+Set-Alias cm chezmoi
+Set-Alias touch create_new_file
+Set-Alias pn pnpm
+Set-Alias gam git_amend
+Set-Alias vim nvim
+# Set-Alias e $env:USERPROFILE\AppData\Local\Voidstar\FilePilot\FPilot.exe
+Set-Alias e explorer.exe
+Set-Alias ldd ldd_
+Set-Alias rip trash_things
+Set-Alias kill task_kill
+Set-Alias time Measure_Command
+Set-Alias invert invert_pdf
+Set-Alias rmrf set_rmrf
+Set-Alias python uv_python
+Set-Alias python3 uv_python
+Set-Alias pip uv_pip
+Set-Alias pip3 uv_pip
+
+
+function Install-Pwsh {
+    param(
+        [Parameter(Mandatory)][string]$Version
+    )
+
+    $file = "PowerShell-$Version-win-x64.msi"
+    $url = "https://github.com/PowerShell/PowerShell/releases/download/v$Version/$file"
+    $outPath = Join-Path $env:TEMP $file
+
+    Invoke-WebRequest $url -OutFile $outPath -UseBasicParsing -ErrorAction Stop
+    & "$outPath"
+    exit
+}
+
+function encode-audio {
+    param (
+        [string]$root = $args[0],
+        [string]$in_ext = "flac",
+        [string]$out_ext = "opus",
+        [string]$ffmpeg_path = "ffmpeg",
+        [string]$encoder = "lib$out_ext",
+        [string]$bitrate = "192k",
+        [string]$ffmpeg_log_level = "fatal"
+    )
+
+    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+    Get-ChildItem -Path $root -Recurse -File
+    | Where-Object { $_.Extension -ieq ".$in_ext" }
+    | ForEach-Object {
+        $in = $_.FullName
+        $output = [System.IO.Path]::ChangeExtension($in, ".$out_ext")
+
+        if (-Not (Test-Path -LiteralPath $output)) {
+
+            $arguments = @(
+                "-hide_banner",
+                "-loglevel", $ffmpeg_log_level,
+                "-n",
+                "-i", "`"$in`"",
+                "-map_metadata", "0",
+                "-c:a", $encoder,
+                "-b:a", $bitrate,
+                "`"$output`""
+            )
+
+            $process = Start-Process -FilePath $ffmpeg_path -ArgumentList $arguments -NoNewWindow -Wait -PassThru
+
+
+            if ($process.ExitCode -eq 0) {
+                Write-Host "✅ Done: $output"
+            }
+            else {
+                Write-Host "❌ Failed: $in"
+            }
+        }
+        else {
+            Write-Host "⏩ Skipped (already exists): $output"
+        }
+    }
+}
+
+function uv_python { uv run python $args }
+function uv_pip { uv pip $args }
+
+function help {
+    param (
+        [string]$Command
+    )
+    $helpOutput = & $Command --help 2>$1
+    $helpOutput | bat --language=help --style=plain --paging=never --theme="OneDark"
+}
+
+function scoopu {
+    do {
+        scoop u
+    } while ($LASTEXITCODE -ne 0)
+}
+
+function invert_pdf {
+    $file = Get-Item -Path $args[0]
+    $invertedFile = $file.FullName + ".inverted.pdf"
+
+    # Start the gswin64 process
+    gswin64 -o $invertedFile -sDEVICE=pdfwrite -c "{1 exch sub}{1 exch sub}{1 exch sub}{1 exch sub} setcolortransfer" -f $file.FullName | Out-Null
+
+    Remove-Item -Force -Path $file.FullName
+    Rename-Item -Path $invertedFile -NewName $file.Name
+}
+
+function disable_wake {
+    powercfg -devicequery wake_armed | Where-Object {
+        $_ -ne "" -and $_ -ne "NONE"
+    } | ForEach-Object { powercfg -devicedisablewake $_ }
+}
+
+function code_r { code -r $args }
+
+function Measure_Command {
+    $command = $args -join ' '
+
+    $scriptBlock = [scriptblock]::Create($Command -join ' ')
+
+    if ($scriptBlock.ToString().Length -eq 0) {
+        Write-Error "No command specified"
+        return
+    }
+
+    $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+
+    try {
+        Invoke-Command -ScriptBlock $scriptBlock -ErrorVariable err
+    }
+    catch {
+        Write-Error $_.Exception.Message
+    }
+
+    $stopwatch.Stop()
+
+    if ($err) { $err | ForEach-Object { Write-Error $_.ToString() } }
+
+    $elapsed = $stopwatch.Elapsed
+    $formattedElapsedTime = New-Object PSObject -Property ([ordered]@{
+            TotalMinutes      = [math]::Round($elapsed.TotalMinutes, 2)
+            TotalSeconds      = [math]::Round($elapsed.TotalSeconds, 2)
+            TotalMilliseconds = [math]::Round($elapsed.TotalMilliseconds, 2)
+        })
+
+    $formattedElapsedTime | Format-List
+}
+
+function task_kill {
+    $imArgs = $args | ForEach-Object { "/IM $_" }
+    $imArgsString = $imArgs -join ' '
+    sudo taskkill.exe /F $imArgsString
+}
+
+function Remove-Item-ToRecycleBin($Path) {
+    $item = Get-Item -Path $Path -ErrorAction SilentlyContinue
+    if ($null -eq $item) {
+        Write-Error("'{0}' not found" -f $Path)
+    }
+    else {
+        $fullPath = $item.FullName
+        Write-Output("Moving '{0}' to the Recycle Bin" -f $fullPath)
+        if (Test-Path -Path $fullPath -PathType Container) {
+            [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteDirectory($fullPath, 'OnlyErrorDialogs', 'SendToRecycleBin')
+        }
+        elseif (Test-Path -Path $fullPath -PathType Leaf) {
+            [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile($fullpath, 'OnlyErrorDialogs', 'SendToRecycleBin')
+        }
+        else {
+            Write-Error("'{0}' is neither a directory, nor a file" -f $fullPath)
+        }
+    }
+}
+
+function trash_things {
+    foreach ($arg in $args) {
+        if ($arg -eq '*') {
+            Get-ChildItem -Path $(Get-Location) | ForEach-Object {
+                Remove-Item-ToRecycleBin $_.FullName
+            }
+        }
+        else {
+            Remove-Item-ToRecycleBin $arg
+        }
+    }
+}
+function ldd_ { dumpbin.exe /DEPENDENTS $args }
+function git_amend { git add --all && git commit --amend --no-edit }
+function create_new_file {
+    foreach ($arg in $args) {
+        Write-Output $null >> $arg
+    }
+}
+function where_alias {
+    foreach ($arg in $args) {
+        where.exe $arg
+    }
+}
+function cargo_install { cargo install $args }
+function cargo_install_local { cargo install --path . $args }
+function cargo_run_debug { cargo run $args }
+function cargo_run_release { cargo run --release $args }
+function cargo_build_debug { cargo build $args }
+function cargo_build_release { cargo build --release $args }
+function git_stash { git stash $args }
+function git_checkout { git checkout $args }
+function gitstatus { git status $args }
+function git_commit { git commit $args }
+function git_add_commit { git add --all && git commit -m $args }
+function git_push { git push $args }
+function source_profile {
+    cmd.exe /c start pwsh.exe -c { Set-Location $PWD } -NoExit
+    Stop-Process -Id $PID
+}
+function set_rmrf { foreach ($arg in $args) { Remove-Item $arg -Recurse -Force } }
+function rg_case_insensitive {
+    if ($MyInvocation.ExpectingInput) {
+        $input | rg --ignore-case $args
+    }
+    else {
+        rg --ignore-case $args
+    }
+}
+function wiki_tui_search { wiki-tui $args }
+function git_pull { git pull $args }
+function cargo_new_tokio {
+    cargo new --bin $args
+    Set-Location $args[0]
+    cargo add tokio --features="full"
+    cargo add anyhow
+    code .
+}
+function cargo_new {
+    cargo new --bin $args
+    Set-Location $args[0]
+    cargo add anyhow
+    code .
+}
+
+function bat_with_theme {
+    bat --theme "OneDark" --paging=never $args
+}
+
+function run_npm_or_pnpm {
+    if (Test-Path -Path "pnpm-lock.yaml") {
+        pnpm $args
+    }
+    else {
+        c:\PROGRA~1/nodejs/npm.cmd $args
+    }
+}
+
+function lsd_pretty { lsd --config-file "C:\Users\tim\AppData\Roaming\lsd\config.yaml" -lah $args }
+function eza_pretty {
+    eza -laah --colour=always --icons=always --group-directories-first -s name --time-style "+%d %b %y %X" $args
+}
+
+$hifumi = "E:\coding-projects\hifumi-js"
+$violet = "E:\coding-projects\violet"
+$ai = "E:\coding-projects\ai-chan"
+$uni = "E:\coding-projects\uni"
+$code = "E:\coding-projects"
+$scala = "E:\coding-projects\scala"
+$rust = "E:\coding-projects\rust"
+$notes = "H:\My Drive\Notes"
+
+
+Invoke-Expression (&sfsu hook)
+Import-Module 'C:\vcpkg\scripts\posh-vcpkg'
+Import-Module 'gsudoModule'
+Import-Module NtStatusHelper -ErrorAction Stop
+
+$env:VIRTUAL_ENV_DISABLE_PROMPT = 1
+$env:GHIDRA_ROOT = "C:\Users\tim\scoop\apps\ghidra\current"
+
+$env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"
+
+Invoke-Expression (& { (zoxide init --cmd cd powershell | Out-String) })
+
+
+
