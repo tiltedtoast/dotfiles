@@ -1,11 +1,22 @@
 [core]
     editor = code --wait
-    excludesfile = ~/.gitignore
+    excludesfile = ~/.gitignore_global
+
+{{- if eq .chezmoi.os "windows" }}
+    sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+{{- end }}
+
     pager = delta
 [user]
     name = Tim
     email = 57221600+TiltedToast@users.noreply.github.com
+
+{{- if eq .chezmoi.hostname "hifumi" }}
+    signingkey = signingkey = ~/.ssh/git.pub
+{{- else }}
     signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPsuU+Rg+TC1KPcooUpCGZg+gAvugJjRd0y+dMz1XwoD
+{{- end }}
+
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
@@ -46,7 +57,7 @@
     helper = !gh auth git-credential
 
 [includeIf "gitdir:/home/tim/projects/uni/"]
-    path = ~/.config/git/.gitconfig-uni
+    path = ~/.config/git/gitconfig-uni
 
 [includeIf "gitdir:/home/ubuntu"]
-    path = ~/.config/git/.gitconfig-server
+    path = ~/.config/git/gitconfig-server

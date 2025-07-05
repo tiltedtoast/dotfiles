@@ -1,0 +1,23 @@
+{{- $useSecrets := promptBoolOnce . "use_secrets" "Use 1Password for secrets? (yes/no)" -}}
+{{- $fullName := "" -}}
+{{- $uniEmail := "" -}}
+
+{{- if $useSecrets -}}
+  {{- $fullName = onepasswordRead "op://Personal/Private/Identification/full name" | default "" -}}
+  {{- $uniEmail = onepasswordRead "op://Personal/Uni Mail/Internet Details/email" | default "" -}}
+{{- end -}}
+
+{{- if not $fullName -}}
+  {{- $fullName = promptStringOnce . "full_name" "Enter full name:" -}}
+{{- end -}}
+{{- if not $uniEmail -}}
+  {{- $uniEmail = promptStringOnce . "uni_email" "Enter uni email:" -}}
+{{- end -}}
+
+[onepassowrd]
+    prompt = false
+
+[data]
+    use_secrets = {{ $useSecrets }}
+    full_name = {{ $fullName | quote }}
+    uni_email = {{ $uniEmail | quote }}

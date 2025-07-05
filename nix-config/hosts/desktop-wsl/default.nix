@@ -189,7 +189,7 @@ in
     CUDA_PATH = "${unstable.cudatoolkit}";
     CUDA_ROOT = "${unstable.cudatoolkit}";
 
-    NH_FLAKE = "/home/tim/dotfiles/nix-config";
+    NH_FLAKE = "/home/tim/.local/share/chezmoi/nix-config";
   };
 
   environment.shellAliases = {

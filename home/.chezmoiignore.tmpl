@@ -1,0 +1,20 @@
+README.md
+nix-config
+.gitignore
+.gitattributes
+*.zwc
+
+{{- if ne .chezmoi.os "linux" }}
+    .zshrc
+    .bashrc
+    .zshenv
+    .zprofile
+    .profile
+    .vimrc
+    .profile
+    .zsh
+{{- end }}
+
+{{- if ne .chezmoi.os "windows" }}
+    Documents/PowerShell
+{{- end }}

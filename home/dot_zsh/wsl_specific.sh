@@ -26,4 +26,3 @@ if [[ ! -e ~/.local/bin/op-ssh-sign ]]; then
 fi
 
 alias explorer.exe="/mnt/c/windows/explorer.exe"
-alias op="/mnt/c/Users/tim/AppData/Local/Microsoft/WinGet/Links/op.exe"

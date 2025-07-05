@@ -32,6 +32,7 @@ alias watch=watch_mode
 alias code='code -r'
 alias suggest="gh copilot suggest"
 alias explain="gh copilot explain"
+alias cm=chezmoi
 
 
 # Encrypt a file using SSH key from 1Password via ssh-agent

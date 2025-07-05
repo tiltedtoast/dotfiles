@@ -76,27 +76,10 @@ cargo binstall -y sd
 bat cache --build
 ```
 
-## Set up the dotfiles
+## Set up and apply the dotfiles
 
 ```shell
-git clone --recurse-submodules git@github.com:TiltedToast/dotfiles.git $HOME/dotfiles
-cd $HOME/dotfiles
-
-rm -rf $HOME/.gitconfig $HOME/.bashrc $HOME/.zshrc
-```
-
-### Now, decrypt all the secrets
-
-```shell
-find . -name "*.age" -type f | while read -r file; do
-    age-decrypt "$file" "${file%.age}"
-done
-```
-
-#### Then, apply the dotfiles
-
-```shell
-stow .
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply tiltedtoast
 ```
 
 ### Last but not least, set the default shell to zsh and restart the terminal

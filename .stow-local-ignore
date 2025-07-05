@@ -1,6 +1,0 @@
-.git
-.gitmodules
-.gitattributes
-README.md
-nix-config
-\.age$
