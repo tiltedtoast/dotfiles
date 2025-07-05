@@ -12,7 +12,7 @@
     email = 57221600+TiltedToast@users.noreply.github.com
 
 {{- if eq .chezmoi.hostname "hifumi" }}
-    signingkey = signingkey = ~/.ssh/git.pub
+    signingkey = ~/.ssh/git.pub
 {{- else }}
     signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPsuU+Rg+TC1KPcooUpCGZg+gAvugJjRd0y+dMz1XwoD
 {{- end }}
