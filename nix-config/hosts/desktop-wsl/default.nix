@@ -97,7 +97,7 @@ in
       unstable.mpi
       unstable.mpi.dev
       age
-      chezmoi 
+      chezmoi
 
       clang-tools
       clang-manpages
@@ -190,7 +190,7 @@ in
     CUDA_PATH = "${unstable.cudatoolkit}";
     CUDA_ROOT = "${unstable.cudatoolkit}";
 
-    NH_FLAKE = "/home/tim/.local/share/chezmoi/nix-config";
+    NH_FLAKE = "/home/tim/dotfiles/nix-config";
   };
 
   environment.shellAliases = {
