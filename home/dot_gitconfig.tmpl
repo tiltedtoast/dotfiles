@@ -26,6 +26,7 @@
     gpgsign = true
 [gpg]
     format = ssh
+    
 {{- if eq .chezmoi.os "windows"}}
 [gpg "ssh"]
   program = "C:/Users/tim/AppData/Local/1Password/app/8/op-ssh-sign.exe"

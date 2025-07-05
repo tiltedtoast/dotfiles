@@ -79,7 +79,7 @@ bat cache --build
 ## Set up and apply the dotfiles
 
 ```shell
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply tiltedtoast
+chezmoi init --apply https://github.com/tiltedtoast/dotfiles.git
 ```
 
 ### Last but not least, set the default shell to zsh and restart the terminal
