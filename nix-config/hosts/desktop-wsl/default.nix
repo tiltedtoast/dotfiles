@@ -97,6 +97,7 @@ in
       unstable.mpi
       unstable.mpi.dev
       age
+      chezmoi 
 
       clang-tools
       clang-manpages
