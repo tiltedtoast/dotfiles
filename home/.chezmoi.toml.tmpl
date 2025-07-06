@@ -33,9 +33,9 @@
   {{- $ttvProxyIp = promptStringOnce . "ttv_proxy_ip" "Enter ttv proxy ip:" -}}
 {{- end -}}
 
-{{- $osid := .chezmoi.os -}}
+{{- $osId := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
-  {{- $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+  {{- $osId = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{- end -}}
 
 sourceDir = "~/dotfiles"
@@ -47,7 +47,7 @@ sourceDir = "~/dotfiles"
     pager = "delta"
 
 [data]
-    osid = {{ $osid | quote }}
+    os_id = {{ $osId | quote }}
     use_secrets = {{ $useSecrets }}
     full_name = {{ $fullName | quote }}
     uni_email = {{ $uniEmail | quote }}
