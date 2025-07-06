@@ -44,7 +44,7 @@ export PATH=$PATH:/usr/local/go/bin
 
 export PATH=$PATH:/usr/bin/FlameGraph
 
-export EDITOR='code'
+export EDITOR='code --wait'
 
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
