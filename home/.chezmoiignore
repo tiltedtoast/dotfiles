@@ -17,4 +17,5 @@ nix-config
 
 {{- if ne .chezmoi.os "windows" }}
     Documents/PowerShell
+    Documents/WindowsPowerShell
 {{- end }}
