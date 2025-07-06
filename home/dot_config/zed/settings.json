@@ -1,17 +1,148 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run the `open default settings` command
-// from the command palette or from `Zed` application menu.
 {
-  "theme": "One Dark",
-  "ui_font_size": 23,
-  "buffer_font_size": 20,
-  "formatter": "language_server",
-  "buffer_font_family": "ComicCodeLigatures Nerd Font Mono",
-  "autosave": "on_focus_change",
-  "ui_font_family": "ComicCodeLigatures Nerd Font Mono",
-}
+    "telemetry": {
+      "metrics": false,
+      "diagnostics": false
+    },
+    "assistant": {
+      "default_model": {
+        "provider": "copilot_chat",
+        "model": "gpt-4o"
+      },
+      "version": "2"
+    },
+    "theme": "Carbonfox",
+    "ui_font_size": 18,
+    "buffer_font_size": 18,
+    "buffer_font_features": {
+      "calt": true
+    },
+    "features": {
+      "inline_completion_provider": "supermaven"
+    },
+    "autosave": {
+      "after_delay": {
+        "milliseconds": 200
+      }
+    },
+    "preferred_line_length": 100,
+    "hour_format": "hour24",
+    "ui_font_family": "ComicCodeLigatures Nerd Font Mono",
+    "ui_font_weight": 200,
+    "buffer_font_family": "ComicCodeLigatures Nerd Font Mono",
+    "buffer_font_weight": 200,
+    "terminal": {
+      "dock": "right",
+      "shell": {
+        "program": "pwsh"
+      },
+      "detect_venv": {
+        "on": {
+          "directories": [".venv", "venv"],
+          "activate_script": "power_shell"
+        }
+      },
+      "cursor_shape": "bar",
+      "copy_on_select": true,
+      "font_weight": 400,
+      "font_features": {
+        "calt": true,
+        "liga": true
+      },
+      "font_family": "ComicCodeLigatures Nerd Font Mono"
+    },
+    "indent_guides": {
+      "enabled": true,
+      "coloring": "indent_aware"
+    },
+    "tab_size": 4,
+    "format_on_save": "off",
+    "languages": {
+      "TypeScript": {
+        "code_actions_on_format": {
+          "source.organizeImports": true,
+          "source.fixAll.biome": true,
+          "source.organizeImports.biome": true
+        }
+      },
+      "TSX": {
+        "code_actions_on_format": {
+          "source.organizeImports": true
+        }
+      }
+    },
+    "lsp": {
+      "rust-analyzer": {
+        "initialization_options": {
+          "check": {
+            "command": "clippy",
+            "extraArgs": [
+              "--",
+              "-W",
+              "clippy::pedantic",
+              "-W",
+              "clippy::nursery",
+              "-A",
+              "clippy::option-if-let-else",
+              "-A",
+              "clippy::or_fun_call",
+              "-A",
+              "clippy::module-name-repetitions",
+              "-A",
+              "clippy::struct-excessive-bools",
+              "-A",
+              "clippy::unused-async",
+              "-A",
+              "clippy::missing-const-for-fn",
+              "-A",
+              "clippy::similar-names",
+              "-A",
+              "clippy::enum_variant_names",
+              "-A",
+              "clippy::too-many-lines",
+              "-A",
+              "clippy::ignored-unit-patterns",
+              "-A",
+              "clippy::must-use-candidate",
+              "-A",
+              "clippy::cast-lossless",
+              "-A",
+              "clippy::use-self",
+              "-A",
+              "clippy::inline-always",
+              "-A",
+              "clippy::missing-errors-doc",
+              "-A",
+              "clippy::missing-panics-doc",
+              "-A",
+              "clippy::doc-markdown",
+              "-A",
+              "clippy::used_underscore_binding",
+              "-A",
+              "clippy::significant_drop_tightening",
+              "-A",
+              "clippy::struct-field-names",
+              "-A",
+              "clippy::redundant-pub-crate",
+              "-A",
+              "clippy::unnecessary-wraps"
+            ]
+          },
+          "rustfmt": {
+            "overrideCommand": [
+              "rustup",
+              "run",
+              "nightly",
+              "--",
+              "rustfmt",
+              "--config-path",
+              "/home/tim/.cargo/rustfmt.toml"
+            ]
+          }
+        }
+      }
+    },
+    "formatter": "auto",
+    "tab_bar": {
+      "show": false
+    }
+  }
