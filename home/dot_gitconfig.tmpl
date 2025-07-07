@@ -4,6 +4,8 @@
 
 {{- if eq .chezmoi.os "windows" }}
     sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+{{- else if eq .chezmoi.hostname "hifumi" }}
+    sshCommand = ssh -i ~/.ssh/git
 {{- end }}
 
     pager = delta
@@ -26,7 +28,7 @@
     gpgsign = true
 [gpg]
     format = ssh
-    
+
 {{- if eq .chezmoi.os "windows"}}
 [gpg "ssh"]
   program = "C:/Users/tim/AppData/Local/1Password/app/8/op-ssh-sign.exe"
