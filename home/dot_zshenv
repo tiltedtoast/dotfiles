@@ -23,8 +23,8 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/go/bin:$PATH"
 export PATH="/usr/local/cuda/bin:/opt/cuda/bin:$PATH"
 export ZVM_INSTALL="$HOME/.zvm/self"
-export PATH="$PATH:$HOME/.zvm/bin"
-export PATH="$PATH:$ZVM_INSTALL/"
+export PATH="$HOME/.zvm/bin:$PATH"
+export PATH="$ZVM_INSTALL/:$PATH"
 export PATH="$HOME/3rd-party/depot_tools:$PATH"
 
 export VOLTA_HOME="$HOME/.volta"
