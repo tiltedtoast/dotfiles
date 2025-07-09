@@ -13,6 +13,7 @@ nix-config
     .vimrc
     .profile
     .zsh
+    .config/btop
 {{- end }}
 
 {{- if ne .chezmoi.os "windows" }}

@@ -3,7 +3,7 @@ export HISTSIZE=500000
 export SAVEHIST=500000
 
 # Added by Radicle.
-export PATH="$PATH:/home/tim/.radicle/bin"
+export PATH="$PATH:$HOME/.radicle/bin"
 
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-envexport
 
@@ -66,7 +66,7 @@ export DENO_INSTALL="$HOME/.deno"
 export PATH=$HOME/.deno/bin:$PATH
 
 
-export PATH="/home/tim/.local/share/coursier/bin:$PATH"
+export PATH="$HOME/.local/share/coursier/bin:$PATH"
 
 export LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="/usr/lib/wsl/lib:/usr/local/lib:/usr/local/cuda/lib64:/usr/lib:/opt/cuda/lib:$LD_LIBRARY_PATH"
