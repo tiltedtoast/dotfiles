@@ -8,6 +8,12 @@
     sshCommand = ssh -i ~/.ssh/git
 {{- end }}
 
+{{- if eq .chezmoi.os "windows" }}
+    autocrlf = true
+{{- else }}
+    autocrlf = input
+{{- end }}
+
     pager = delta
 [user]
     name = Tim
