@@ -26,7 +26,7 @@ in
     "root"
     "tim"
   ];
-  networking.hostName = "nixos-wsl";
+  networking.hostName = "nixos-wsl-pc";
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
