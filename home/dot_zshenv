@@ -99,3 +99,6 @@ export TF_FORCE_GPU_ALLOW_GROWTH=true
 
 export MAKEFLAGS="-j$(($(nproc) - 2))"
 export NINJAFLAGS="-j$(($(nproc) - 2))"
+
+# nvcc doesn't support gcc 15 yet
+export NVCC_CCBIN="g++-14"
