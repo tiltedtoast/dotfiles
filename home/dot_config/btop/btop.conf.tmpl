@@ -1,8 +1,10 @@
+{{- /* We need to make sure to trim the ANSI escape code for bold text from the version string. */ -}}
 {{- $version := (output "btop" "--version")
        | splitList "\n"
        | first
        | splitList " "
-       | last -}}
+       | last
+       | replace "\033[1m" "" -}}
 
 #? Config file for btop v. {{ $version }}
 

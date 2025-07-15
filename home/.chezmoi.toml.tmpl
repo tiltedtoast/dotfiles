@@ -35,7 +35,11 @@
 
 {{- $osId := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
-  {{- $osId = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+  {{- $osId = printf "%s-%s" $osId .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{- if ne (env "WSL_DISTRO_NAME") "" }}
+  {{- $osId = printf "%s-%s" $osId "wsl" -}}
 {{- end -}}
 
 sourceDir = "~/dotfiles"
