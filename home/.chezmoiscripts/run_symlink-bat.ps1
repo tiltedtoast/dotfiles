@@ -7,7 +7,7 @@ if ($IsWindows) {
     }
     if (-Not (Test-Path $dst_scoop) -or ((Get-Item $dst_scoop).LinkType -ne 'Junction')) {
         if (Test-Path $dst_scoop) {
-            Remove-Item $dst_scoop -Force
+            Remove-Item $dst_scoop -Force -Recurse
         }
         New-Item -ItemType Junction -Path $dst_scoop -Value $src
     }
