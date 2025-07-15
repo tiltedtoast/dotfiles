@@ -3,7 +3,7 @@ using namespace System.Management.Automation.Language
 
 oh-my-posh init pwsh --config "$env:USERPROFILE\powerline_custom.omp.json" | Invoke-Expression
 
-$env:PATH = "$env:USERPROFILE\scoop\shims;$env:PATH2;$env:PATH"
+$env:PATH = "$env:USERPROFILE\scoop\shims;$env:PATH3;$env:PATH2;$env:PATH"
 $env:RCLONE_CONFIG = "$env:USERPROFILE\scoop\persist\rclone\rclone.conf"
 $env:BAT_THEME = "OneDark"
 
