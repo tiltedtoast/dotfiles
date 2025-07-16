@@ -10,4 +10,5 @@ AlignAfterOpenBracket: BlockIndent
 BinPackParameters: false
 BinPackArguments: false
 PointerAlignment: Left
-
+StatementMacros:
+  - "_Pragma"
