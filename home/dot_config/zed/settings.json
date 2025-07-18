@@ -1,28 +1,28 @@
 {
+    "icon_theme": "VSCode Great Icons Theme",
     "telemetry": {
-      "metrics": false,
-      "diagnostics": false
+        "metrics": false,
+        "diagnostics": false
     },
-    "assistant": {
-      "default_model": {
-        "provider": "copilot_chat",
-        "model": "gpt-4o"
-      },
-      "version": "2"
+    "agent": {
+        "default_model": {
+            "provider": "copilot_chat",
+            "model": "gpt-4o"
+        }
     },
-    "theme": "Carbonfox",
+    "theme": "One Dark Pro Max",
     "ui_font_size": 18,
     "buffer_font_size": 18,
     "buffer_font_features": {
-      "calt": true
+        "calt": true
     },
     "features": {
-      "inline_completion_provider": "supermaven"
+        "edit_prediction_provider": "supermaven"
     },
     "autosave": {
-      "after_delay": {
-        "milliseconds": 200
-      }
+        "after_delay": {
+            "milliseconds": 200
+        }
     },
     "preferred_line_length": 100,
     "hour_format": "hour24",
@@ -31,118 +31,108 @@
     "buffer_font_family": "ComicCodeLigatures Nerd Font Mono",
     "buffer_font_weight": 200,
     "terminal": {
-      "dock": "right",
-      "shell": {
-        "program": "pwsh"
-      },
-      "detect_venv": {
-        "on": {
-          "directories": [".venv", "venv"],
-          "activate_script": "power_shell"
-        }
-      },
-      "cursor_shape": "bar",
-      "copy_on_select": true,
-      "font_weight": 400,
-      "font_features": {
-        "calt": true,
-        "liga": true
-      },
-      "font_family": "ComicCodeLigatures Nerd Font Mono"
+        "dock": "right",
+        "shell": {
+            "program": "pwsh"
+        },
+        "detect_venv": {
+            "on": {
+                "directories": [".venv", "venv"],
+                "activate_script": "power_shell"
+            }
+        },
+        "cursor_shape": "bar",
+        "copy_on_select": true,
+        "font_weight": 200,
+        "font_features": {
+            "calt": true,
+            "liga": true
+        },
+        "font_family": "ComicCodeLigatures Nerd Font Mono"
     },
     "indent_guides": {
-      "enabled": true,
-      "coloring": "indent_aware"
+        "enabled": true,
+        "coloring": "indent_aware"
     },
     "tab_size": 4,
     "format_on_save": "off",
     "languages": {
-      "TypeScript": {
-        "code_actions_on_format": {
-          "source.organizeImports": true,
-          "source.fixAll.biome": true,
-          "source.organizeImports.biome": true
+        "TypeScript": {
+            "code_actions_on_format": {
+                "source.organizeImports": true,
+                "source.fixAll.biome": true,
+                "source.organizeImports.biome": true
+            }
+        },
+        "TSX": {
+            "code_actions_on_format": {
+                "source.organizeImports": true
+            }
         }
-      },
-      "TSX": {
-        "code_actions_on_format": {
-          "source.organizeImports": true
-        }
-      }
     },
     "lsp": {
-      "rust-analyzer": {
-        "initialization_options": {
-          "check": {
-            "command": "clippy",
-            "extraArgs": [
-              "--",
-              "-W",
-              "clippy::pedantic",
-              "-W",
-              "clippy::nursery",
-              "-A",
-              "clippy::option-if-let-else",
-              "-A",
-              "clippy::or_fun_call",
-              "-A",
-              "clippy::module-name-repetitions",
-              "-A",
-              "clippy::struct-excessive-bools",
-              "-A",
-              "clippy::unused-async",
-              "-A",
-              "clippy::missing-const-for-fn",
-              "-A",
-              "clippy::similar-names",
-              "-A",
-              "clippy::enum_variant_names",
-              "-A",
-              "clippy::too-many-lines",
-              "-A",
-              "clippy::ignored-unit-patterns",
-              "-A",
-              "clippy::must-use-candidate",
-              "-A",
-              "clippy::cast-lossless",
-              "-A",
-              "clippy::use-self",
-              "-A",
-              "clippy::inline-always",
-              "-A",
-              "clippy::missing-errors-doc",
-              "-A",
-              "clippy::missing-panics-doc",
-              "-A",
-              "clippy::doc-markdown",
-              "-A",
-              "clippy::used_underscore_binding",
-              "-A",
-              "clippy::significant_drop_tightening",
-              "-A",
-              "clippy::struct-field-names",
-              "-A",
-              "clippy::redundant-pub-crate",
-              "-A",
-              "clippy::unnecessary-wraps"
-            ]
-          },
-          "rustfmt": {
-            "overrideCommand": [
-              "rustup",
-              "run",
-              "nightly",
-              "--",
-              "rustfmt",
-              "--config-path",
-              "/home/tim/.cargo/rustfmt.toml"
-            ]
-          }
+        "rust-analyzer": {
+            "initialization_options": {
+                "check": {
+                    "command": "clippy",
+                    "extraArgs": [
+                        "--",
+                        "-W",
+                        "clippy::pedantic",
+                        "-W",
+                        "clippy::nursery",
+                        "-A",
+                        "clippy::option-if-let-else",
+                        "-A",
+                        "clippy::or_fun_call",
+                        "-A",
+                        "clippy::module-name-repetitions",
+                        "-A",
+                        "clippy::struct-excessive-bools",
+                        "-A",
+                        "clippy::unused-async",
+                        "-A",
+                        "clippy::missing-const-for-fn",
+                        "-A",
+                        "clippy::similar-names",
+                        "-A",
+                        "clippy::enum_variant_names",
+                        "-A",
+                        "clippy::too-many-lines",
+                        "-A",
+                        "clippy::ignored-unit-patterns",
+                        "-A",
+                        "clippy::must-use-candidate",
+                        "-A",
+                        "clippy::cast-lossless",
+                        "-A",
+                        "clippy::use-self",
+                        "-A",
+                        "clippy::inline-always",
+                        "-A",
+                        "clippy::missing-errors-doc",
+                        "-A",
+                        "clippy::missing-panics-doc",
+                        "-A",
+                        "clippy::doc-markdown",
+                        "-A",
+                        "clippy::used_underscore_binding",
+                        "-A",
+                        "clippy::significant_drop_tightening",
+                        "-A",
+                        "clippy::struct-field-names",
+                        "-A",
+                        "clippy::redundant-pub-crate",
+                        "-A",
+                        "clippy::unnecessary-wraps"
+                    ]
+                },
+                "rustfmt": {}
+            }
         }
-      }
     },
     "formatter": "auto",
     "tab_bar": {
-      "show": false
+        "show": false
     }
-  }
+}
