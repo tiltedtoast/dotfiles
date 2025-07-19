@@ -20,4 +20,5 @@ nix-config
     Documents/PowerShell
     Documents/WindowsPowerShell
     .chezmoiscripts/*.ps1
+    AppData
 {{- end }}

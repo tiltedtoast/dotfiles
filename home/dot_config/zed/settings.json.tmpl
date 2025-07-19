@@ -26,9 +26,9 @@
     },
     "preferred_line_length": 100,
     "hour_format": "hour24",
-    "ui_font_family": "ComicCodeLigatures Nerd Font Mono",
+    "ui_font_family": "{{ .monospace_font }}",
     "ui_font_weight": 200,
-    "buffer_font_family": "ComicCodeLigatures Nerd Font Mono",
+    "buffer_font_family": "{{ .monospace_font }}",
     "buffer_font_weight": 200,
     "terminal": {
         "dock": "right",
@@ -48,7 +48,7 @@
             "calt": true,
             "liga": true
         },
-        "font_family": "ComicCodeLigatures Nerd Font Mono"
+        "font_family": "{{ .monospace_font }}"
     },
     "indent_guides": {
         "enabled": true,
