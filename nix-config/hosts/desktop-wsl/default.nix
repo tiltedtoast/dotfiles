@@ -121,7 +121,6 @@ in
       cuda_gdb
       libcublas
       cuda_nvcc
-      tensorrt
       cuda_opencl
       cuda_nvtx
       cuda_nvrtc
