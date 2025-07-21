@@ -4,6 +4,10 @@
     "actions":
     [
         {
+            "command": "find",
+            "id": "User.find"
+        },
+        {
             "command":
             {
                 "action": "splitPane",
@@ -11,10 +15,6 @@
                 "splitMode": "duplicate"
             },
             "id": "User.splitPane.A6751878"
-        },
-        {
-            "command": "find",
-            "id": "User.find"
         },
         {
             "command": "showContextMenu",
@@ -29,10 +29,6 @@
             "id": "User.switchToTab.6CD791B"
         },
         {
-            "command": "paste",
-            "id": "User.paste"
-        },
-        {
             "command":
             {
                 "action": "newTab"
@@ -40,12 +36,8 @@
             "id": "User.newTab.5DEADB41"
         },
         {
-            "command":
-            {
-                "action": "switchToTab",
-                "index": 4
-            },
-            "id": "User.switchToTab.F747588A"
+            "command": "paste",
+            "id": "User.paste"
         },
         {
             "command":
@@ -54,6 +46,14 @@
                 "index": 7
             },
             "id": "User.switchToTab.D7681B66"
+        },
+        {
+            "command":
+            {
+                "action": "switchToTab",
+                "index": 4
+            },
+            "id": "User.switchToTab.F747588A"
         },
         {
             "command":
@@ -94,17 +94,17 @@
             "command":
             {
                 "action": "switchToTab",
-                "index": 5
+                "index": 2
             },
-            "id": "User.switchToTab.75247157"
+            "id": "User.switchToTab.87C324ED"
         },
         {
             "command":
             {
                 "action": "switchToTab",
-                "index": 2
+                "index": 5
             },
-            "id": "User.switchToTab.87C324ED"
+            "id": "User.switchToTab.75247157"
         },
         {
             "command":
@@ -127,28 +127,28 @@
     "keybindings":
     [
         {
-            "id": "User.splitPane.A6751878",
-            "keys": "alt+shift+d"
-        },
-        {
             "id": "User.switchToTab.D7681B66",
             "keys": "ctrl+8"
         },
         {
-            "id": "User.find",
-            "keys": "ctrl+f"
+            "id": "User.splitPane.A6751878",
+            "keys": "alt+shift+d"
         },
         {
-            "id": "User.paste",
-            "keys": "ctrl+v"
+            "id": null,
+            "keys": "ctrl+shift+w"
         },
         {
             "id": null,
             "keys": "ctrl+shift+f"
         },
         {
-            "id": null,
-            "keys": "ctrl+shift+w"
+            "id": "User.paste",
+            "keys": "ctrl+v"
+        },
+        {
+            "id": "User.find",
+            "keys": "ctrl+f"
         },
         {
             "id": "User.switchToTab.6CD791B",
@@ -267,7 +267,8 @@
             "experimental.retroTerminalEffect": false,
             "font":
             {
-                "face": "{{ .monospace_font }}",
+                "builtinGlyphs": true,
+                "face": "ComicCodeLigatures Nerd Font Mono",
                 "size": 13,
                 "weight": "normal"
             },
