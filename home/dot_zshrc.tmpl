@@ -15,8 +15,7 @@ zstyle ':znap:*' repos-dir ~/3rd-party/znap-plugins
 
 znap source zsh-users/zsh-syntax-highlighting
 znap source zsh-users/zsh-autosuggestions
-
-znap install zsh-users/zsh-completions
+znap source zsh-users/zsh-completions
 
 command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 znap eval omp "oh-my-posh init zsh --config $HOME/powerline_custom.omp.json" &> /dev/null
