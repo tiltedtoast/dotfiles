@@ -124,6 +124,7 @@
     libgcc
     volta
     python3Full
+    pixi
 
     (pkgs.callPackage ../../pkgs/wsl2-ssh-agent.nix { })
   ];
