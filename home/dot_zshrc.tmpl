@@ -5,7 +5,7 @@ setopt HIST_IGNORE_DUPS
 setopt INTERACTIVE_COMMENTS
 unsetopt BEEP
 
-export ZSH="$HOME/.zsh"
+export ZSH="$HOME/.config/zsh"
 
 [[ -r ~/3rd-party/znap/znap.zsh ]] ||
     git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/3rd-party/znap
@@ -27,7 +27,7 @@ source $ZSH/hooks.sh
 
 
 if [[ ! "$fpath" =~ .*"$ZSH/completions".* ]]; then
-  fpath=(~/.zsh/completions $fpath)
+  fpath=($ZSH/completions $fpath)
 fi
 
 autoload -Uz compinit && compinit
