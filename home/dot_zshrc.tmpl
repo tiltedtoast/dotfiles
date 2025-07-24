@@ -17,7 +17,7 @@ znap source zsh-users/zsh-syntax-highlighting
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zsh-completions
 
-command -v direnv >/dev/null && eval "$(direnv hook zsh)"
+command -v direnv >/dev/null && znap eval direnv "direnv hook zsh"
 znap eval omp "oh-my-posh init zsh --config $HOME/powerline_custom.omp.json" &> /dev/null
 znap eval zoxide "zoxide init --cmd cd zsh"
 znap eval atuin "atuin init --disable-up-arrow zsh"
