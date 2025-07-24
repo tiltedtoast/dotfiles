@@ -46,4 +46,6 @@
       LC_IDENTIFICATION = "C.UTF-8";
     };
   };
+
+  programs.command-not-found.enable = true;
 }

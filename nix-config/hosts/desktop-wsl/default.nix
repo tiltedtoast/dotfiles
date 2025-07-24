@@ -1,10 +1,5 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 
-let
-in
 {
   imports = [
     ../../common
@@ -128,6 +123,7 @@ in
     mesa
     libgcc
     volta
+    python3Full
 
     (pkgs.callPackage ../../pkgs/wsl2-ssh-agent.nix { })
   ];

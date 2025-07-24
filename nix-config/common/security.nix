@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ ... }:
 
 {
   security.sudo = {
