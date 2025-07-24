@@ -6,6 +6,7 @@
 {
   imports = [
     ./security.nix
+    ./nixpkgs.nix
   ];
 
   fonts = {

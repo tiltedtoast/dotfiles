@@ -1,20 +1,9 @@
 {
-  lib,
-  inputs,
+  pkgs,
   ...
 }:
 
 let
-  unstable = import inputs.nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
-  pkgs = import inputs.nixpkgs {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
-
-  pocl-cuda = import ../../pkgs/pocl { inherit unstable lib; };
 in
 {
   imports = [
@@ -32,152 +21,144 @@ in
     "flakes"
   ];
 
-  environment.systemPackages =
-    with pkgs;
-    with unstable.llvmPackages_20;
-    with unstable.cudaPackages;
-    [
-      cachix
-      file
-      unstable.gcc
-      unstable.moar
-      unstable.dust
-      rm-improved
-      wget
-      gnumake
-      ninja
-      git
-      unstable.btop
-      delta
-      unzip
-      zsh
-      stow
-      curl
-      cmake
-      imagemagick
-      gifsicle
-      openssh
-      openssl
-      unstable.oh-my-posh
-      fzf
-      atuin
-      unstable.bun
-      zoxide
-      gh
-      rustup
-      unstable.uv
-      ookla-speedtest
-      unstable.mold
-      sqlite
-      containerd
-      unstable.fastfetch
-      openssl
-      pkg-config
-      direnv
-      git-filter-repo
-      unstable.go
-      gtk4
-      gtk3
-      gtk2
-      hyperfine
-      unstable.jdk
-      jq
-      kmod
-      lz4
-      maven
-      gradle
-      musl
-      unstable.oha
-      unstable.protobuf
-      unstable.qemu
-      valgrind
-      wl-clipboard
-      hex
-      unstable.nixfmt-rfc-style
-      unstable.mpi
-      unstable.mpi.dev
-      age
-      chezmoi
-
-      clang-tools
-      clang-manpages
-      openmp
-      clangUseLLVM
-      bintools-unwrapped
-
-      unstable.bear
-      unstable.tokei
-      unstable.eza
-      unstable.bat
-      ripgrep
-      fd
-      unstable.vulkan-tools
-      libva-utils
-      vdpauinfo
-      unstable.mesa-demos
-      unstable.vulkan-loader
-      sd
-
-      cuda_gdb
-      libcublas
-      cuda_nvcc
-      cuda_opencl
-      cuda_nvtx
-      cuda_nvrtc
-      cuda_nvprof
-      cuda_cupti
-      cuda_cccl
-      cuda_cudart
-      cudatoolkit
-
-      unstable.ffmpeg-full
-      unstable.nixd
-      docker
-      turso-cli
-      clinfo
-      opencl-headers
-      unstable.mesa
-      unstable.libgcc
-      volta
-
-      (pkgs.callPackage ../../pkgs/wsl2-ssh-agent/default.nix { })
-    ];
-
-  hardware.graphics.extraPackages = [
-    pocl-cuda
+  nixpkgs.overlays = [
+    (import ../../overlays/pocl-cuda.nix)
   ];
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      # mesa = unstable.mesa;
-      # libGL = unstable.mesa;
-      # libglvnd = unstable.libglvnd;
-    })
+  environment.systemPackages = with pkgs; [
+    cachix
+    file
+    gcc
+    moar
+    dust
+    rm-improved
+    wget
+    gnumake
+    ninja
+    git
+    btop
+    delta
+    unzip
+    zsh
+    stow
+    curl
+    cmake
+    imagemagick
+    gifsicle
+    openssh
+    openssl
+    oh-my-posh
+    fzf
+    atuin
+    bun
+    zoxide
+    gh
+    rustup
+    uv
+    ookla-speedtest
+    mold
+    sqlite
+    containerd
+    fastfetch
+    openssl
+    pkg-config
+    direnv
+    git-filter-repo
+    go
+    gtk4
+    gtk3
+    gtk2
+    hyperfine
+    jdk
+    jq
+    kmod
+    lz4
+    maven
+    gradle
+    musl
+    oha
+    protobuf
+    qemu
+    valgrind
+    wl-clipboard
+    hex
+    nixfmt-rfc-style
+    mpi
+    mpi.dev
+    age
+    chezmoi
+
+    llvmPackages_20.clang-tools
+    llvmPackages_20.clang-manpages
+    llvmPackages_20.openmp
+    llvmPackages_20.clangUseLLVM
+    llvmPackages_20.bintools-unwrapped
+
+    bear
+    tokei
+    eza
+    bat
+    ripgrep
+    fd
+    vulkan-tools
+    libva-utils
+    vdpauinfo
+    mesa-demos
+    vulkan-loader
+    sd
+
+    cudaPackages.libcublas
+    cudaPackages.cuda_gdb
+    cudaPackages.cuda_nvcc
+    cudaPackages.cuda_opencl
+    cudaPackages.cuda_nvtx
+    cudaPackages.cuda_nvrtc
+    cudaPackages.cuda_nvprof
+    cudaPackages.cuda_cupti
+    cudaPackages.cuda_cccl
+    cudaPackages.cuda_cudart
+    cudaPackages.cudatoolkit
+
+    ffmpeg-full
+    nixd
+    docker
+    turso-cli
+    clinfo
+    opencl-headers
+    mesa
+    libgcc
+    volta
+
+    (pkgs.callPackage ../../pkgs/wsl2-ssh-agent.nix { })
+  ];
+
+  hardware.graphics.extraPackages = [
+    pkgs.pocl-cuda
   ];
 
   programs.direnv.enable = true;
 
   environment.variables = {
-    LIBVA_DRIVERS_PATH = "${unstable.mesa}/lib/dri";
-    VK_DRIVER_FILES = "${unstable.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
-    VK_ICD_FILENAMES = "${unstable.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
-    VK_LAYER_PATH = "${unstable.mesa}/share/vulkan/explicit_layer.d";
-    LIBGL_DRIVERS_PATH = "${unstable.mesa}/lib/dri";
-    OCL_ICD_FILENAMES = "${pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
+    LIBVA_DRIVERS_PATH = "${pkgs.mesa}/lib/dri";
+    VK_DRIVER_FILES = "${pkgs.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
+    VK_ICD_FILENAMES = "${pkgs.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
+    VK_LAYER_PATH = "${pkgs.mesa}/share/vulkan/explicit_layer.d";
+    LIBGL_DRIVERS_PATH = "${pkgs.mesa}/lib/dri";
+    OCL_ICD_FILENAMES = "${pkgs.pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
 
-    JAVA_HOME = "${unstable.jdk}";
+    JAVA_HOME = "${pkgs.jdk}";
 
     LD_LIBRARY_PATH = [
-      "${unstable.stdenv.cc.cc.lib}/lib"
-      "${unstable.cudatoolkit}/lib"
-      "${unstable.cudaPackages.cuda_cudart.static}/lib"
-      "${unstable.llvmPackages_20.libcxx}/lib"
-      "${unstable.llvmPackages_20.libunwind}/lib"
+      "${pkgs.stdenv.cc.cc.lib}/lib"
+      "${pkgs.cudatoolkit}/lib"
+      "${pkgs.cudaPackages.cuda_cudart.static}/lib"
+      "${pkgs.llvmPackages_20.libcxx}/lib"
+      "${pkgs.llvmPackages_20.libunwind}/lib"
     ];
 
     CPATH = [
-      "${unstable.cudatoolkit}/include"
-      "${unstable.libglvnd.dev}/include"
+      "${pkgs.cudatoolkit}/include"
+      "${pkgs.libglvnd.dev}/include"
     ];
 
     PKG_CONFIG_PATH = [
@@ -186,15 +167,15 @@ in
 
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
 
-    CUDA_PATH = "${unstable.cudatoolkit}";
-    CUDA_ROOT = "${unstable.cudatoolkit}";
+    CUDA_PATH = "${pkgs.cudatoolkit}";
+    CUDA_ROOT = "${pkgs.cudatoolkit}";
 
     NH_FLAKE = "/home/tim/dotfiles/nix-config";
   };
 
   environment.shellAliases = {
     # Thanks for trying to access /run/current-system/sw/bin/../nvvm/bin/cicc
-    nvcc = "${unstable.cudaPackages.cudatoolkit}/bin/nvcc";
+    nvcc = "${pkgs.cudaPackages.cudatoolkit}/bin/nvcc";
 
     nix-shell = "nix-shell --command zsh";
   };
