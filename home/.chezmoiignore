@@ -12,7 +12,7 @@ nix-config
     .profile
     .vimrc
     .profile
-    .zsh
+    .config/zsh
     .config/btop
 {{- end }}
 
