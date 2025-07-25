@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../../common
     ./services.nix
+    ../../common
     ../../modules/nvidia.nix
   ];
 
@@ -16,6 +16,8 @@
     "nix-command"
     "flakes"
   ];
+
+  nvidia.cuda.enable = true;
 
   environment.systemPackages = with pkgs; [
     cachix
@@ -140,9 +142,9 @@
     ];
 
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
-
-    NH_FLAKE = "/home/tim/dotfiles/nix-config";
   };
+
+  environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles/nix-config";
 
   environment.shellAliases = {
     nix-shell = "nix-shell --command zsh";
