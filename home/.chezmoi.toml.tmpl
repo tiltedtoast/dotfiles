@@ -47,7 +47,7 @@
     {{- if not (stat $ageKeyPath) -}}
         {{- writeToStdout "\033[1;31mError: Age key required but 1Password secrets disabled.\033[0m\n" -}}
         {{- writeToStdout "\n" -}}
-        {{- writeToStdout "Please create: {{ $ageKeyPath }}\n" -}}
+        {{- writeToStdout (printf "Please create: %s\n" $ageKeyPath) -}}
         {{- writeToStdout "Copy your age key there and set permissions to 600.\n" -}}
         {{- fail "Age key setup required before continuing" -}}
     {{- end -}}
