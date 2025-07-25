@@ -4,6 +4,7 @@
   imports = [
     ../../common
     ./services.nix
+    ../../modules/nvidia.nix
   ];
 
   nix.settings.trusted-users = [
@@ -14,10 +15,6 @@
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
-  ];
-
-  nixpkgs.overlays = [
-    (import ../../overlays/pocl-cuda.nix)
   ];
 
   environment.systemPackages = with pkgs; [
@@ -102,18 +99,6 @@
     vulkan-loader
     sd
 
-    cudaPackages.libcublas
-    cudaPackages.cuda_gdb
-    cudaPackages.cuda_nvcc
-    cudaPackages.cuda_opencl
-    cudaPackages.cuda_nvtx
-    cudaPackages.cuda_nvrtc
-    cudaPackages.cuda_nvprof
-    cudaPackages.cuda_cupti
-    cudaPackages.cuda_cccl
-    cudaPackages.cuda_cudart
-    cudaPackages.cudatoolkit
-
     ffmpeg-full
     nixd
     docker
@@ -129,10 +114,6 @@
     (pkgs.callPackage ../../pkgs/wsl2-ssh-agent.nix { })
   ];
 
-  hardware.graphics.extraPackages = [
-    pkgs.pocl-cuda
-  ];
-
   programs.direnv.enable = true;
 
   environment.variables = {
@@ -141,20 +122,16 @@
     VK_ICD_FILENAMES = "${pkgs.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
     VK_LAYER_PATH = "${pkgs.mesa}/share/vulkan/explicit_layer.d";
     LIBGL_DRIVERS_PATH = "${pkgs.mesa}/lib/dri";
-    OCL_ICD_FILENAMES = "${pkgs.pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
 
     JAVA_HOME = "${pkgs.jdk}";
 
     LD_LIBRARY_PATH = [
       "${pkgs.stdenv.cc.cc.lib}/lib"
-      "${pkgs.cudatoolkit}/lib"
-      "${pkgs.cudaPackages.cuda_cudart.static}/lib"
       "${pkgs.llvmPackages_20.libcxx}/lib"
       "${pkgs.llvmPackages_20.libunwind}/lib"
     ];
 
     CPATH = [
-      "${pkgs.cudatoolkit}/include"
       "${pkgs.libglvnd.dev}/include"
     ];
 
@@ -164,16 +141,10 @@
 
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
 
-    CUDA_PATH = "${pkgs.cudatoolkit}";
-    CUDA_ROOT = "${pkgs.cudatoolkit}";
-
     NH_FLAKE = "/home/tim/dotfiles/nix-config";
   };
 
   environment.shellAliases = {
-    # Thanks for trying to access /run/current-system/sw/bin/../nvvm/bin/cicc
-    nvcc = "${pkgs.cudaPackages.cudatoolkit}/bin/nvcc";
-
     nix-shell = "nix-shell --command zsh";
   };
 
