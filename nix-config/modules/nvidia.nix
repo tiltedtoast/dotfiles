@@ -6,7 +6,7 @@
 {
 
   nixpkgs.overlays = [
-    (import ../../overlays/pocl-cuda.nix)
+    (import ../overlays/pocl-cuda.nix)
   ];
 
   hardware.graphics.extraPackages = [
