@@ -4,6 +4,10 @@ nix-config
 .gitattributes
 *.zwc
 
+{{- if not .use_secrets }}
+  .config/age/key
+{{- end }}
+
 {{- if ne .chezmoi.os "linux" }}
     .zshrc
     .bashrc

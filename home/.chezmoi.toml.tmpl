@@ -42,7 +42,24 @@
   {{- $osId = printf "%s-%s" $osId "wsl" -}}
 {{- end -}}
 
+{{- $ageKeyPath := joinPath .chezmoi.homeDir ".config" "age" "key" -}}
+{{- if not .use_secrets -}}
+    {{- if not (stat $ageKeyPath) -}}
+        {{- writeToStdout "\033[1;31mError: Age key required but 1Password secrets disabled.\033[0m\n" -}}
+        {{- writeToStdout "\n" -}}
+        {{- writeToStdout "Please create: {{ $ageKeyPath }}\n" -}}
+        {{- writeToStdout "Copy your age key there and set permissions to 600.\n" -}}
+        {{- fail "Age key setup required before continuing" -}}
+    {{- end -}}
+{{- end -}}
+
+encryption = "age"
+
 sourceDir = "~/dotfiles"
+
+[age]
+    identity = "~/.config/age/key"
+    recipient = "age1r3ee8yzrvhsqzpur68xpuheg8g66q3g4eu8dk4eft9xyh0nczdhqpn3grr"
 
 [interpreters.ps1]
     command = "pwsh"
