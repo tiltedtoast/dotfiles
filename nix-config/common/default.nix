@@ -22,6 +22,37 @@
 
   time.timeZone = "Europe/Berlin";
 
+  environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles/nix-config";
+
+  environment.shellAliases = {
+    nix-shell = "nix-shell --command zsh";
+  };
+
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
+
+  programs.nix-ld.enable = true;
+
+  nix.settings = {
+    trusted-users = [
+      "tim"
+      "root"
+    ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
+
+  programs.nh.enable = true;
+  programs.direnv.enable = true;
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
   programs.nano = {
     enable = true;
     nanorc = ''

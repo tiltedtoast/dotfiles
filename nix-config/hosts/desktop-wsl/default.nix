@@ -7,16 +7,7 @@
     ../../modules/nvidia.nix
   ];
 
-  nix.settings.trusted-users = [
-    "root"
-    "tim"
-  ];
   networking.hostName = "nixos-wsl-pc";
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   nvidia.cuda.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -116,8 +107,6 @@
     (pkgs.callPackage ../../pkgs/wsl2-ssh-agent.nix { })
   ];
 
-  programs.direnv.enable = true;
-
   environment.variables = {
     LIBVA_DRIVERS_PATH = "${pkgs.mesa}/lib/dri";
     VK_DRIVER_FILES = "${pkgs.mesa}/share/vulkan/icd.d/dzn_icd.x86_64.json";
@@ -144,17 +133,6 @@
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
   };
 
-  environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles/nix-config";
-
-  environment.shellAliases = {
-    nix-shell = "nix-shell --command zsh";
-  };
-
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-
-  programs.nix-ld.enable = true;
-
   virtualisation.docker.enable = false;
 
   users.users.tim = {
@@ -166,18 +144,6 @@
       "video"
       "render"
     ];
-  };
-
-  programs.nh = {
-    enable = true;
-    #clean.enable = true;
-    #clean.extraArgs = "--keep-since 4d --keep 3";
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
   };
 
   wsl = {

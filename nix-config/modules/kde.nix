@@ -8,7 +8,7 @@
     desktopManager.plasma6.enable = true;
     displayManager.sddm = {
       enable = true;
-      wayland = true;
+      wayland.enable = true;
     };
   };
 
@@ -18,6 +18,7 @@
     kcolorchooser
     ksystemlog
     sddm-kcm
+    pkgs.wayland-utils
     pkgs.wl-clipboard
   ];
 }
