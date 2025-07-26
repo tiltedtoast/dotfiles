@@ -86,6 +86,7 @@ in
         cuda_cccl
         cuda_cudart
         cudatoolkit
+        pkgs.nvtopPackages.nvidia
       ];
     })
 
@@ -99,6 +100,9 @@ in
         nvidiaSettings = cfg.driver.enable;
         open = cfg.driver.enable;
       };
+      environment.systemPackages = [
+        pkgs.nvidia-vaapi-driver
+      ];
     })
   ];
 }
