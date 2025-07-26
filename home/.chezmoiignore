@@ -8,6 +8,10 @@ nix-config
   .config/age/key
 {{- end }}
 
+{{- if not .is_wsl }}
+  .local/bin/xdg-open*
+{{- end -}}
+
 {{- if ne .chezmoi.os "linux" }}
     .zshrc
     .bashrc

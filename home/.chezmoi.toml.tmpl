@@ -82,6 +82,7 @@ sourceDir = "~/dotfiles"
 
 [data]
     os_id = {{ $osId | quote }}
+    is_wsl = {{ hasSuffix "wsl" $osId }}
     use_secrets = {{ $useSecrets }}
     full_name = {{ $fullName | quote }}
     uni_email = {{ $uniEmail | quote }}
