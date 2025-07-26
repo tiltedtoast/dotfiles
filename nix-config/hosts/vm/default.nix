@@ -7,8 +7,8 @@
   imports = [
     ./hardware-configuration.nix
     ../../common
-    ../../modules/kde.nix
-    ../../modules/1password.nix
+    ../../modules/system/kde.nix
+    ../../modules/system/1password.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -83,5 +83,4 @@
 
   programs.mtr.enable = true;
   system.stateVersion = "25.05";
-
 }

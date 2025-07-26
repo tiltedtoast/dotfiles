@@ -4,7 +4,7 @@
   imports = [
     ./services.nix
     ../../common
-    ../../modules/nvidia.nix
+    ../../modules/system/nvidia.nix
   ];
 
   networking.hostName = "nixos-wsl-pc";

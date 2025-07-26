@@ -24,4 +24,14 @@
   environment.sessionVariables = {
     SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
   };
+
+  environment.etc."xdg/autostart/1password.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=1Password
+    Exec=1password --silent
+    Hidden=false
+    NoDisplay=false
+    X-GNOME-Autostart-enabled=true
+  '';
 }
