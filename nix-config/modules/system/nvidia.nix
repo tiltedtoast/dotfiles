@@ -50,7 +50,7 @@ in
     # CUDA configuration
     (lib.mkIf cfg.cuda.enable {
       nixpkgs.overlays = [
-        (import ../overlays/pocl-cuda.nix)
+        (import ../../overlays/pocl-cuda.nix)
       ];
       hardware.graphics.extraPackages = [
         pkgs.pocl-cuda
