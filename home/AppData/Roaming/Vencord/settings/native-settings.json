@@ -1,0 +1,17 @@
+{
+    "plugins": {},
+    "customCspRules": {
+        "www.google.com": [
+            "connect-src",
+            "img-src",
+            "style-src",
+            "font-src"
+        ],
+        "gist.githubusercontent.com": [
+            "connect-src",
+            "img-src",
+            "style-src",
+            "font-src"
+        ]
+    }
+}
