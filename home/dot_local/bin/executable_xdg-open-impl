@@ -146,7 +146,7 @@ def get_explorer_path() -> str:
     # Looking at the docs: https://docs.microsoft.com/en-us/windows/wsl/filesystems#run-windows-tools-from-linux
     # they want us to use just the .exe name
     # return subprocess.check_output(["wslpath", "-u", r"c:\windows\explorer.exe"]).decode('utf-8').strip()
-    return "explorer.exe"
+    return "/mnt/c/windows/explorer.exe"
 
 
 def get_cmd_path() -> str:
@@ -157,7 +157,7 @@ def get_cmd_path() -> str:
     """
     # see note above in get_explorer_path()
     # return subprocess.check_output(["wslpath", "-u", r"c:\windows\system32/cmd.exe"]).decode('utf-8').strip()
-    return "cmd.exe"
+    return "/mnt/c/Windows/System32/cmd.exe"
 
 
 @click.command()
