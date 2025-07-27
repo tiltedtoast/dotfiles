@@ -1,4 +1,3 @@
-# modules/services/my-disk.nix
 { lib, config, ... }:
 
 with lib;
