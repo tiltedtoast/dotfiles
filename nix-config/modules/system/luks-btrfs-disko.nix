@@ -23,8 +23,13 @@ in
 
   config = mkIf cfg.enable {
     boot.loader = {
-      systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+
+      grub = {
+        enable = true;
+        devices = [ "nodev" ];
+        efiSupport = true;
+      };
     };
 
     disko.devices.disk.main = {
