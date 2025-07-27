@@ -12,6 +12,11 @@
     };
   };
 
+  nixpkgs.config.freetype = {
+    withHarfbuzz = true;
+    withGnuByteCode = true;
+  };
+
   environment.systemPackages = with pkgs.kdePackages; [
     kcalc
     kcharselect
@@ -20,5 +25,6 @@
     sddm-kcm
     pkgs.wayland-utils
     pkgs.wl-clipboard
+    kdeconnect-kde
   ];
 }

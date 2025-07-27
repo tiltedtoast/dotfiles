@@ -17,7 +17,7 @@
     workspace = {
       theme = "breeze-dark";
       lookAndFeel = "org.kde.breezedark.desktop";
-      wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/MilkyWay/contents/images/1080x1920.png";
+      wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/MilkyWay/contents/images/5120x2880.png";
     };
 
     fonts =
@@ -40,5 +40,7 @@
         };
       };
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
+
+    configFile."kdeglobals"."General"."AccentColor" = "#926ee4";
   };
 }
