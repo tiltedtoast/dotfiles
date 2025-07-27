@@ -22,6 +22,16 @@ in
   };
 
   config = mkIf cfg.enable {
+    boot.loader = {
+      efi.canTouchEfiVariables = true;
+
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+      };
+    };
+
     disko.devices.disk.main = {
       type = "disk";
       device = cfg.disk;
