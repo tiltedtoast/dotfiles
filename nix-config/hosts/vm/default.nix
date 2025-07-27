@@ -9,10 +9,20 @@
     ../../common
     ../../modules/system/kde.nix
     ../../modules/system/1password.nix
+    ../../modules/system/luks-btrfs-disko.nix
   ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.grub.device = "nodev";
+
+  services.disk = {
+    enable = true;
+    disk = "/dev/sda";
+    swapSize = "18G";
+  };
+
   networking.hostName = "nixos-vm";
 
   xdg.mime.defaultApplications = {
