@@ -84,6 +84,8 @@
   environment.variables = {
     BROWSER = "${pkgs.librewolf}/bin/librewolf";
     DEFAULT_BROWSER = "${pkgs.librewolf}/bin/librewolf";
+
+    NIXOS_OZONE_WL = "1";
   };
 
   programs.mtr.enable = true;
