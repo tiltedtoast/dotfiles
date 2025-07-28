@@ -6,4 +6,5 @@
 --map-syntax "**/chromium/**/*.conf:XML"
 --map-syntax "*.🔥:Python"
 --map-syntax "*.mojo:Python"
+--map-syntax "flake.lock:JSON"
 
