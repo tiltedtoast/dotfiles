@@ -14,6 +14,7 @@ let
     "System"
     "MicFilteredOut.monitor"
   ];
+
   mkLoopbackModule = slave: {
     name = "module-loopback";
     args = {
@@ -22,6 +23,7 @@ let
       latency_msec = 8;
     };
   };
+
   mkSink = name: {
     factory = "adapter";
     args = {
@@ -32,6 +34,7 @@ let
       "audio.position" = "FL,FR";
     };
   };
+
   limiterNode = thresh: {
     type = "ladspa";
     plugin = "${pkgs.ladspaPlugins}/lib/ladspa/fast_lookahead_limiter_1913.so";
@@ -50,13 +53,11 @@ let
         nodes = [ (limiterNode thresh) ];
       };
 
-      # The “capture” side is the input of the virtual sink:
       "capture.props" = {
         "node.name" = "${name}LimiterIn";
         "media.class" = "Audio/Sink";
       };
 
-      # The “playback” side is what apps will see as the sink:
       "playback.props" = {
         "node.name" = "${name}";
         "node.description" = "${name} (Limited)";
@@ -64,9 +65,9 @@ let
       };
     };
   };
+
 in
 {
-
   environment.systemPackages = with pkgs; [
     rnnoise-plugin
     ladspaPlugins
