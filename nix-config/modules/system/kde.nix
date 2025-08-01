@@ -27,4 +27,10 @@
     pkgs.wl-clipboard
     kdeconnect-kde
   ];
+
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    kdepim-runtime
+    konsole
+    oxygen
+  ];
 }

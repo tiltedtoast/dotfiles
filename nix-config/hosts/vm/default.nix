@@ -10,6 +10,7 @@
     ../../modules/system/kde.nix
     ../../modules/system/1password.nix
     ../../modules/system/luks-btrfs-disko.nix
+    ../../modules/system/pipewire.nix
   ];
 
   services.disk = {
@@ -30,11 +31,6 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.networkmanager.enable = true;
-
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-  };
 
   services.libinput.enable = true;
 
@@ -74,6 +70,7 @@
     delta
     gh
     ookla-speedtest
+    dust
   ];
 
   xdg.portal = {
