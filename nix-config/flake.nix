@@ -18,6 +18,10 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -27,6 +31,7 @@
       nixos-wsl,
       home-manager,
       plasma-manager,
+      nix-index-database,
       disko,
       ...
     }@inputs:
@@ -37,6 +42,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             nixos-wsl.nixosModules.default
+            nix-index-database.nixosModules.nix-index
             ./hosts/desktop-wsl
           ];
         };
@@ -45,6 +51,7 @@
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
+            nix-index-database.nixosModules.nix-index
             home-manager.nixosModules.home-manager
             disko.nixosModules.disko
             ./hosts/vm

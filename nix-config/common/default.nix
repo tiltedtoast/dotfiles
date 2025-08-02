@@ -79,4 +79,7 @@
   };
 
   programs.command-not-found.enable = true;
+  programs.nix-index-database.comma.enable = true;
+  programs.nix-index.enableBashIntegration = false;
+  programs.nix-index.enableZshIntegration = false;
 }
