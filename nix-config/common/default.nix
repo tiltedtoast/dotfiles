@@ -6,8 +6,10 @@
 {
   imports = [
     ./security.nix
-    ./nixpkgs.nix
+    ./packages.nix
   ];
+
+  nixpkgs.config.allowUnfree = true;
 
   fonts = {
     fontDir.enable = true;
@@ -26,6 +28,9 @@
 
   environment.shellAliases = {
     nix-shell = "nix-shell --command zsh";
+    nixos-switch = "nh os switch";
+    flake-update = "sudo nix flake update --flake $NH_FLAKE";
+    update = "nh os switch --update";
   };
 
   programs.zsh.enable = true;

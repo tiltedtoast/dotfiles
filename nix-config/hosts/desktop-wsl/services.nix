@@ -1,8 +1,10 @@
 {
+  config,
+  lib,
   ...
 }:
 {
-  systemd.services.link-wslg-runtime = {
+  systemd.services.link-wslg-runtime = lib.mkIf config.wsl.enable {
     enable = true;
     description = "Symlink all WSLg runtime files";
     wantedBy = [ "multi-user.target" ];

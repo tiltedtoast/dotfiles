@@ -35,11 +35,16 @@
       disko,
       ...
     }@inputs:
+    let
+      globalOptions = {
+        username = "tim";
+      };
+    in
     {
       nixosConfigurations = {
         nixos-wsl-pc = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs globalOptions; };
           modules = [
             nixos-wsl.nixosModules.default
             nix-index-database.nixosModules.nix-index
@@ -49,7 +54,7 @@
 
         nixos-vm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs globalOptions; };
           modules = [
             nix-index-database.nixosModules.nix-index
             home-manager.nixosModules.home-manager
@@ -61,7 +66,7 @@
               home-manager.backupFileExtension = "backup";
               home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
 
-              home-manager.users.tim = import ./hosts/vm/home.nix;
+              home-manager.users.${globalOptions.username} = import ./hosts/vm/home.nix;
             }
           ];
         };

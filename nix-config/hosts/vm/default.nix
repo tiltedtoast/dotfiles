@@ -1,5 +1,6 @@
 {
   pkgs,
+  globalOptions,
   ...
 }:
 
@@ -34,7 +35,7 @@
 
   services.libinput.enable = true;
 
-  users.users.tim = {
+  users.users.${globalOptions.username} = {
     isNormalUser = true;
     extraGroups = [
       "wheel"
@@ -44,34 +45,13 @@
   };
 
   environment.systemPackages = with pkgs; [
-    wget
     ghostty
-    mesa
-    mesa-demos
-    moar
-    eza
-    bat
-    fastfetch
-    git
-    oh-my-posh
-    chezmoi
-    btop
     vscode-fhs
     librewolf
-    ripgrep
-    fd
+
     xdg-utils
     xdg-desktop-portal
     xdg-desktop-portal-gtk
-    file
-    atuin
-    nixd
-    unzip
-    nixfmt-rfc-style
-    delta
-    gh
-    ookla-speedtest
-    dust
   ];
 
   xdg.portal = {
