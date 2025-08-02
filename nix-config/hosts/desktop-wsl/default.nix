@@ -72,6 +72,9 @@
     mpi.dev
     age
     chezmoi
+    nix-output-monitor
+    nix-init
+
 
     llvmPackages_20.clang-tools
     llvmPackages_20.clang-manpages
