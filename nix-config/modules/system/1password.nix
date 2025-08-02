@@ -1,4 +1,4 @@
-{ ... }:
+{ globalOptions, ... }:
 
 {
   security.polkit.enable = true;
@@ -6,7 +6,7 @@
   programs._1password.enable = true;
   programs._1password-gui = {
     enable = true;
-    polkitPolicyOwners = [ "tim" ];
+    polkitPolicyOwners = [ globalOptions.username ];
   };
 
   environment.etc = {

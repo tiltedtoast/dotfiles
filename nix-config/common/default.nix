@@ -1,5 +1,6 @@
 {
   pkgs,
+  globalOptions,
   ...
 }:
 
@@ -40,7 +41,7 @@
 
   nix.settings = {
     trusted-users = [
-      "tim"
+      globalOptions.username
       "root"
     ];
     experimental-features = [
