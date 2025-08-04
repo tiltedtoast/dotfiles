@@ -25,7 +25,7 @@
 
   time.timeZone = "Europe/Berlin";
 
-  environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles/nix-config";
+  environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles";
 
   environment.shellAliases = {
     nix-shell = "nix-shell --command zsh";
