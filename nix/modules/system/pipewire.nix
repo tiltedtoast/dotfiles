@@ -44,10 +44,10 @@ in
       example = "alsa_output.pci-0000_00_1f.3.analog-stereo";
     };
 
-    mic_process = {
+    micProcess = {
       enable = mkEnableOption "RNNoise-based microphone noise suppression";
 
-      vad_threshold = mkOption {
+      vadThreshold = mkOption {
         type = types.float;
         default = 50.0;
         description = "Voice Activity Detection (VAD) threshold percentage for RNNoise.";
@@ -101,7 +101,7 @@ in
         qpwgraph
         ladspaPlugins
       ]
-      ++ (optional cfg.mic_process.enable rnnoise-plugin)
+      ++ (optional cfg.micProcess.enable rnnoise-plugin)
       ++ (optional cfg.eq.enable lsp-plugins);
 
     security.rtkit.enable = true;
@@ -223,7 +223,8 @@ in
 
           # --- Microphone Processing ---
           (
-            if cfg.mic_process.enable then
+            # TODO: Add a compressor when you get the chance
+            if cfg.micProcess.enable then
               {
                 name = "libpipewire-module-filter-chain";
                 args = {
@@ -241,7 +242,7 @@ in
                         type = "ladspa";
                         plugin = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
                         label = "noise_suppressor_stereo";
-                        control."VAD Threshold (%)" = cfg.mic_process.vad_threshold;
+                        control."VAD Threshold (%)" = cfg.micProcess.vadThreshold;
                       }
                     ];
                   };
@@ -263,12 +264,12 @@ in
             args = {
               "node.description" = "HW-Mic ➜ Mic Processing";
               "capture.props"."node.target" = cfg.input;
-              "playback.props"."node.target" = if cfg.mic_process.enable then "MicRaw" else "MicFiltered";
+              "playback.props"."node.target" = if cfg.micProcess.enable then "MicRaw" else "MicFiltered";
             };
           }
           # This creates the final "MicFiltered" source, even if processing is disabled.
           (
-            if !cfg.mic_process.enable then
+            if !cfg.micProcess.enable then
               {
                 name = "libpipewire-module-adapter";
                 args = {

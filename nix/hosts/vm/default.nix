@@ -25,9 +25,9 @@
     input = "alsa_input.pci-0000_02_02.0.analog-stereo";
     output = "alsa_output.pci-0000_02_02.0.analog-stereo";
 
-    mic_process = {
+    micProcess = {
       enable = true;
-      vad_threshold = 50.0;
+      vadThreshold = 50.0;
     };
 
     eq = {
