@@ -20,6 +20,64 @@
     swapSize = "18G";
   };
 
+  audio = {
+    enable = true;
+    input = "alsa_input.pci-0000_02_02.0.analog-stereo";
+    output = "alsa_output.pci-0000_02_02.0.analog-stereo";
+
+    mic_process = {
+      enable = true;
+      vad_threshold = 50.0;
+    };
+
+    eq = {
+      enable = true;
+      preamp = -6.0;
+      settings = [
+        {
+          freq = 42;
+          gain = 7.3;
+        }
+        {
+          freq = 143;
+          gain = -5.0;
+        }
+        {
+          freq = 1524;
+          gain = -3.8;
+        }
+        {
+          freq = 3845;
+          gain = -9.9;
+        }
+        {
+          freq = 6520;
+          gain = 7.8;
+        }
+        {
+          freq = 2492;
+          gain = 2.0;
+        }
+        {
+          freq = 3108;
+          gain = -2.5;
+        }
+        {
+          freq = 4006;
+          gain = 2.1;
+        }
+        {
+          freq = 4816;
+          gain = -1.3;
+        }
+        {
+          freq = 6050;
+          gain = 1.2;
+        }
+      ];
+    };
+  };
+
   networking.hostName = "nixos-vm";
 
   xdg.mime.defaultApplications = {

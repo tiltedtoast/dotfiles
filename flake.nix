@@ -22,6 +22,11 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-math = {
+      url = "github:xddxdd/nix-math";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
