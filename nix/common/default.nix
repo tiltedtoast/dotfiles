@@ -23,6 +23,19 @@
     ];
   };
 
+    users.users.${globalOptions.username} = {
+    isNormalUser = true;
+    extraGroups = [
+      "docker"
+      "wheel"
+      "networkmanager"
+      "audio"
+      "video"
+      "render"
+    ];
+    initialPassword = "password"; # Obviously change this asap
+  };
+
   time.timeZone = "Europe/Berlin";
 
   environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles/nix";

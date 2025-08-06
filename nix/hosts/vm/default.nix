@@ -1,6 +1,5 @@
 {
   pkgs,
-  globalOptions,
   ...
 }:
 
@@ -86,15 +85,6 @@
   networking.networkmanager.enable = true;
 
   services.libinput.enable = true;
-
-  users.users.${globalOptions.username} = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "audio"
-    ];
-  };
 
   environment.systemPackages = with pkgs; [
     ghostty
