@@ -10,15 +10,9 @@
     ../../common
     ../../modules/system/kde.nix
     ../../modules/system/1password.nix
-    ../../modules/system/luks-btrfs-disko.nix
     ../../modules/system/pipewire.nix
+    ./disko.nix
   ];
-
-  services.disk = {
-    enable = true;
-    disk = "/dev/sda";
-    swapSize = "18G";
-  };
 
   audio = {
     enable = true;

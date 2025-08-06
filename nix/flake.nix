@@ -53,7 +53,7 @@
           modules = [
             nixos-wsl.nixosModules.default
             nix-index-database.nixosModules.nix-index
-            ./nix/hosts/desktop-wsl
+            ./hosts/desktop-wsl
           ];
         };
 
@@ -64,14 +64,14 @@
             nix-index-database.nixosModules.nix-index
             home-manager.nixosModules.home-manager
             disko.nixosModules.disko
-            ./nix/hosts/vm
+            ./hosts/vm
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
               home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
 
-              home-manager.users.${globalOptions.username} = import ./nix/hosts/vm/home.nix;
+              home-manager.users.${globalOptions.username} = import ./hosts/vm/home.nix;
             }
           ];
         };
