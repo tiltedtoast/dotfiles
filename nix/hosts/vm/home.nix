@@ -18,6 +18,38 @@
       theme = "breeze-dark";
       lookAndFeel = "org.kde.breezedark.desktop";
       wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/MilkyWay/contents/images/5120x2880.png";
+
+      enableMiddleClickPaste = true;
+    };
+
+    kscreenlocker = {
+      autoLock = false;
+      appearance.showMediaControls = false;
+    };
+
+    kwin = {
+      effects = {
+        shakeCursor.enable = false;
+        minimization.animation = "magiclamp";
+      };
+
+      titlebarButtons = {
+        left = [
+          "more-window-actions"
+          "keep-above-windows"
+          "keep-below-windows"
+        ];
+
+        right = [
+          "help"
+          "minimize"
+          "maximize"
+          "close"
+        ];
+      };
+
+      edgeBarrier = 0;
+      cornerBarrier = false;
     };
 
     fonts =
@@ -39,6 +71,9 @@
           pointSize = 10;
         };
       };
+
+    windows.allowWindowsToRememberPositions = true;
+
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
 
     configFile."kdeglobals"."General"."AccentColor" = "#926ee4";

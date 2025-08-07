@@ -93,12 +93,16 @@
 
     xdg-utils
     xdg-desktop-portal
-    xdg-desktop-portal-gtk
+    kdePackages.xdg-desktop-portal-kde
+
+    (discord.override {
+      withVencord = true;
+    })
   ];
 
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
   };
 
   environment.variables = {
