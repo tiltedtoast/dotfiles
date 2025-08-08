@@ -1,5 +1,6 @@
 {
   pkgs,
+  globalOptions,
   ...
 }:
 
@@ -21,54 +22,37 @@
     micProcess = {
       enable = true;
       vadThreshold = 50.0;
+
+      compressor = {
+        attack = 10.6;
+        release = 500;
+        threshold = -18.3;
+        ratio = 4.0;
+        makup = 5.9;
+      };
     };
 
     eq = {
       enable = true;
-      preamp = -6.0;
-      settings = [
-        {
-          freq = 42;
-          gain = 7.3;
-        }
-        {
-          freq = 143;
-          gain = -5.0;
-        }
-        {
-          freq = 1524;
-          gain = -3.8;
-        }
-        {
-          freq = 3845;
-          gain = -9.9;
-        }
-        {
-          freq = 6520;
-          gain = 7.8;
-        }
-        {
-          freq = 2492;
-          gain = 2.0;
-        }
-        {
-          freq = 3108;
-          gain = -2.5;
-        }
-        {
-          freq = 4006;
-          gain = 2.1;
-        }
-        {
-          freq = 4816;
-          gain = -1.3;
-        }
-        {
-          freq = 6050;
-          gain = 1.2;
-        }
-      ];
+      file = "/home/${globalOptions.username}/.local/share/auto_eq/hd6xx_he-1_parametric.txt";
     };
+
+    appCategories = {
+      Browser.appNames = [ "LibreWolf" ];
+      Music = {
+        limitThreshold = -12.0;
+        appNames = [
+          "Spotify.*"
+        ];
+      };
+      Discord.appNames = [
+        "Discord.*"
+        "Slack.*"
+      ];
+      System = { };
+    };
+
+    fallbackCategory = "System";
   };
 
   networking.hostName = "nixos-vm";

@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 
@@ -10,22 +9,31 @@ with lib;
 
 let
   cfg = config.audio;
-  pow = inputs.nix-math.lib.math.pow;
 
-  # Helper function to convert a dB value to a linear gain value
-  # Formula: G = 10^(dB / 20)
-  dbToGain = db: pow 10 (db / 20);
-
-  mkEqBands =
-    settings:
+  mkAppRoutingRules =
+    categories:
     let
-      bandAttrs = imap0 (index: band: {
-        "Frequency ${toString index} (Hz)" = band.freq;
-        "Gain ${toString index} (G)" = dbToGain band.gain;
-        "Quality factor ${toString index}" = band.quality;
-      }) settings;
+      categoryRules = mapAttrsToList (
+        categoryName: categoryConfig:
+        let
+          targetName = categoryName;
+
+          nameRules = map (appName: {
+            matches = [ { "application.name" = "~${appName}"; } ];
+            actions.update-props."node.target" = targetName;
+          }) categoryConfig.appNames;
+
+          binaryRules = map (binary: {
+            matches = [ { "application.process.binary" = binary; } ];
+            actions.update-props."node.target" = targetName;
+          }) categoryConfig.binaries;
+
+        in
+        nameRules ++ binaryRules
+      ) categories;
+
     in
-    mergeAttrsList bandAttrs;
+    flatten categoryRules;
 
 in
 {
@@ -44,52 +52,116 @@ in
       example = "alsa_output.pci-0000_00_1f.3.analog-stereo";
     };
 
-    micProcess = {
-      enable = mkEnableOption "RNNoise-based microphone noise suppression";
+    appCategories = mkOption {
+      type = types.attrsOf (
+        types.submodule {
+          options = {
+            limitThreshold = mkOption {
+              type = types.float;
+              default = -14.0;
+              description = "Limiter threshold in dB for this category.";
+            };
 
-      vadThreshold = mkOption {
-        type = types.float;
-        default = 50.0;
-        description = "Voice Activity Detection (VAD) threshold percentage for RNNoise.";
-        example = 75.0;
-      };
+            appNames = mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+              description = "List of application names (regex patterns) to match";
+              example = [
+                "LibreWolf"
+                "Firefox"
+                "Chromium.*"
+              ];
+            };
+
+            binaries = mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+              description = "List of binary names to match";
+              example = [
+                "spotify"
+                "vlc"
+              ];
+            };
+          };
+        }
+      );
+      description = "Application categories for audio routing and processing";
     };
 
-    eq = {
-      enable = mkEnableOption "a parametric equalizer on the main output";
+    fallbackCategory = mkOption {
+      type = types.enum (attrNames cfg.appCategories);
+      description = "Default category for applications that don't match any specific rules.";
+    };
 
-      preamp = mkOption {
-        type = types.float;
-        default = 0.0;
-        description = "Preamp gain in decibels (dB). Use a negative value to prevent clipping.";
-        example = -6.0;
-      };
+    micProcess = mkOption {
+      type = types.submodule {
+        options = {
+          enable = mkEnableOption "RNNoise-based microphone noise suppression";
 
-      settings = mkOption {
-        type = types.listOf (
-          types.submodule {
-            options = {
-              freq = mkOption {
-                type = types.int;
-                description = "Center frequency of the EQ band in Hz.";
-              };
-              gain = mkOption {
-                type = types.float;
-                description = "Gain of the EQ band in decibels (dB).";
-              };
-              quality = mkOption {
-                type = types.float;
-                default = 1.0;
-                description = "Quality factor (Q) of the EQ band.";
+          vadThreshold = mkOption {
+            type = types.float;
+            default = 50.0;
+            description = "Voice Activity Detection (VAD) threshold percentage for RNNoise.";
+            example = 75.0;
+          };
+
+          compressor = mkOption {
+            type = types.submodule {
+              options = {
+                attack = mkOption {
+                  type = types.float;
+                  description = "Attack time (ms)";
+                  example = 10.6;
+                };
+                release = mkOption {
+                  type = types.float;
+                  description = "Release time (ms)";
+                  example = 500;
+                };
+                threshold = mkOption {
+                  type = types.float;
+                  description = "Threshold level (dB)";
+                  example = -18.3;
+                };
+                ratio = mkOption {
+                  type = types.float;
+                  description = "Ratio (1:n)";
+                  example = 4.0;
+                };
+                makeup = mkOption {
+                  type = types.float;
+                  description = "Makeup gain (dB)";
+                  example = 5.9;
+                };
               };
             };
-          }
-        );
-        default = [ ];
-        example = ''[ { freq = 42.0; gain = 7.3; } ]'';
-        description = "A list of bands to configure for the parametric equalizer.";
+            description = "Compressor options";
+          };
+        };
       };
+      description = "Microphone processing options";
     };
+
+    eq = mkOption {
+      type = types.submodule {
+        options = {
+          enable = mkEnableOption "a parametric equalizer on the main output";
+
+          file = mkOption {
+            type = types.str;
+            example = "/path/to/parametric-eq.txt";
+            description = "Absolute path to parametric EQ settings file generated by AutoEQ";
+          };
+        };
+      };
+      default = { };
+      example = {
+        enable = true;
+        file = "/path/to/parametric-eq.txt";
+      };
+      description = "Equalizer options";
+    };
+
   };
 
   config = mkIf cfg.enable {
@@ -100,9 +172,9 @@ in
         helvum
         qpwgraph
         ladspaPlugins
+
       ]
-      ++ (optional cfg.micProcess.enable rnnoise-plugin)
-      ++ (optional cfg.eq.enable lsp-plugins);
+      ++ (optional cfg.micProcess.enable rnnoise-plugin);
 
     security.rtkit.enable = true;
 
@@ -135,64 +207,47 @@ in
       ];
     };
 
-    # PulseAudio routing rules
     services.pipewire.extraConfig.pipewire-pulse."99-app-routing" = {
       "pulse.rules" = [
         {
           matches = [ { "application.name" = "~.*"; } ];
-          actions.update-props."node.target" = "App_System";
+          actions.update-props."node.target" = cfg.fallbackCategory;
         }
-        {
-          matches = [ { "application.name" = "~(LibreWolf|Firefox)"; } ];
-          actions.update-props."node.target" = "App_Browser";
-        }
-        {
-          matches = [ { "application.process.binary" = "spotify"; } ];
-          actions.update-props."node.target" = "App_Music";
-        }
-        {
-          matches = [ { "application.process.binary" = "discord"; } ];
-          actions.update-props."node.target" = "App_Discord";
-        }
-      ];
+      ]
+      ++ (mkAppRoutingRules cfg.appCategories);
     };
 
     services.pipewire.extraConfig.pipewire."10-processing-and-linking" =
       let
-        mkAppChain =
-          {
-            name,
-            thresh ? -14.0,
-          }:
-          {
-            name = "libpipewire-module-filter-chain";
-            args = {
-              "capture.props" = {
-                "node.name" = "App_${name}";
-                "node.description" = "App ${name} (raw)";
-                "media.class" = "Audio/Sink";
-                "audio.position" = "FL,FR";
-              };
-              "playback.props" = {
-                "node.name" = "${name}Processed";
-                "node.description" = "${name} (processed)";
-                "media.class" = "Audio/Source";
-              };
-              "filter.graph" = {
-                nodes = [
-                  {
-                    type = "ladspa";
-                    plugin = "${pkgs.ladspaPlugins}/lib/ladspa/fast_lookahead_limiter_1913.so";
-                    label = "fastLookaheadLimiter";
-                    control = {
-                      "Limit (dB)" = thresh;
-                      "Release time (s)" = 0.1;
-                    };
-                  }
-                ];
-              };
+        mkAppChain = categoryName: categoryConfig: {
+          name = "libpipewire-module-filter-chain";
+          args = {
+            "capture.props" = {
+              "node.name" = "${categoryName}";
+              "node.description" = "${categoryName} (Raw)";
+              "media.class" = "Audio/Sink";
+              "audio.position" = "FL,FR";
+            };
+            "playback.props" = {
+              "node.name" = "${categoryName}Processed";
+              "node.description" = "${categoryName} (Processed)";
+              "media.class" = "Audio/Source";
+            };
+            "filter.graph" = {
+              nodes = [
+                {
+                  type = "ladspa";
+                  plugin = "${pkgs.ladspaPlugins}/lib/ladspa/fast_lookahead_limiter_1913.so";
+                  label = "fastLookaheadLimiter";
+                  control = {
+                    "Limit (dB)" = categoryConfig.limitThreshold;
+                    "Release time (s)" = 0.1;
+                  };
+                }
+              ];
             };
           };
+        };
 
         mkMainLoopback = name: {
           name = "libpipewire-module-loopback";
@@ -203,168 +258,175 @@ in
           };
         };
 
+        appChains = mapAttrsToList mkAppChain cfg.appCategories;
+        mainLoopbacks = map (name: mkMainLoopback name) (attrNames cfg.appCategories);
+
       in
       {
-        "context.modules" = [
-          # --- Application Limiters ---
-          (mkAppChain { name = "Browser"; })
-          (mkAppChain {
-            name = "Music";
-            thresh = -12;
-          })
-          (mkAppChain { name = "Discord"; })
-          (mkAppChain { name = "System"; })
+        "context.modules" =
+          appChains
+          ++ mainLoopbacks
+          ++ [
 
-          # --- Route Apps to the Main Mix ---
-          (mkMainLoopback "Browser")
-          (mkMainLoopback "Music")
-          (mkMainLoopback "Discord")
-          (mkMainLoopback "System")
+            # --- Microphone Processing ---
+            (
+              if cfg.micProcess.enable then
+                {
+                  name = "libpipewire-module-filter-chain";
+                  args = {
+                    "capture.props" = {
+                      "node.name" = "MicRaw";
+                      "media.class" = "Audio/Sink";
+                    };
+                    "playback.props" = {
+                      "node.name" = "MicFiltered";
+                      "media.class" = "Audio/Source";
+                    };
+                    "filter.graph" = {
+                      nodes = [
+                        {
+                          type = "ladspa";
+                          name = "rnnoise";
+                          plugin = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
+                          label = "noise_suppressor_stereo";
+                          control."VAD Threshold (%)" = cfg.micProcess.vadThreshold;
+                        }
+                        {
+                          type = "ladspa";
+                          plugin = "${pkgs.ladspaPlugins}/lib/ladspa/sc4_1882.so";
+                          name = "compressor";
+                          label = "sc4";
+                          control = {
+                            "Attack time (ms)" = 10.6;
+                            "Release time (ms)" = 500;
+                            "Threshold level (dB)" = -18.3;
+                            "Ratio (1:n)" = 4.0;
+                            "Makeup gain (dB)" = 5.9;
+                          };
+                        }
+                      ];
 
-          # --- Microphone Processing ---
-          (
-            # TODO: Add a compressor when you get the chance
-            if cfg.micProcess.enable then
-              {
-                name = "libpipewire-module-filter-chain";
-                args = {
-                  "capture.props" = {
+                      links = [
+                        {
+                          output = "rnnoise:Output (L)";
+                          input = "compressor:Left input";
+                        }
+                        {
+                          output = "rnnoise:Output (R)";
+                          input = "compressor:Right input";
+                        }
+                      ];
+                    };
+                  };
+                }
+              else
+                {
+                  # If mic processing is off, create a simple pass-through virtual device
+                  name = "libpipewire-module-adapter";
+                  args = {
+                    "factory.name" = "support.null-audio-sink";
                     "node.name" = "MicRaw";
                     "media.class" = "Audio/Sink";
                   };
-                  "playback.props" = {
-                    "node.name" = "MicFiltered";
-                    "media.class" = "Audio/Source";
-                  };
-                  "filter.graph" = {
-                    nodes = [
-                      {
-                        type = "ladspa";
-                        plugin = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
-                        label = "noise_suppressor_stereo";
-                        control."VAD Threshold (%)" = cfg.micProcess.vadThreshold;
-                      }
-                    ];
-                  };
-                };
-              }
-            else
-              {
-                # If mic processing is off, create a simple pass-through virtual device
-                name = "libpipewire-module-adapter";
-                args = {
-                  "factory.name" = "support.null-audio-sink";
-                  "node.name" = "MicRaw";
-                  "media.class" = "Audio/Sink";
-                };
-              }
-          )
-          {
-            name = "libpipewire-module-loopback";
-            args = {
-              "node.description" = "HW-Mic ➜ Mic Processing";
-              "capture.props"."node.target" = cfg.input;
-              "playback.props"."node.target" = if cfg.micProcess.enable then "MicRaw" else "MicFiltered";
-            };
-          }
-          # This creates the final "MicFiltered" source, even if processing is disabled.
-          (
-            if !cfg.micProcess.enable then
-              {
-                name = "libpipewire-module-adapter";
-                args = {
-                  "factory.name" = "support.null-audio-sink";
-                  "node.name" = "MicFiltered";
-                  "media.class" = "Audio/Source";
-                };
-              }
-            else
-              { }
-          )
-
-          # --- Headphone EQ and Final Output  ---
-          (
-            if cfg.eq.enable then
-              {
-                name = "libpipewire-module-filter-chain";
-                args = {
-                  "capture.props" = {
-                    "node.name" = "MainEQ";
-                    "node.description" = "Main Mix (Post-EQ)";
-                    "media.class" = "Audio/Sink";
-                    "audio.position" = "FL,FR";
-                  };
-                  "playback.props" = {
-                    "node.target" = cfg.output;
-                  };
-                  "filter.graph" = {
-                    nodes = [
-                      {
-                        type = "ladspa";
-                        plugin = "${pkgs.lsp-plugins}/lib/ladspa/lsp-plugins-ladspa.so";
-                        label = "http://lsp-plug.in/plugins/ladspa/para_equalizer_x16_stereo";
-                        control = {
-                          "Input gain (G)" = dbToGain cfg.eq.preamp;
-                        }
-                        // (mkEqBands cfg.eq.settings);
-                      }
-                    ];
-                  };
-                };
-              }
-            else
-              {
-                # If EQ is disabled, create a simple sink that acts as the main mix and outputs directly to hardware.
-                name = "libpipewire-module-loopback";
-                args = {
-                  "capture.props" = {
-                    "node.name" = "MainEQ";
-                    "node.description" = "Main Mix (Passthrough)";
-                    "media.class" = "Audio/Sink";
-                    "audio.position" = "FL,FR";
-                  };
-                  "playback.props" = {
-                    "node.target" = cfg.output;
-                  };
-                };
-              }
-          )
-
-          # --- Stream Mix and Virtual Mic ---
-          {
-            factory = "adapter";
-            args = {
-              "factory.name" = "support.null-audio-sink";
-              "node.name" = "Mix_Stream";
-              "node.description" = "Mix: Stream (OBS)";
-              "media.class" = "Audio/Sink";
-              "audio.position" = "FL,FR";
-            };
-          }
-          {
-            name = "libpipewire-module-loopback";
-            args = {
-              "node.description" = "Mic ➜ Stream mix";
-              "capture.props"."node.target" = "MicFiltered";
-              "playback.props"."node.target" = "Mix_Stream";
-            };
-          }
-          {
-            name = "libpipewire-module-loopback";
-            args = {
-              "node.description" = "Stream mix ➜ VirtualMic";
-              "capture.props" = {
-                "node.target" = "Mix_Stream";
-                "stream.monitor" = true;
+                }
+            )
+            {
+              name = "libpipewire-module-loopback";
+              args = {
+                "node.description" = "HW-Mic ➜ Mic Processing";
+                "capture.props"."node.target" = cfg.input;
+                "playback.props"."node.target" = if cfg.micProcess.enable then "MicRaw" else "MicFiltered";
               };
-              "playback.props" = {
+            }
+            (mkIf (!cfg.micProcess.enable) {
+              name = "libpipewire-module-adapter";
+              args = {
+                "factory.name" = "support.null-audio-sink";
+                "node.name" = "MicFiltered";
                 "media.class" = "Audio/Source";
-                "node.name" = "VirtualMic";
-                "node.description" = "Input: Stream mix";
               };
-            };
-          }
-        ];
+            })
+
+            # --- Headphone EQ and Final Output  ---
+            (
+              if cfg.eq.enable then
+                {
+                  name = "libpipewire-module-filter-chain";
+                  args = {
+                    "capture.props" = {
+                      "node.name" = "MainEQ";
+                      "node.description" = "Main Mix (Post-EQ)";
+                      "media.class" = "Audio/Sink";
+                      "audio.position" = "FL,FR";
+                    };
+                    "playback.props" = {
+                      "node.target" = cfg.output;
+                    };
+                    "filter.graph" = {
+                      nodes = [
+                        {
+                          type = "builtin";
+                          label = "param_eq";
+
+                          config.filename = cfg.eq.file;
+                        }
+                      ];
+                    };
+                  };
+                }
+              else
+                {
+                  # If EQ is disabled, create a simple sink that acts as the main mix and outputs directly to hardware.
+                  name = "libpipewire-module-loopback";
+                  args = {
+                    "capture.props" = {
+                      "node.name" = "MainEQ";
+                      "node.description" = "Main Mix (Passthrough)";
+                      "media.class" = "Audio/Sink";
+                      "audio.position" = "FL,FR";
+                    };
+                    "playback.props" = {
+                      "node.target" = cfg.output;
+                    };
+                  };
+                }
+            )
+
+            # --- Stream Mix and Virtual Mic ---
+            {
+              factory = "adapter";
+              args = {
+                "factory.name" = "support.null-audio-sink";
+                "node.name" = "Mix_Stream";
+                "node.description" = "Stream Mix";
+                "media.class" = "Audio/Sink";
+                "audio.position" = "FL,FR";
+              };
+            }
+            {
+              name = "libpipewire-module-loopback";
+              args = {
+                "node.description" = "Mic ➜ Stream mix";
+                "capture.props"."node.target" = "MicFiltered";
+                "playback.props"."node.target" = "Mix_Stream";
+              };
+            }
+            {
+              name = "libpipewire-module-loopback";
+              args = {
+                "node.description" = "Stream mix ➜ VirtualMic";
+                "capture.props" = {
+                  "node.target" = "Mix_Stream";
+                  "stream.monitor" = true;
+                };
+                "playbook.props" = {
+                  "media.class" = "Audio/Source";
+                  "node.name" = "VirtualMic";
+                  "node.description" = "Input: Stream mix";
+                };
+              };
+            }
+          ];
       };
   };
 }
