@@ -22,8 +22,8 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-math = {
-      url = "github:xddxdd/nix-math";
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -35,6 +35,7 @@
       nixpkgs,
       nixos-wsl,
       home-manager,
+      spicetify-nix,
       plasma-manager,
       nix-index-database,
       disko,
@@ -61,6 +62,7 @@
           system = "x86_64-linux";
           specialArgs = { inherit inputs globalOptions; };
           modules = [
+            spicetify-nix.nixosModules.default
             nix-index-database.nixosModules.nix-index
             home-manager.nixosModules.home-manager
             disko.nixosModules.disko

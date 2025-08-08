@@ -28,10 +28,7 @@
     };
 
     kwin = {
-      effects = {
-        shakeCursor.enable = false;
-        minimization.animation = "magiclamp";
-      };
+      effects.shakeCursor.enable = false;
 
       titlebarButtons = {
         left = [

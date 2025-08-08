@@ -11,6 +11,7 @@
     ../../modules/system/kde.nix
     ../../modules/system/1password.nix
     ../../modules/system/pipewire.nix
+    ../../modules/system/spicetify.nix
     ./disko.nix
   ];
 
@@ -42,7 +43,7 @@
       Music = {
         limitThreshold = -12.0;
         appNames = [
-          "Spotify.*"
+          "spotify"
         ];
       };
       Discord.appNames = [
