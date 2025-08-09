@@ -42,28 +42,33 @@
       ...
     }@inputs:
     let
-      globalOptions = {
-        username = "tim";
+      globalArgs = {
+        currentUsername = "tim";
       };
+
+      commonModules = [
+        nix-index-database.nixosModules.nix-index
+        {
+          config._module.args = globalArgs;
+        }
+      ];
     in
     {
       nixosConfigurations = {
         nixos-wsl-pc = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs globalOptions; };
-          modules = [
+          specialArgs = { inherit inputs; };
+          modules = commonModules ++ [
             nixos-wsl.nixosModules.default
-            nix-index-database.nixosModules.nix-index
             ./hosts/desktop-wsl
           ];
         };
 
         nixos-vm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs globalOptions; };
-          modules = [
+          specialArgs = { inherit inputs; };
+          modules = commonModules ++ [
             spicetify-nix.nixosModules.default
-            nix-index-database.nixosModules.nix-index
             home-manager.nixosModules.home-manager
             disko.nixosModules.disko
             ./hosts/vm
@@ -73,8 +78,9 @@
               home-manager.backupFileExtension = "backup";
               home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
 
-              home-manager.users.${globalOptions.username} = import ./hosts/vm/home.nix;
+              home-manager.users.${globalArgs.currentUsername} = import ./hosts/vm/home.nix;
             }
+
           ];
         };
       };

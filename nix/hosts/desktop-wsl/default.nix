@@ -1,4 +1,4 @@
-{ pkgs, globalOptions, ... }:
+{ pkgs, currentUsername, ... }:
 
 {
   imports = [
@@ -42,7 +42,7 @@
 
   virtualisation.docker.enable = false;
 
-  users.users.${globalOptions.username} = {
+  users.users.${currentUsername} = {
     isNormalUser = true;
     extraGroups = [
       "docker"
@@ -55,7 +55,7 @@
 
   wsl = {
     enable = true;
-    defaultUser = globalOptions.username;
+    defaultUser = currentUsername;
     wslConf.interop.appendWindowsPath = false;
   };
 

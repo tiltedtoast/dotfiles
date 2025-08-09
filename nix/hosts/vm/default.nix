@@ -1,6 +1,6 @@
 {
   pkgs,
-  globalOptions,
+  currentUsername,
   ...
 }:
 
@@ -35,7 +35,7 @@
 
     eq = {
       enable = true;
-      file = "/home/${globalOptions.username}/.local/share/auto_eq/hd6xx_he-1_parametric.txt";
+      file = "/home/${currentUsername}/.local/share/auto_eq/hd6xx_he-1_parametric.txt";
     };
 
     appCategories = {

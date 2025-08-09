@@ -56,7 +56,7 @@ in
         pkgs.pocl-cuda
       ];
 
-      environment.variables = with cfg.cuda.packages;{
+      environment.variables = with cfg.cuda.packages; {
         OCL_ICD_FILENAMES = "${pkgs.pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
         CUDA_PATH = "${cudatoolkit}";
         CUDA_ROOT = "${cudatoolkit}";
