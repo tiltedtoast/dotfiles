@@ -71,17 +71,18 @@
 
     windows.allowWindowsToRememberPositions = true;
 
+    shortcuts = {
+      "services/systemsettings.desktop" = {
+        _launch = "Meta+I";
+      };
+      "services/com.mitchellh.ghostty.desktop" = {
+        new-window = "Meta+Return";
+      };
+    };
+
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
 
     configFile."kdeglobals"."General"."AccentColor" = "#926ee4";
     configFile."baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
-  };
-
-  programs.plasma.hotkeys.commands = {
-    "launch-librewolf" = {
-      name = "Launch LibreWolf";
-      command = "librewolf";
-      key = "Meta+B";
-    };
   };
 }
