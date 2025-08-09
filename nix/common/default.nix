@@ -23,7 +23,7 @@
     ];
   };
 
-    users.users.${globalOptions.username} = {
+  users.users.${globalOptions.username} = {
     isNormalUser = true;
     extraGroups = [
       "docker"
@@ -69,7 +69,7 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 7d";
+    options = "--delete-older-than 30d";
   };
 
   programs.nano = {
@@ -81,8 +81,9 @@
   };
 
   services.xserver.xkb = {
-    layout = "us";
-    variant = "altgr-intl";
+    layout = "us,de";
+    variant = "altgr-intl,";
+    options = "grp:alt_shift_toggle";
   };
 
   i18n = {
