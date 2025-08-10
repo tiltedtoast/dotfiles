@@ -108,13 +108,13 @@ in
           compressor = mkOption {
             type = types.submodule {
               options = {
-                attack = mkOption {
+                attackTime = mkOption {
                   type = types.float;
                   description = "Attack time (ms)";
                   example = 10.6;
                 };
-                release = mkOption {
-                  type = types.float;
+                releaseTime = mkOption {
+                  type = types.int;
                   description = "Release time (ms)";
                   example = 500;
                 };
@@ -128,7 +128,7 @@ in
                   description = "Ratio (1:n)";
                   example = 4.0;
                 };
-                makeup = mkOption {
+                makeupGain = mkOption {
                   type = types.float;
                   description = "Makeup gain (dB)";
                   example = 5.9;
@@ -296,12 +296,12 @@ in
                           plugin = "${pkgs.ladspaPlugins}/lib/ladspa/sc4_1882.so";
                           name = "compressor";
                           label = "sc4";
-                          control = {
-                            "Attack time (ms)" = 10.6;
-                            "Release time (ms)" = 500;
-                            "Threshold level (dB)" = -18.3;
-                            "Ratio (1:n)" = 4.0;
-                            "Makeup gain (dB)" = 5.9;
+                          control = with cfg.micProcess.compressor; {
+                            "Attack time (ms)" = attackTime;
+                            "Release time (ms)" = releaseTime;
+                            "Threshold level (dB)" = threshold;
+                            "Ratio (1:n)" = ratio;
+                            "Makeup gain (dB)" = makeupGain;
                           };
                         }
                       ];

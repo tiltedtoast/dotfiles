@@ -25,11 +25,11 @@
       vadThreshold = 50.0;
 
       compressor = {
-        attack = 10.6;
-        release = 500;
+        attackTime = 10.6;
+        releaseTime = 500;
         threshold = -18.3;
         ratio = 4.0;
-        makup = 5.9;
+        makeupGain = 5.9;
       };
     };
 
