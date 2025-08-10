@@ -12,11 +12,6 @@
     };
   };
 
-  nixpkgs.config.freetype = {
-    withHarfbuzz = true;
-    withGnuByteCode = true;
-  };
-
   environment.systemPackages = with pkgs.kdePackages; [
     kcalc
     kcharselect
@@ -30,7 +25,6 @@
 
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
     kdepim-runtime
-    konsole
     oxygen
   ];
 }

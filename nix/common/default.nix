@@ -23,7 +23,6 @@
     ];
   };
 
-
   fonts = {
     fontDir.enable = true;
 
@@ -73,6 +72,11 @@
       "nix-command"
       "flakes"
     ];
+  };
+
+  nixpkgs.config.freetype = {
+    withHarfbuzz = true;
+    withGnuByteCode = true;
   };
 
   programs.nh.enable = true;

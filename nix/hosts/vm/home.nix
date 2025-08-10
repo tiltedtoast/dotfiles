@@ -85,4 +85,16 @@
     configFile."kdeglobals"."General"."AccentColor" = "#926ee4";
     configFile."baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
   };
+
+  programs.konsole = {
+    enable = true;
+    defaultProfile = "default";
+
+    profiles.default = {
+      font = {
+        name = "ComicCodeLigatures Nerd Font Mono";
+        size = 14;
+      };
+    };
+  };
 }
