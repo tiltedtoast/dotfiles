@@ -82,8 +82,12 @@
 
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
 
-    configFile."kdeglobals"."General"."AccentColor" = "#926ee4";
-    configFile."baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
+    configFile = {
+      plasmashellrc."PlasmaViews/Panel 65/Defaults".thickness = 44;
+      kdeglobals.General.AccentColor = "#926ee4";
+      baloofilerc."Basic Settings".Indexing-Enabled = false;
+    };
+
   };
 
   programs.konsole = {
