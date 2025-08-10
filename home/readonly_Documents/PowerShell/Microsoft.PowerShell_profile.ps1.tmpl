@@ -10,29 +10,11 @@ $env:PAGER = "moar"
 
 {{ completion "powershell" }}
 
-if (Get-Alias gc -ErrorAction SilentlyContinue) {
-    Remove-Alias gc -Force
-}
-if (Get-Alias rm -ErrorAction SilentlyContinue) {
-    Remove-Alias rm -Force
-}
-if (Get-Alias gp -ErrorAction SilentlyContinue) {
-    Remove-Alias gp -Force
-}
-if (Get-Alias cat -ErrorAction SilentlyContinue) {
-    Remove-Alias cat -Force
-}
-if (Get-Alias ls -ErrorAction SilentlyContinue) {
-    Remove-Alias ls -Force
-}
-if (Get-Alias where -ErrorAction SilentlyContinue) {
-    Remove-Alias where -Force
-}
-if (Get-Alias mv -ErrorAction SilentlyContinue) {
-    Remove-Alias mv -Force
-}
-if (Get-Alias cp -ErrorAction SilentlyContinue) {
-    Remove-Alias cp -Force
+$aliasesToRemove = @('gc', 'rm', 'gp', 'cat', 'ls', 'where', 'mv', 'cp')
+foreach ($alias in $aliasesToRemove) {
+    if (Get-Alias $alias -ErrorAction SilentlyContinue) {
+        Remove-Alias $alias -Force
+    }
 }
 
 Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
