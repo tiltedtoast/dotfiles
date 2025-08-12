@@ -12,6 +12,8 @@
     };
   };
 
+  programs.kdeconnect.enable = true;
+
   environment.systemPackages = with pkgs.kdePackages; [
     kcalc
     kcharselect

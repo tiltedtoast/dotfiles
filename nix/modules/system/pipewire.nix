@@ -214,7 +214,15 @@ in
           actions.update-props."node.target" = cfg.fallbackCategory;
         }
       ]
-      ++ (mkAppRoutingRules cfg.appCategories);
+      ++ (mkAppRoutingRules cfg.appCategories)
+      ++ [
+        {
+          matches = [
+            { "node.target" = "Mix_Stream"; }
+            { "node.target" = "MainEQ"; }
+          ];
+        }
+      ];
     };
 
     services.pipewire.extraConfig.pipewire."10-processing-and-linking" =
@@ -394,7 +402,7 @@ in
 
             # --- Stream Mix and Virtual Mic ---
             {
-              factory = "adapter";
+              name = "libpipewire-module-adapter";
               args = {
                 "factory.name" = "support.null-audio-sink";
                 "node.name" = "Mix_Stream";
@@ -404,11 +412,12 @@ in
               };
             }
             {
-              name = "libpipewire-module-loopback";
+              name = "libpipewire-module-link-factory";
               args = {
-                "node.description" = "Mic ➜ Stream mix";
-                "capture.props"."node.target" = "MicFiltered";
-                "playback.props"."node.target" = "Mix_Stream";
+                "factory.name" = "link-factory";
+                "link.output.node" = "MicFiltered";
+                "link.input.node" = "Mix_Stream";
+                "link.passive" = true;
               };
             }
             {
@@ -419,7 +428,7 @@ in
                   "node.target" = "Mix_Stream";
                   "stream.monitor" = true;
                 };
-                "playbook.props" = {
+                "playback.props" = {
                   "media.class" = "Audio/Source";
                   "node.name" = "VirtualMic";
                   "node.description" = "Input: Stream mix";

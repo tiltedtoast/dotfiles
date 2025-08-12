@@ -43,6 +43,7 @@
       "audio"
       "video"
       "render"
+      "input"
     ];
     initialPassword = "password"; # Obviously change this asap
   };
@@ -85,7 +86,7 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 30d";
+    options = "--delete-older-than 14d";
   };
 
   programs.nano = {
@@ -99,7 +100,6 @@
   services.xserver.xkb = {
     layout = "us,de";
     variant = "altgr-intl,";
-    options = "grp:alt_shift_toggle";
   };
 
   i18n = {
@@ -114,7 +114,6 @@
     };
   };
 
-  programs.command-not-found.enable = true;
   programs.nix-index-database.comma.enable = true;
   programs.nix-index.enableBashIntegration = false;
   programs.nix-index.enableZshIntegration = false;

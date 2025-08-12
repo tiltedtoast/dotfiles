@@ -83,6 +83,26 @@
 
           ];
         };
+
+        nixos-pc = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = commonModules ++ [
+            spicetify-nix.nixosModules.default
+            home-manager.nixosModules.home-manager
+            disko.nixosModules.disko
+            ./hosts/desktop
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
+              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+
+              home-manager.users.${globalArgs.currentUsername} = import ./hosts/desktop/home.nix;
+            }
+
+          ];
+        };
       };
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;

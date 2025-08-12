@@ -63,10 +63,6 @@ in
         CPATH = [
           "${cudatoolkit}/include"
         ];
-        LD_LIBRARY_PATH = [
-          "${cudatoolkit}/lib"
-          "${cuda_cudart.static}/lib"
-        ];
       };
 
       environment.shellAliases = {
