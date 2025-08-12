@@ -16,7 +16,7 @@ with lib;
 
     configFile = mkOption {
       type = types.str;
-      default = "/home/${currentUsername}/.config/nextdns/nextdns.conf";
+      default = "/home/${currentUsername}/.config/nextdns/nextdns.profile";
       description = "Absolute path to the nextdns config file to use";
     };
   };
@@ -27,6 +27,7 @@ with lib;
     services.nextdns = {
       enable = true;
       arguments = [
+        "-report-client-info"
         "-config-file"
         cfg.configFile
       ];
