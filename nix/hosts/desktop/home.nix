@@ -86,10 +86,10 @@
       powerButtonAction = "hibernate";
       autoSuspend = {
         action = "hibernate";
-        idleTimeout = 600;
+        idleTimeout = 60 * 15;
       };
       whenSleepingEnter = "standbyThenHibernate";
-      turnOffDisplay.idleTimeout = 300;
+      turnOffDisplay.idleTimeout = "never";
     };
 
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
