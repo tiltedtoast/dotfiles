@@ -102,6 +102,8 @@
       kdeglobals.General.AccentColor = "#926ee4";
       baloofilerc."Basic Settings".Indexing-Enabled = false;
 
+      plasmanotifyrc.Notifications.PopupTimeout = 15000;
+
       kcminputrc."Libinput/1133/50503/Logitech USB Receiver".PointerAccelerationProfile = 1;
 
       kwinrulesrc."a5f27bc3-c738-4dd0-9cef-ee580d3e981a".desktopfile =
