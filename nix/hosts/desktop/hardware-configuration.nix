@@ -1,4 +1,8 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 
 {
   boot.initrd.availableKernelModules = [
@@ -12,6 +16,20 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
+
+  boot.kernelParams = [ "resume_offset=533760" ];
+  boot.resumeDevice = "/dev/disk/by-partlabel/disk-main-root";
+
+  powerManagement.enable = true;
+
+  hardware.nvidia.powerManagement.enable = true;
+
+  swapDevices = [
+    {
+      device = "/swap/swapfile";
+      size = 70 * 1024; # 70GB
+    }
+  ];
 
   networking.useDHCP = lib.mkDefault true;
 

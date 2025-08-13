@@ -34,11 +34,14 @@ with lib;
     };
 
     systemd.services.nextdns-activate = {
-      script = ''
-        /run/current-system/sw/bin/nextdns activate
-      '';
+      enable = true;
+      description = "Activate NextDNS after the service starts";
       after = [ "nextdns.service" ];
       wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "/run/current-system/sw/bin/nextdns activate";
+      };
     };
   };
 }

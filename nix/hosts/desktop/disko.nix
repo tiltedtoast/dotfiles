@@ -15,7 +15,7 @@
 
   disko.devices.disk.main = {
     type = "disk";
-    device = "/dev/sdd";
+    device = "/dev/disk/by-partlabel/disk-main-root";
     content = {
       type = "gpt";
       partitions = {

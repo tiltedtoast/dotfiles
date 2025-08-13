@@ -80,6 +80,16 @@
       };
     };
 
+    powerdevil.AC = {
+      powerButtonAction = "hibernate";
+      autoSuspend = {
+        action = "hibernate";
+        idleTimeout = 600;
+      };
+      whenSleepingEnter = "standbyThenHibernate";
+      turnOffDisplay.idleTimeout = 300;
+    };
+
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
 
     configFile = {

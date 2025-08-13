@@ -1,6 +1,7 @@
 {
   pkgs,
   currentUsername,
+  config,
   ...
 }:
 
@@ -19,7 +20,10 @@
 
   nvidia = {
     cuda.enable = true;
-    driver.enable = true;
+    driver = {
+      enable = true;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+    };
   };
 
   hardware.bluetooth = {
@@ -106,6 +110,7 @@
     ghostty
     vscode-fhs
     librewolf
+    btrfs-progs
 
     xdg-utils
     xdg-desktop-portal
