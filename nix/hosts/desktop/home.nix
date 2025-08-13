@@ -84,10 +84,7 @@
 
     powerdevil.AC = {
       powerButtonAction = "hibernate";
-      autoSuspend = {
-        action = "hibernate";
-        idleTimeout = "never";
-      };
+      autoSuspend.action = "nothing";
       whenSleepingEnter = "standbyThenHibernate";
       turnOffDisplay.idleTimeout = "never";
     };
