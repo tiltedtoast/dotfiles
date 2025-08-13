@@ -97,6 +97,8 @@
       plasmashellrc."PlasmaViews/Panel 3/Defaults".thickness = 48;
 
       kdeglobals.Sounds.Enable = false;
+      kdeglobals.General.TerminalApplication = "ghostty";
+      kdeglobals.General.TerminalService = "com.mitchellh.ghostty.desktop";
 
       kdeglobals.General.AccentColor = "#926ee4";
       baloofilerc."Basic Settings".Indexing-Enabled = false;
