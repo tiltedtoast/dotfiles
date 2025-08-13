@@ -15,6 +15,7 @@
     ../../modules/system/spicetify.nix
     ../../modules/system/nvidia.nix
     ../../modules/system/nextdns.nix
+    ../../modules/system/disable-wakeup.nix
     ./disko.nix
   ];
 
@@ -43,10 +44,12 @@
 
   programs.streamcontroller.enable = true;
 
-  # TODO: make a StreamController module with this
   services.udev.extraRules = ''
+    # StreamController text input
     KERNEL=="uinput", SUBSYSTEM=="misc", OPTIONS+="static_node=uinput", TAG+="uaccess", GROUP="input", MODE="0660"
   '';
+
+  disableWakeFromHibernate.enable = true;
 
   programs.steam.enable = true;
 
