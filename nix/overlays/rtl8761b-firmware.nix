@@ -1,4 +1,3 @@
-# overlays/rtl8761b-firmware.nix
 self: super:
 
 let
