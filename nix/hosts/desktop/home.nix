@@ -20,6 +20,8 @@
       wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/MilkyWay/contents/images/5120x2880.png";
 
       enableMiddleClickPaste = true;
+
+      tooltipDelay = 200;
     };
 
     kscreenlocker = {
