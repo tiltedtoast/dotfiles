@@ -21,7 +21,7 @@
 
       enableMiddleClickPaste = true;
 
-      tooltipDelay = 200;
+      tooltipDelay = 5;
     };
 
     kscreenlocker = {
