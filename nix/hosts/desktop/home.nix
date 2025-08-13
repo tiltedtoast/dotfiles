@@ -105,7 +105,24 @@
 
       kcminputrc."Libinput/1133/50503/Logitech USB Receiver".PointerAccelerationProfile = 1;
 
-      kwinrulesrc."a5f27bc3-c738-4dd0-9cef-ee580d3e981a".desktopfile = "/run/current-system/sw/share/applications/StreamController.desktop";
+      kwinrulesrc."a5f27bc3-c738-4dd0-9cef-ee580d3e981a".desktopfile =
+        "/run/current-system/sw/share/applications/StreamController.desktop";
+    };
+
+    startup.startupScript = {
+      discord = {
+        text = ''
+          setsid discord &
+        '';
+        runAlways = true;
+      };
+
+      spotify = {
+        text = ''
+          setsid spotify &
+        '';
+        runAlways = true;
+      };
     };
 
   };
