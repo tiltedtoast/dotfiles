@@ -96,11 +96,14 @@
       plasmashellrc."PlasmaViews/Panel 25/Defaults".thickness = 48;
       plasmashellrc."PlasmaViews/Panel 3/Defaults".thickness = 48;
 
+      kdeglobals.Sounds.Enable = false;
+
       kdeglobals.General.AccentColor = "#926ee4";
       baloofilerc."Basic Settings".Indexing-Enabled = false;
 
       kcminputrc."Libinput/1133/50503/Logitech USB Receiver".PointerAccelerationProfile = 1;
 
+      kwinrulesrc."a5f27bc3-c738-4dd0-9cef-ee580d3e981a".desktopfile = "/run/current-system/sw/share/applications/StreamController.desktop";
     };
 
   };
