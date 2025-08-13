@@ -50,6 +50,9 @@
 
   programs.steam.enable = true;
 
+  virtualisation.docker.enable = true;
+  hardware.nvidia-container-toolkit.enable = true;
+
   audio = {
     enable = true;
     input = "alsa_input.pci-0000_0b_00.4.analog-stereo";
