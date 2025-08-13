@@ -86,7 +86,7 @@
       powerButtonAction = "hibernate";
       autoSuspend = {
         action = "hibernate";
-        idleTimeout = 60 * 15;
+        idleTimeout = "never";
       };
       whenSleepingEnter = "standbyThenHibernate";
       turnOffDisplay.idleTimeout = "never";
