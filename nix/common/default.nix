@@ -57,7 +57,7 @@
 
     nixos-switch = "nh os switch";
     nixos-boot = "nh os boot";
-    
+
     flake-update = "sudo nix flake update --flake $NH_FLAKE";
     update = "nh os switch --update";
   };
@@ -104,6 +104,8 @@
     layout = "us,de";
     variant = "altgr-intl,";
   };
+
+  console.useXkbConfig = true;
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
