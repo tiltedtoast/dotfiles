@@ -17,6 +17,7 @@
     ../../modules/system/nextdns.nix
     ../../modules/system/disable-wakeup.nix
     ../../modules/system/gaming.nix
+    ../../modules/system/qbittorrent.nix
     ./disko.nix
   ];
 
