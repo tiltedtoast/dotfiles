@@ -104,7 +104,10 @@
 
       plasmanotifyrc.Notifications.PopupTimeout = 15000;
 
-      kcminputrc."Libinput/1133/50503/Logitech USB Receiver".PointerAccelerationProfile = 1;
+      kcminputrc."Libinput/1133/50503/Logitech USB Receiver" = {
+        PointerAccelerationProfile = 1;
+        PointerAcceleration = 0.500;
+      };
 
       kwinrulesrc."a5f27bc3-c738-4dd0-9cef-ee580d3e981a".desktopfile =
         "/run/current-system/sw/share/applications/StreamController.desktop";

@@ -16,6 +16,7 @@
     ../../modules/system/nvidia.nix
     ../../modules/system/nextdns.nix
     ../../modules/system/disable-wakeup.nix
+    ../../modules/system/gaming.nix
     ./disko.nix
   ];
 
@@ -50,8 +51,6 @@
   '';
 
   disableWakeFromHibernate.enable = true;
-
-  programs.steam.enable = true;
 
   virtualisation.docker.enable = true;
   hardware.nvidia-container-toolkit.enable = true;
@@ -121,11 +120,16 @@
     rtl8761bFirmwareWithBu
   ];
 
+  services.ratbagd.enable = true;
+
   environment.systemPackages = with pkgs; [
     ghostty
     vscode-fhs
     librewolf
     btrfs-progs
+
+    libratbag
+    piper
 
     xdg-utils
     xdg-desktop-portal
