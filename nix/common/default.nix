@@ -66,6 +66,12 @@
     update = "nh os switch --update";
   };
 
+  environment.interactiveShellInit = ''
+    flake-template() {
+      nix flake init --template $NH_FLAKE#$1
+    }
+  '';
+
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
