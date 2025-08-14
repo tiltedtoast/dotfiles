@@ -36,8 +36,6 @@
     PKG_CONFIG_PATH = [
       "${pkgs.openssl.dev}/lib/pkgconfig"
     ];
-
-    SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
   };
 
   virtualisation.docker.enable = false;
