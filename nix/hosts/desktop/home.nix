@@ -110,6 +110,12 @@
         PointerAcceleration = 0.500;
       };
 
+      kdeglobals.General = {
+        XftAntialias = true;
+        XftHintStyle = "hintslight";
+        XftSubPixel = "rgb";
+      };
+
       kwinrulesrc."a5f27bc3-c738-4dd0-9cef-ee580d3e981a".desktopfile =
         "/run/current-system/sw/share/applications/StreamController.desktop";
     };
