@@ -66,6 +66,7 @@
       chezmoi
       nix-output-monitor
       nix-init
+      trashy
 
       llvmPackages_20.clang-tools
       llvmPackages_20.clang-manpages
