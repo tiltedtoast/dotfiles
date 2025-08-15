@@ -18,6 +18,7 @@
     ../../modules/system/disable-wakeup.nix
     ../../modules/system/gaming.nix
     ../../modules/system/qbittorrent.nix
+    ../../modules/system/openrgb.nix
     ./disko.nix
   ];
 
