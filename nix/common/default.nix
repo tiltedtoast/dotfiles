@@ -59,11 +59,11 @@
   environment.shellAliases = {
     nix-shell = "nix-shell --command zsh";
 
-    nixos-switch = "nh os switch";
-    nixos-boot = "nh os boot";
+    nixos-switch = "nh os switch -- --impure";
+    nixos-boot = "nh os boot -- --impure";
 
     flake-update = "sudo nix flake update --flake $NH_FLAKE";
-    update = "nh os switch --update";
+    update = "nh os switch --update -- --impure";
   };
 
   environment.interactiveShellInit = ''

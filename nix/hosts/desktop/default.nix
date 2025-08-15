@@ -41,7 +41,8 @@
 
   nextdns = {
     enable = true;
-    configFile = "/home/${currentUsername}/.config/nextdns/nextdns.conf";
+    configFile = "/home/${currentUsername}/.config/nextdns/resolved.conf";
+    hostName = "NixOS--PC";
   };
 
   programs.streamcontroller.enable = true;

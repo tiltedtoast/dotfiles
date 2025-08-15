@@ -1,47 +1,42 @@
 {
   config,
-  pkgs,
-  currentUsername,
   lib,
+  currentUsername,
   ...
 }:
+
+with lib;
 
 let
   cfg = config.nextdns;
 in
-with lib;
 {
   options.nextdns = {
-    enable = mkEnableOption "nextdns";
+    enable = mkEnableOption "NextDNS via systemd-resolved";
 
     configFile = mkOption {
       type = types.str;
-      default = "/home/${currentUsername}/.config/nextdns/nextdns.profile";
-      description = "Absolute path to the nextdns config file to use";
+      defaultText = "/home/${currentUsername}/.config/nextdns/resolved.conf";
+      description = "Absolute path to the systemd-resolved config file for NextDNS.";
+    };
+
+    hostName = mkOption {
+      type = types.str;
+      defaultText = "NixOS--PC";
+      description = "The hostname to use for NextDNS (-- for spaces)";
     };
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.nextdns ];
 
-    services.nextdns = {
+    services.resolved = {
       enable = true;
-      arguments = [
-        "-report-client-info"
-        "-config-file"
-        cfg.configFile
-      ];
+
+      # TODO: agenix? sops-nix?
+      extraConfig = lib.replaceStrings [ "HOSTNAME" ] [ cfg.hostName ] (
+        builtins.readFile cfg.configFile
+      );
     };
 
-    systemd.services.nextdns-activate = {
-      enable = true;
-      description = "Activate NextDNS after the service starts";
-      after = [ "nextdns.service" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "/run/current-system/sw/bin/nextdns activate";
-      };
-    };
   };
 }
