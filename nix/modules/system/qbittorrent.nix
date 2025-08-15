@@ -32,6 +32,7 @@
         };
         WebUI = {
           Address = "*";
+          LocalHostAuth = false;
           Username = "admin";
           Password_PBKDF2 = "@ByteArray(ld9tpxX1BfxpzgEImGXLJA==:yxC2mw6+EfF14jJNV9ppuS0sqNas7ENWXAccUu+gCVNP0h7NokJA1dgnkoWejmDfp5mq6OEFXEHPGkLJNUZNiw==)";
         };
