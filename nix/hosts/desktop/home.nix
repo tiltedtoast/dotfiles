@@ -87,6 +87,7 @@
       autoSuspend.action = "nothing";
       whenSleepingEnter = "standbyThenHibernate";
       turnOffDisplay.idleTimeout = "never";
+      dimDisplay.enable = false;
     };
 
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
