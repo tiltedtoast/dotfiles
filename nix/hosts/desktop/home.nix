@@ -105,6 +105,11 @@
 
       plasmanotifyrc.Notifications.PopupTimeout = 15000;
 
+      "plasma-org.kde.plasma.desktop-appletsrc"."Containments/25/Applets/42/Configuration/Appearance" = {
+        fontWeight = 400;
+        selectedTimeZones = "America/Los_Angeles,Local,Asia/Tokyo";
+      };
+
       kcminputrc."Libinput/1133/50503/Logitech USB Receiver" = {
         PointerAccelerationProfile = 1;
         PointerAcceleration = 0.500;

@@ -423,7 +423,7 @@ in
             {
               name = "libpipewire-module-loopback";
               args = {
-                "node.description" = "Stream mix ➜ VirtualMic";
+                "node.description" = "Stream Mix ➜ VirtualMic";
                 "capture.props" = {
                   "node.target" = "Mix_Stream";
                   "stream.monitor" = true;
@@ -431,7 +431,7 @@ in
                 "playback.props" = {
                   "media.class" = "Audio/Source";
                   "node.name" = "VirtualMic";
-                  "node.description" = "Input: Stream mix";
+                  "node.description" = "Input: Stream Mix";
                 };
               };
             }
