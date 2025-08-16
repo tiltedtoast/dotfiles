@@ -108,6 +108,7 @@
       kcminputrc."Libinput/1133/50503/Logitech USB Receiver" = {
         PointerAccelerationProfile = 1;
         PointerAcceleration = 0.500;
+        ScrollFactor = 3;
       };
 
       kdeglobals.General = {
