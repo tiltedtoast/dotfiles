@@ -44,6 +44,7 @@
       "video"
       "render"
       "input"
+      "gamemode"
     ];
     initialPassword = "password"; # Obviously change this asap
   };
