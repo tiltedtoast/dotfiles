@@ -19,6 +19,7 @@
     ../../modules/system/gaming.nix
     ../../modules/system/qbittorrent.nix
     ../../modules/system/openrgb.nix
+    ../../modules/system/vpn-run.nix
     ./disko.nix
   ];
 
@@ -44,6 +45,12 @@
     enable = true;
     configFile = "/home/${currentUsername}/.config/nextdns/resolved.conf";
     hostName = "NixOS--PC";
+  };
+
+  vpn-run = {
+    enable = true;
+    defaultInterface = "wg0";
+    allowedUsers = [ currentUsername ];
   };
 
   programs.streamcontroller.enable = true;
