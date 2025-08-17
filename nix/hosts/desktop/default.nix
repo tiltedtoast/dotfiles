@@ -114,13 +114,12 @@
 
   services.libinput.enable = true;
 
-  # TODO: Figure out why a simple overlay that just adds the two commands doesn't work?
   nixpkgs.overlays = [
     (import ../../overlays/rtl8761b-firmware.nix)
   ];
 
   hardware.firmware = with pkgs; [
-    rtl8761bFirmwareWithBu
+    rtl8761b-firmware
   ];
 
   services.ratbagd.enable = true;
@@ -139,7 +138,7 @@
     kdePackages.xdg-desktop-portal-kde
 
     # Bluetooth Dongle
-    rtl8761bFirmwareWithBu
+    rtl8761b-firmware
 
     (discord.override {
       withVencord = true;
