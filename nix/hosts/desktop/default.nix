@@ -130,7 +130,6 @@
     vscode-fhs
     librewolf
     btrfs-progs
-    zed-editor-fhs
 
     libratbag
     piper
@@ -155,10 +154,6 @@
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
-  };
-  
-  environment.shellAliases = {
-      zed = "WAYLAND_DISPLAY= zeditor";
   };
 
   environment.variables = {
