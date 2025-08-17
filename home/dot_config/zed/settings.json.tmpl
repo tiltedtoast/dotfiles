@@ -32,9 +32,7 @@
     "buffer_font_weight": 200,
     "terminal": {
         "dock": "right",
-        "shell": {
-            "program": "pwsh"
-        },
+        "shell": "system",
         "detect_venv": {
             "on": {
                 "directories": [".venv", "venv"],
@@ -68,9 +66,30 @@
             "code_actions_on_format": {
                 "source.organizeImports": true
             }
+        },
+        "Nix": {
+            "language_servers": [ "nixd" ]
         }
     },
     "lsp": {
+        "nixd": {
+            "settings": {
+                "formatting": {
+                    "command": ["nixfmt"]
+                },
+                "nixpkgs": {
+                    "expr": "import <nixpkgs> { }"
+                },
+                "options": {
+                    "nixos": {
+                        "expr": "(builtins.getFlake \"/home/tim/dotfiles/nix\").nixosConfigurations.nixos-pc.options"
+                    },
+                    "home-manager": {
+                        "expr": "(builtins.getFlake \"/home/tim/dotfiles/nix\").nixosConfigurations.nixos-pc.options.home-manager.users.type.getSubOptions []"
+                    }
+                }
+            }
+        },
         "rust-analyzer": {
             "initialization_options": {
                 "check": {
