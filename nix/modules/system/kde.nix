@@ -23,10 +23,14 @@
     pkgs.wayland-utils
     pkgs.wl-clipboard
     kdeconnect-kde
+
+    kaccounts-integration
+    kaccounts-providers
+    kio-gdrive
+
+    signond
+    signon-kwallet-extension
+    kdepim-addons
   ];
 
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    kdepim-runtime
-    oxygen
-  ];
 }
