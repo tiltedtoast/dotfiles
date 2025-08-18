@@ -1,65 +1,97 @@
-{ pkgs, currentUsername, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
-  networking.wireguard.interfaces.wg0 = {
-    privateKeyFile = "/home/${currentUsername}/.config/wireguard/privatekey";
-    ips = [ "10.14.0.2/16" ];
+with lib;
 
-    allowedIPsAsRoutes = false;
+let
+  cfg = config.qbittorrent;
+in
+{
+  options.qbittorrent = {
+    enable = mkEnableOption "qbittorrent";
+    package = lib.mkPackageOption pkgs "qbittorrent-nox" { };
 
-    peers = [
-      {
-        publicKey = "fJDA+OA6jzQxfRcoHfC27xz7m3C8/590fRjpntzSpGo=";
-        endpoint = "de-fra.prod.surfshark.com:51820";
+    wireguard = {
+      interface = mkOption {
+        type = types.str;
+        defaultText = "wg0";
+        description = "Wireguard interface to use";
+      };
 
-        allowedIPs = [
-          "0.0.0.0/0"
-          "::/0"
-        ];
-      }
-    ];
-  };
+      listenPort = mkOption {
+        type = types.int;
+        default = 51820;
+        description = "Wireguard listen port";
+      };
+    };
 
-  services.qbittorrent = {
-    enable = true;
-    webuiPort = 8080;
-    openFirewall = true;
-    serverConfig = {
-      Preferences = {
-        Connection = {
-          Interface = "wg0";
-          InterfaceAddress = "10.14.0.2";
-        };
-        WebUI = {
-          Address = "*";
-          LocalHostAuth = false;
-          Username = "admin";
-          Password_PBKDF2 = "@ByteArray(ld9tpxX1BfxpzgEImGXLJA==:yxC2mw6+EfF14jJNV9ppuS0sqNas7ENWXAccUu+gCVNP0h7NokJA1dgnkoWejmDfp5mq6OEFXEHPGkLJNUZNiw==)";
+    webui = mkOption {
+      type = types.submodule {
+        options = {
+          port = mkOption {
+            type = types.int;
+            default = 8080;
+            description = "WebUI port";
+          };
+          username = mkOption {
+            type = types.str;
+            default = "admin";
+            description = "Username for the webui";
+          };
+          hashedPassword = mkOption {
+            type = types.str;
+            default = "";
+            description = "Hashed password for the webui (PBKDF2)";
+          };
         };
       };
-      LegalNotice.Accepted = true;
+      description = "WebUI options";
+      default = { };
     };
   };
 
-  systemd.services.qbittorrent = {
-    after = [
-      "network-online.target"
-      "wireguard-wg0.service"
+  config = mkIf cfg.enable {
+    services.qbittorrent = {
+      enable = true;
+      package = cfg.package;
+      webuiPort = cfg.webui.port;
+      openFirewall = true;
+      serverConfig = {
+        Preferences = {
+          Connection = {
+            Interface = cfg.wireguard.interface;
+          };
+          WebUI = with cfg.webui; {
+            Address = "*";
+            LocalHostAuth = false;
+            Username = username;
+            Password_PBKDF2 = hashedPassword;
+          };
+        };
+        LegalNotice.Accepted = true;
+      };
+    };
+
+    systemd.services.qbittorrent = {
+      after = [
+        "network-online.target"
+        "wireguard-${cfg.wireguard.interface}.service"
+      ];
+      wants = [ "wireguard-${cfg.wireguard.interface}.service" ];
+    };
+
+    networking.firewall = {
+      allowedUDPPorts = [ cfg.wireguard.listenPort ];
+      allowedTCPPorts = [ cfg.webui.port ];
+      checkReversePath = "loose";
+    };
+
+    environment.systemPackages = [
+      pkgs.wireguard-tools
     ];
-    wants = [ "wireguard-wg0.service" ];
-
-    serviceConfig = {
-      BindToDevice = "wg0";
-    };
   };
-
-  networking.firewall = {
-    allowedUDPPorts = [ 51820 ];
-    allowedTCPPorts = [ 8080 ];
-    checkReversePath = "loose";
-  };
-
-  environment.systemPackages = [
-    pkgs.wireguard-tools
-  ];
 }

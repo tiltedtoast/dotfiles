@@ -55,6 +55,37 @@
     };
   };
 
+  qbittorrent = {
+    enable = true;
+    wireguard.interface = "wg0";
+    webui = {
+      port = 8080;
+      username = "admin";
+      hashedPassword = "@ByteArray(ld9tpxX1BfxpzgEImGXLJA==:yxC2mw6+EfF14jJNV9ppuS0sqNas7ENWXAccUu+gCVNP0h7NokJA1dgnkoWejmDfp5mq6OEFXEHPGkLJNUZNiw==)";
+    };
+  };
+
+  networking.wireguard.interfaces = {
+    wg0 = {
+      privateKeyFile = "/home/${currentUsername}/.config/wireguard/privatekey";
+      ips = [ "10.14.0.2/16" ];
+
+      allowedIPsAsRoutes = false;
+
+      peers = [
+        {
+          publicKey = "fJDA+OA6jzQxfRcoHfC27xz7m3C8/590fRjpntzSpGo=";
+          endpoint = "de-fra.prod.surfshark.com:51820";
+
+          allowedIPs = [
+            "0.0.0.0/0"
+            "::/0"
+          ];
+        }
+      ];
+    };
+  };
+
   nextdns = {
     enable = true;
     configFile = "/home/${currentUsername}/.config/nextdns/resolved.conf";

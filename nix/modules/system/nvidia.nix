@@ -4,11 +4,14 @@
   lib,
   ...
 }:
+
+with lib;
+
 let
   cfg = config.nvidia;
 in
 {
-  options.nvidia = with lib; {
+  options.nvidia = {
     cuda = mkOption {
       type = types.submodule {
         options = {
