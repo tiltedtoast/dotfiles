@@ -9,7 +9,14 @@
       devices = [ "nodev" ];
       efiSupport = true;
       font = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf";
-      fontSize = 20;
+      fontSize = 24;
+
+      extraEntries = ''
+        menuentry 'Windows' --class windows --class os {
+          search --fs-uuid --set=root 0CF9-FFEE
+          chainloader /efi/Microsoft/Boot/bootmgfw.efi
+        }
+      '';
     };
   };
 
