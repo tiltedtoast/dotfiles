@@ -193,6 +193,8 @@
 
   programs.thunderbird.enable = true;
 
+  environment.variables.GHIDRA_ROOT = "${pkgs.ghidra}";
+
   environment.systemPackages = with pkgs; [
     ghostty
     vscode-fhs
@@ -203,6 +205,7 @@
     piper
     vlc
     libnotify
+    ghidra
 
     xdg-utils
     xdg-desktop-portal
