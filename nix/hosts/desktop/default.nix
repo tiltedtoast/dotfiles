@@ -86,6 +86,21 @@
     };
   };
 
+  services.sonarr = {
+    enable = true;
+    openFirewall = true;
+  };
+
+  services.prowlarr = {
+    enable = true;
+    openFirewall = true;
+  };
+
+  services.flaresolverr = {
+    enable = true;
+    openFirewall = true;
+  };
+
   nextdns = {
     enable = true;
     configFile = "/home/${currentUsername}/.config/nextdns/resolved.conf";
@@ -184,6 +199,8 @@
 
     libratbag
     piper
+    vlc
+    libnotify
 
     xdg-utils
     xdg-desktop-portal

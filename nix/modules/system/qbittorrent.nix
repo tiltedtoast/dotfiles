@@ -61,7 +61,26 @@ in
       webuiPort = cfg.webui.port;
       openFirewall = true;
       serverConfig = {
+        BitTorrent.Session = {
+          AddExtensionToIncompleteFiles = true;
+
+          GlobalMaxRatio = 1;
+          GlobalMaxSeedingMinutes = 1440;
+
+          MaxConnections = -1;
+          MaxConnectionsPerTorrent = -1;
+          MaxUploads = -1;
+          MaxUploadsPerTorrent = -1;
+
+          Interface = cfg.wireguard.interface;
+          InterfaceName = cfg.wireguard.interface;
+        };
         Preferences = {
+          General = {
+            StatusbarExternalIPDisplayed = true;
+            Locale = "en";
+          };
+
           Connection = {
             Interface = cfg.wireguard.interface;
           };
