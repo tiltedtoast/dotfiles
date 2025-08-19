@@ -191,6 +191,8 @@
 
   services.ratbagd.enable = true;
 
+  programs.thunderbird.enable = true;
+
   environment.systemPackages = with pkgs; [
     ghostty
     vscode-fhs
