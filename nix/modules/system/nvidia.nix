@@ -86,6 +86,8 @@ in
         cuda_cudart
         cudatoolkit
         pkgs.nvtopPackages.nvidia
+        nsight_systems
+        nsight_compute
       ];
     })
 
