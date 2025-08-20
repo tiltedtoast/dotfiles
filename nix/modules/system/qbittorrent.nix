@@ -80,7 +80,6 @@ in
             StatusbarExternalIPDisplayed = true;
             Locale = "en";
           };
-
           Connection = {
             Interface = cfg.wireguard.interface;
           };
@@ -105,7 +104,10 @@ in
 
     networking.firewall = {
       allowedUDPPorts = [ cfg.wireguard.listenPort ];
-      allowedTCPPorts = [ cfg.webui.port ];
+      allowedTCPPorts = [
+        cfg.webui.port
+        cfg.wireguard.listenPort
+      ];
       checkReversePath = "loose";
     };
 
