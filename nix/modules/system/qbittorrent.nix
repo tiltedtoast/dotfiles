@@ -63,6 +63,7 @@ in
       serverConfig = {
         BitTorrent.Session = {
           AddExtensionToIncompleteFiles = true;
+          AnonymousModeEnabled = true;
 
           GlobalMaxRatio = 1;
           GlobalMaxSeedingMinutes = 1440;
