@@ -194,18 +194,23 @@
   programs.thunderbird.enable = true;
 
   environment.variables.GHIDRA_ROOT = "${pkgs.ghidra}";
+  environment.shellAliases = {
+    mpv-hdr = "ENABLE_HDR_WSI=1 mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk";
+  };
 
   environment.systemPackages = with pkgs; [
     ghostty
     vscode-fhs
     librewolf
     btrfs-progs
+    mpv
 
     libratbag
     piper
     vlc
     libnotify
     ghidra
+    vulkan-hdr-layer-kwin6
 
     xdg-utils
     xdg-desktop-portal
