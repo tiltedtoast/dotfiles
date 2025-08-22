@@ -23,13 +23,27 @@
   users.groups.media = { };
 
   users.users.sonarr.extraGroups = [ "media" ];
+  users.users.qbittorrent.extraGroups = [ "media" ];
   users.users.${currentUsername}.extraGroups = [ "media" ];
 
   fileSystems."/mnt/shows" = {
     device = "/dev/disk/by-uuid/206C11B36C1184A6";
-    fsType = "ntfs-3g";
+    fsType = "ntfs3";
     options = [
       "defaults"
+      "uid=1000"
+      "gid=media"
+      "umask=0002"
+      "rw"
+    ];
+  };
+
+  fileSystems."/mnt/games" = {
+    device = "/dev/disk/by-uuid/1260ED5460ED3F5B";
+    fsType = "ntfs3";
+    options = [
+      "defaults"
+      "uid=1000"
       "gid=media"
       "umask=0002"
       "rw"
