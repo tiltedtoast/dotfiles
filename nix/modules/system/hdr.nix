@@ -32,10 +32,15 @@ let
       exit 1
     fi
 
-    OUTPUT_HDR_STATE=$(kscreen-doctor -o | awk -v monitor="$OUTPUT" '
-      $0 ~ ("Output:.*" monitor) { found=1 }
-      found && /HDR:/ { sub(/.*HDR: */, ""); print $1; exit }
-    ' | sed 's/\x1b\[[0-9;]*m//g' | tr -d '\n')
+    OUTPUT_HDR_STATE=$(kscreen-doctor -j | jq -r --arg name "$OUTPUT" '
+      ( .outputs[] | select(.name == $name) |
+        if has("hdr") then
+          if .hdr then "enabled" else "disabled" end
+        else
+          "incapable"
+        end
+      ) // "incapable"
+    ')
 
     if [[ $OUTPUT_HDR_STATE == "incapable" ]]; then
       echo "Output $OUTPUT reports HDR is incapable. Quitting..."
@@ -47,18 +52,18 @@ let
     fi
 
     function hdr_disable() {
-      echo "''${OUTPUT}: Toggling HDR off"
+      echo "$OUTPUT: Toggling HDR off"
       local ICCPROF_
-      if [[ -n "''${3}" ]]; then
-        ICCPROF_=''${3}
+      if [[ -n "$3" ]]; then
+        ICCPROF_=$3
       else
         ICCPROF_=''${!ICCPROF}
       fi
-      kscreen-doctor output.$OUTPUT.hdr.disable output.$OUTPUT.wcg.disable output.$OUTPUT.iccprofile."''${ICCPROF_}" >/dev/null 2>&1
+      kscreen-doctor output.$OUTPUT.hdr.disable output.$OUTPUT.wcg.disable output.$OUTPUT.iccprofile."$ICCPROF_" >/dev/null 2>&1
     }
 
     function hdr_enable() {
-      echo "''${OUTPUT}: Toggling HDR on"
+      echo "$OUTPUT: Toggling HDR on"
       kscreen-doctor output.$OUTPUT.hdr.enable output.$OUTPUT.wcg.enable >/dev/null 2>&1
     }
 
@@ -101,14 +106,14 @@ let
         if [[ "$OUTPUT_HDR_STATE" != "enabled" ]]; then
             hdr_enable
         else
-            echo "''${OUTPUT}: HDR is already enabled."
+            echo "$OUTPUT: HDR is already enabled."
         fi
         ;;
       disable)
         if [[ "$OUTPUT_HDR_STATE" == "enabled" ]]; then
             hdr_disable
         else
-            echo "''${OUTPUT}: HDR is already disabled."
+            echo "$OUTPUT: HDR is already disabled."
         fi
         ;;
       help|h|-h|--help)
@@ -177,10 +182,23 @@ in
     ++ lib.optionals cfg.extraScripts [
       hdr-enable-script
       hdr-disable-script
-    ];
+    ]
+    ++ (
+      let
+        mpv-hdr-script = pkgs.writeShellScriptBin "mpv-hdr" ''
+          ENABLE_HDR_WSI=1 mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "$@"
+        '';
 
-    environment.shellAliases = {
-      mpv-hdr = "ENABLE_HDR_WSI=1 mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk";
-    };
+        mpv-hdr-auto-script = pkgs.writeShellScriptBin "mpv-hdr-auto" ''
+          hdr-toggle enable
+          ${mpv-hdr-script}/bin/mpv-hdr "$@"
+          hdr-toggle disable
+        '';
+      in
+      [
+        mpv-hdr-script
+        mpv-hdr-auto-script
+      ]
+    );
   };
 }
