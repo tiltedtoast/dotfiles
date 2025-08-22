@@ -143,6 +143,13 @@
         '';
         runAlways = true;
       };
+
+      steam = {
+        text = ''
+          setsid steam -silent &
+        '';
+        runAlways = true;
+      };
     };
 
   };
