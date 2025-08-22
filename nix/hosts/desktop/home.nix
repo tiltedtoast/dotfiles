@@ -1,5 +1,7 @@
 {
   pkgs,
+  osConfig,
+  lib,
   ...
 }:
 
@@ -80,6 +82,7 @@
       "services/com.mitchellh.ghostty.desktop" = {
         new-window = "Meta+Return";
       };
+      "services/net.local.hdr-toggle.desktop"."_launch" = lib.mkIf osConfig.hdr.enable "Meta+Alt+B";
     };
 
     powerdevil.AC = {

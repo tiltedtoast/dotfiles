@@ -20,6 +20,7 @@
     ../../modules/system/qbittorrent.nix
     ../../modules/system/openrgb.nix
     ../../modules/system/vpn-run.nix
+    ../../modules/system/hdr.nix
     ./disko.nix
   ];
 
@@ -27,8 +28,14 @@
     cuda.enable = true;
     driver = {
       enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
+  };
+
+  hdr = {
+    enable = true;
+    defaultOutput = "DP-3";
+    extraScripts = true;
   };
 
   services.avahi = {
@@ -194,9 +201,6 @@
   programs.thunderbird.enable = true;
 
   environment.variables.GHIDRA_ROOT = "${pkgs.ghidra}";
-  environment.shellAliases = {
-    mpv-hdr = "ENABLE_HDR_WSI=1 mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk";
-  };
 
   environment.systemPackages = with pkgs; [
     ghostty
@@ -210,7 +214,6 @@
     vlc
     libnotify
     ghidra
-    vulkan-hdr-layer-kwin6
 
     xdg-utils
     xdg-desktop-portal
