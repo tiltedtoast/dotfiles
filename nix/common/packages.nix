@@ -86,6 +86,9 @@
       mesa-demos
       vulkan-loader
       sd
+      p7zip-rar
+      cabextract
+      zenity
 
       ffmpeg-full
       nixd
