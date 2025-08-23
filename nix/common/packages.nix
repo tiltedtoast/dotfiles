@@ -89,6 +89,7 @@
       p7zip-rar
       cabextract
       zenity
+      shfmt
 
       ffmpeg-full
       nixd
