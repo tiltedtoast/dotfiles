@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -20,7 +21,10 @@
   ];
   boot.extraModulePackages = [ ];
 
-  boot.kernelParams = [ "resume_offset=533760" ];
+  boot.kernelParams = [
+    "resume_offset=533760"
+    "drm.edid_firmware=DP-3:edid/odyssey-g7-8bpc.bin"
+  ];
   boot.resumeDevice = "/dev/disk/by-partlabel/disk-main-root";
 
   powerManagement.enable = true;
@@ -32,6 +36,13 @@
       device = "/swap/swapfile";
       size = 70 * 1024; # 70GB
     }
+  ];
+
+  hardware.firmware = [
+    (pkgs.runCommandNoCC "firmware-custom-edid" { } ''
+      mkdir -p $out/lib/firmware/edid/
+      cp "${../../firmware/odyssey-g7-8bpc-edid.bin}" $out/lib/firmware/edid/odyssey-g7-8bpc.bin
+    '')
   ];
 
   networking.useDHCP = lib.mkDefault true;
