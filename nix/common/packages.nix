@@ -72,7 +72,7 @@
       llvmPackages_20.clang-manpages
       llvmPackages_20.openmp
       llvmPackages_20.clangUseLLVM
-      llvmPackages_20.bintools-unwrapped
+      llvmPackages_20.bintools
 
       bear
       tokei
