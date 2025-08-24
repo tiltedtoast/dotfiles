@@ -50,10 +50,19 @@ in
       };
     })
 
+    (lib.mkIf (cfg.cuda.enable && cfg.driver.enable) {
+      # https://developer.nvidia.com/nvidia-development-tools-solutions-err_nvgpuctrperm-permission-issue-performance-counters
+      boot.kernelParams = [
+        "nvidia.NVreg_RestrictProfilingToAdminUsers=0"
+      ];
+    })
+
     # CUDA configuration
     (lib.mkIf cfg.cuda.enable {
       nixpkgs.overlays = [
         (import ../../overlays/pocl-cuda.nix)
+        (import ../../overlays/nsight_compute.nix)
+        (import ../../overlays/nsight_systems.nix)
       ];
       hardware.graphics.extraPackages = [
         pkgs.pocl-cuda
