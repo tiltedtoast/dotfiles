@@ -96,7 +96,7 @@
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
 
     configFile = {
-      plasmashellrc."PlasmaViews/Panel 25/Defaults".thickness = 48;
+      plasmashellrc."PlasmaViews/Panel 278/Defaults".thickness = 48;
       plasmashellrc."PlasmaViews/Panel 3/Defaults".thickness = 48;
 
       kdeglobals.Sounds.Enable = false;
@@ -108,7 +108,7 @@
 
       plasmanotifyrc.Notifications.PopupTimeout = 15000;
 
-      "plasma-org.kde.plasma.desktop-appletsrc"."Containments/25/Applets/42/Configuration/Appearance" = {
+      "plasma-org.kde.plasma.desktop-appletsrc"."Containments/278/Applets/296/Configuration/Appearance" = {
         fontWeight = 400;
         selectedTimeZones = "America/Los_Angeles,Local,Asia/Tokyo";
       };
