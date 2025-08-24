@@ -97,7 +97,7 @@
 
     configFile = {
       plasmashellrc."PlasmaViews/Panel 278/Defaults".thickness = 48;
-      plasmashellrc."PlasmaViews/Panel 3/Defaults".thickness = 48;
+      plasmashellrc."PlasmaViews/Panel 25/Defaults".thickness = 48;
 
       kdeglobals.Sounds.Enable = false;
       kdeglobals.General.TerminalApplication = "ghostty";

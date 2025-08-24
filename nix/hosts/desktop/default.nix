@@ -200,8 +200,6 @@
 
   programs.thunderbird.enable = true;
 
-  environment.variables.GHIDRA_ROOT = "${pkgs.ghidra}";
-
   environment.systemPackages = with pkgs; [
     ghostty
     vscode-fhs
@@ -245,6 +243,9 @@
     VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
 
     NIXOS_OZONE_WL = "1";
+
+    MOZ_DISABLE_RDD_SANDBOX = 1;
+    GHIDRA_ROOT = "${pkgs.ghidra}";
   };
 
   programs.mtr.enable = true;
