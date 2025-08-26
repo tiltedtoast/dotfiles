@@ -223,6 +223,8 @@
     (discord.override {
       withVencord = true;
     })
+
+    (pkgs.callPackage ../../pkgs/hayase.nix { })
   ];
 
   hardware.logitech.wireless = {
