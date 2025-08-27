@@ -32,6 +32,7 @@ Host hpcgate
     ForwardX11 yes
     IdentityFile ~/.ssh/mogon.pub
     IdentitiesOnly yes
+    SetEnv TERM=xterm-256color
 
 Host mogon
     HostName mogon
@@ -40,6 +41,7 @@ Host mogon
     ForwardX11 yes
     IdentityFile ~/.ssh/mogon.pub
     IdentitiesOnly yes
+    SetEnv TERM=xterm-256color
 
 Host mogon-nhr
     HostName mogon-nhr-01
@@ -47,3 +49,4 @@ Host mogon-nhr
     ProxyJump hpcgate
     ForwardX11 yes
     IdentityFile ~/.ssh/mogon.pub
+    SetEnv TERM=xterm-256color
