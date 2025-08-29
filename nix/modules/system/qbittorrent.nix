@@ -65,9 +65,7 @@ in
           AddExtensionToIncompleteFiles = true;
           AnonymousModeEnabled = true;
 
-          GlobalMaxRatio = 1;
-          GlobalMaxSeedingMinutes = 1440;
-
+          GlobalMaxRatio = 2;
           MaxConnections = -1;
           MaxConnectionsPerTorrent = -1;
           MaxUploads = -1;
