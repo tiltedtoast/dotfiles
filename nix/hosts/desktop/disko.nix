@@ -48,7 +48,6 @@
       "gid=media"
       "umask=0002"
       "rw"
-      "windows_names"
       "discard"
     ];
   };
