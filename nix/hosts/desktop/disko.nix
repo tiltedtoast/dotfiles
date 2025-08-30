@@ -52,9 +52,9 @@
     ];
   };
 
-  disko.devices.disk.main = {
+  disko.devices.disk.primary = {
     type = "disk";
-    device = "/dev/disk/by-partlabel/disk-main-root";
+    device = "/dev/disk/by-partlabel/disk-primary-root";
     content = {
       type = "gpt";
       partitions = {
