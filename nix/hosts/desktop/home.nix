@@ -108,10 +108,11 @@
 
       plasmanotifyrc.Notifications.PopupTimeout = 15000;
 
-      "plasma-org.kde.plasma.desktop-appletsrc"."Containments/278/Applets/296/Configuration/Appearance" = {
-        fontWeight = 400;
-        selectedTimeZones = "America/Los_Angeles,Local,Asia/Tokyo";
-      };
+      "plasma-org.kde.plasma.desktop-appletsrc"."Containments/278/Applets/296/Configuration/Appearance" =
+        {
+          fontWeight = 400;
+          selectedTimeZones = "America/Los_Angeles,Local,Asia/Tokyo";
+        };
 
       kcminputrc."Libinput/1133/50503/Logitech USB Receiver" = {
         PointerAccelerationProfile = 1;
@@ -124,6 +125,9 @@
         XftHintStyle = "hintslight";
         XftSubPixel = "rgb";
       };
+
+      kded5rc.Module-browserintegrationreminder.autoload = false;
+      kded6rc.PlasmaBrowserIntegration.shownCount = 1;
 
       kwinrulesrc."a5f27bc3-c738-4dd0-9cef-ee580d3e981a".desktopfile =
         "/run/current-system/sw/share/applications/StreamController.desktop";
