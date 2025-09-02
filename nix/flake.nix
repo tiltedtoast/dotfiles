@@ -112,6 +112,10 @@
           path = ./templates/cuda;
           description = "CUDA development environment";
         };
+        cpp = {
+          path = ./templates/cpp;
+          description = "C++ development environment using llvm";
+        };
       };
     };
 }
