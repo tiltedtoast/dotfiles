@@ -11,15 +11,25 @@
         system = system;
         config.allowUnfree = true;
       };
+    cudaPkgs = pkgs.cudaPackages_12_9;
+    llvm = pkgs.llvmPackages_20;
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
-        buildInputs = with pkgs.cudaPackages; [
+      devShells.${system}.default = pkgs.mkShell.override { stdenv = llvm.stdenv; } {
+        buildInputs = with cudaPkgs; [
           cudatoolkit
-          cuda_nvcc
           cuda_cudart
-          cuda_gdb
           pkgs.stdenv.cc.cc.lib
+        ];
+
+        packages = with pkgs; [
+          llvm.clang-tools
+          llvm.lldb
+          gnumake
+        ];
+
+        CPATH = pkgs.lib.makeIncludePath [
+          cudaPkgs.cudatoolkit
         ];
 
         LD_LIBRARY_PATH =

@@ -76,7 +76,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
-              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
 
               home-manager.users.${globalArgs.currentUsername} = import ./hosts/vm/home.nix;
             }
@@ -96,7 +96,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
-              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
 
               home-manager.users.${globalArgs.currentUsername} = import ./hosts/desktop/home.nix;
             }

@@ -18,7 +18,7 @@ in
           enable = mkEnableOption "CUDA support";
           packages = mkOption {
             type = types.attrsOf types.package;
-            default = pkgs.cudaPackages;
+            default = pkgs.cudaPackages_12_9;
             description = "The CUDA packages to use. Defaults to the latest CUDA packages provided by Nixpkgs";
           };
         };
@@ -60,22 +60,19 @@ in
     # CUDA configuration
     (lib.mkIf cfg.cuda.enable {
       nixpkgs.overlays = [
-        (import ../../overlays/pocl-cuda.nix)
-        (import ../../overlays/nsight_compute.nix)
-        (import ../../overlays/nsight_systems.nix)
+        (import ../../overlays/pocl-cuda.nix { cudaPkgs = cfg.cuda.packages;})
+        (import ../../overlays/nsight_compute.nix { cudaPkgs = cfg.cuda.packages;})
+        (import ../../overlays/nsight_systems.nix { cudaPkgs = cfg.cuda.packages;})
       ];
       hardware.graphics.extraPackages = [
         pkgs.pocl-cuda
       ];
 
-      environment.variables = with cfg.cuda.packages; {
+      environment.variables = {
         OCL_ICD_FILENAMES = "${pkgs.pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
-        CUDA_PATH = "${cudatoolkit}";
-        CUDA_ROOT = "${cudatoolkit}";
-        CPATH = [
-          "${cudatoolkit}/include"
-        ];
+        CUDA_PATH = "${cfg.cuda.packages.cudatoolkit}";
       };
+
 
       environment.shellAliases = {
         # Thanks for trying to access /run/current-system/sw/bin/../nvvm/bin/cicc
@@ -83,16 +80,6 @@ in
       };
 
       environment.systemPackages = with cfg.cuda.packages; [
-        libcublas
-        cuda_gdb
-        cuda_nvcc
-        cuda_opencl
-        cuda_nvtx
-        cuda_nvrtc
-        cuda_nvprof
-        cuda_cupti
-        cuda_cccl
-        cuda_cudart
         cudatoolkit
         pkgs.nvtopPackages.nvidia
         nsight_systems

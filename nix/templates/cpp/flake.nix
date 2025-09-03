@@ -29,7 +29,7 @@
         CPATH =
           with pkgs;
           lib.makeIncludePath [
-            pkgs.openmpi
+            openmpi
             llvm.openmp
           ];
 
