@@ -43,63 +43,63 @@ in
     };
   };
 
-  config = lib.mkMerge [
-    (lib.mkIf (cfg.cuda.enable || cfg.driver.enable) {
-      hardware.graphics = {
-        enable = true;
+  config =
+    let
+      pocl-cuda = pkgs.callPackage ../../overlays/pocl-cuda.nix {
+        cudaPkgs = cfg.cuda.packages;
       };
-    })
-
-    (lib.mkIf (cfg.cuda.enable && cfg.driver.enable) {
-      # https://developer.nvidia.com/nvidia-development-tools-solutions-err_nvgpuctrperm-permission-issue-performance-counters
-      boot.kernelParams = [
-        "nvidia.NVreg_RestrictProfilingToAdminUsers=0"
-      ];
-    })
-
-    # CUDA configuration
-    (lib.mkIf cfg.cuda.enable {
-      nixpkgs.overlays = [
-        (import ../../overlays/pocl-cuda.nix { cudaPkgs = cfg.cuda.packages;})
-        (import ../../overlays/nsight_compute.nix { cudaPkgs = cfg.cuda.packages;})
-        (import ../../overlays/nsight_systems.nix { cudaPkgs = cfg.cuda.packages;})
-      ];
-      hardware.graphics.extraPackages = [
-        pkgs.pocl-cuda
-      ];
-
-      environment.variables = {
-        OCL_ICD_FILENAMES = "${pkgs.pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
-        CUDA_PATH = "${cfg.cuda.packages.cudatoolkit}";
+      nsight_compute = pkgs.callPackage ../../overlays/nsight_compute.nix {
+        cudaPkgs = cfg.cuda.packages;
       };
-
-
-      environment.shellAliases = {
-        # Thanks for trying to access /run/current-system/sw/bin/../nvvm/bin/cicc
-        nvcc = "${cfg.cuda.packages.cudatoolkit}/bin/nvcc";
+      nsight_systems = pkgs.callPackage ../../overlays/nsight_systems.nix {
+        cudaPkgs = cfg.cuda.packages;
       };
+    in
+    lib.mkMerge [
+      (lib.mkIf (cfg.cuda.enable || cfg.driver.enable) {
+        hardware.graphics = {
+          enable = true;
+        };
+      })
 
-      environment.systemPackages = with cfg.cuda.packages; [
-        cudatoolkit
-        pkgs.nvtopPackages.nvidia
-        nsight_systems
-        nsight_compute
-      ];
-    })
+      (lib.mkIf (cfg.cuda.enable && cfg.driver.enable) {
+        # https://developer.nvidia.com/nvidia-development-tools-solutions-err_nvgpuctrperm-permission-issue-performance-counters
+        boot.kernelParams = [
+          "nvidia.NVreg_RestrictProfilingToAdminUsers=0"
+        ];
+      })
 
-    # NVIDIA driver configuration
-    (lib.mkIf cfg.driver.enable {
-      services.xserver.videoDrivers = [ "nvidia" ];
+      # CUDA configuration
+      (lib.mkIf cfg.cuda.enable {
+        hardware.graphics.extraPackages = [
+          pocl-cuda
+        ];
 
-      hardware.nvidia = {
-        package = cfg.driver.package;
-        modesetting.enable = cfg.driver.enable;
-        nvidiaSettings = cfg.driver.enable;
-        open = cfg.driver.enable;
-      };
-      environment.systemPackages = [
-        pkgs.nvidia-vaapi-driver
-      ];
-    })
-  ];
+        environment.variables = {
+          OCL_ICD_FILENAMES = "${pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
+          CUDA_PATH = "${cfg.cuda.packages.cudatoolkit}";
+        };
+
+        environment.systemPackages = [
+          cfg.cuda.packages.cudatoolkit
+          pkgs.nvtopPackages.nvidia
+          nsight_systems
+          nsight_compute
+        ];
+      })
+
+      (lib.mkIf cfg.driver.enable {
+        services.xserver.videoDrivers = [ "nvidia" ];
+
+        hardware.nvidia = {
+          package = cfg.driver.package;
+          modesetting.enable = cfg.driver.enable;
+          nvidiaSettings = cfg.driver.enable;
+          open = cfg.driver.enable;
+        };
+        environment.systemPackages = [
+          pkgs.nvidia-vaapi-driver
+        ];
+      })
+    ];
 }
