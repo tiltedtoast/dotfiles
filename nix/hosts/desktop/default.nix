@@ -212,6 +212,7 @@
     vlc
     libnotify
     ghidra
+    teams-for-linux
 
     xdg-utils
     xdg-desktop-portal
