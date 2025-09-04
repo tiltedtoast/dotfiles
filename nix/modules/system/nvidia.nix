@@ -18,7 +18,7 @@ in
           enable = mkEnableOption "CUDA support";
           packages = mkOption {
             type = types.attrsOf types.package;
-            default = pkgs.cudaPackages_12_9;
+            default = pkgs.cudaPackages;
             description = "The CUDA packages to use. Defaults to the latest CUDA packages provided by Nixpkgs";
           };
         };

@@ -213,6 +213,7 @@
     libnotify
     ghidra
     teams-for-linux
+    libreoffice-qt6
 
     xdg-utils
     xdg-desktop-portal
