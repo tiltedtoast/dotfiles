@@ -10,7 +10,12 @@
     ./packages.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "olm-3.2.16"
+    ];
+  };
 
   nix.settings = {
     substituters = [

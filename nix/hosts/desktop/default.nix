@@ -214,6 +214,7 @@
     ghidra
     teams-for-linux
     libreoffice-qt6
+    nheko
 
     xdg-utils
     xdg-desktop-portal
