@@ -11,7 +11,7 @@
         system = system;
         config.allowUnfree = true;
       };
-    cudaPkgs = pkgs.cudaPackages_12_9;
+    cudaPkgs = pkgs.cudaPackages;
     llvm = pkgs.llvmPackages_20;
     in
     {
