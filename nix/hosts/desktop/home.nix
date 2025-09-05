@@ -154,13 +154,6 @@
         '';
         runAlways = true;
       };
-
-      nheko = {
-        text = ''
-          setsid nheko &
-        '';
-        runAlways = true;
-      };
     };
   };
 
