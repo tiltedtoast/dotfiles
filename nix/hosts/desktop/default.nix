@@ -188,6 +188,12 @@
 
   services.libinput.enable = true;
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "weekly";
+    fileSystems = [ "/" ];
+  };
+
   nixpkgs.overlays = [
     (import ../../overlays/rtl8761b-firmware.nix)
   ];

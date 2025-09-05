@@ -22,7 +22,7 @@
   boot.extraModulePackages = [ ];
 
   boot.kernelParams = [
-    "resume_offset=33301760"
+    "resume_offset=33307031"
     "drm.edid_firmware=DP-3:edid/odyssey-g7-8bpc.bin"
   ];
   boot.resumeDevice = "/dev/disk/by-partlabel/disk-primary-root";
