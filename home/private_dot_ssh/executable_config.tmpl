@@ -63,6 +63,9 @@ Host monster?
   Hostname %h.informatik.uni-mainz.de
   IdentityFile ~/.ssh/mogon
   User {{ .uni_username }}
+  {{- if eq .os_id "linux-nixos" }}
+  ProxyJump hpcgate
+  {{- end  }}
   IdentitiesOnly yes
   PubkeyAuthentication yes
   PasswordAuthentication no
