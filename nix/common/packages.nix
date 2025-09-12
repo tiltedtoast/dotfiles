@@ -100,7 +100,7 @@
       mesa
       libgcc
       volta
-      python3Full
+      python3
       pixi
     ]
     ++ [ (if config.nvidia.driver.enable then pkgs.btop-cuda else pkgs.btop) ];
