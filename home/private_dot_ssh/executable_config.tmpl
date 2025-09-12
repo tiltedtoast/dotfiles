@@ -52,22 +52,22 @@ Host mogon-nhr
     SetEnv TERM=xterm-256color
 
 Host sshgate
-  Hostname sshgate.zdv.uni-mainz.de
-  User username
-  IdentityFile ~/.ssh/mogon
-  IdentitiesOnly yes
-  PubkeyAuthentication yes
-  PasswordAuthentication no
+    Hostname sshgate.zdv.uni-mainz.de
+    User {{ .uni_username }}
+    IdentityFile ~/.ssh/mogon
+    IdentitiesOnly yes
+    PubkeyAuthentication yes
+    PasswordAuthentication no
 
 Host monster?
-  Hostname %h.informatik.uni-mainz.de
-  IdentityFile ~/.ssh/mogon
-  User {{ .uni_username }}
-  {{- if eq .os_id "linux-nixos" }}
-  ProxyJump hpcgate
-  {{- end  }}
-  IdentitiesOnly yes
-  PubkeyAuthentication yes
-  PasswordAuthentication no
-  SetEnv TERM=xterm-256color
+    Hostname %h.informatik.uni-mainz.de
+    IdentityFile ~/.ssh/mogon
+    User {{ .uni_username }}
+{{- if eq .os_id "linux-nixos" }}
+    ProxyJump hpcgate
+{{- end  }}
+    IdentitiesOnly yes
+    PubkeyAuthentication yes
+    PasswordAuthentication no
+    SetEnv TERM=xterm-256color
 
