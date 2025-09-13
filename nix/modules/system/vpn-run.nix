@@ -278,21 +278,21 @@ in
         commands = [
           {
             command = "${vpnRunScript}/bin/vpn-run";
-            options = [ "NOPASSWD" ];
+            options = [ "NOPASSWD" "SETENV"];
           }
           {
             command = "/run/current-system/sw/bin/vpn-run";
-            options = [ "NOPASSWD" ];
+            options = [ "NOPASSWD" "SETENV"];
           }
           {
             command = "/run/wrappers/bin/vpn-run";
-            options = [ "NOPASSWD" ];
+            options = [ "NOPASSWD" "SETENV"];
           }
         ];
       }
     ];
 
-    users.groupsv.vpn-run = mkIf (cfg.allowedUsers != [ ]) {
+    users.groups.vpn-run = mkIf (cfg.allowedUsers != [ ]) {
       members = cfg.allowedUsers;
     };
   };
