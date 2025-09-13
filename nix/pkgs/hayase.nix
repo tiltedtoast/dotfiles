@@ -7,11 +7,11 @@
 
 appimageTools.wrapType2 rec {
   pname = "hayase";
-  version = "6.4.23";
+  version = "6.4.29";
 
   src = fetchurl {
     url = "https://github.com/hayase-app/ui/releases/download/v${version}/linux-${pname}-${version}-linux.AppImage";
-    sha256 = "sha256-lP1F1jFXenFDyLX04YZZ00KhG21LUU2OaI0OvHxpgNo=";
+    sha256 = "sha256-w/+asNfLGZEyg+nI3aFjrCphLGkaXEHuobg6Se1jHR8=";
   };
 
   extraInstallCommands =
@@ -24,7 +24,7 @@ appimageTools.wrapType2 rec {
 
       # Fix desktop file to point to the wrapped binary
       substituteInPlace $out/share/applications/${pname}.desktop \
-        --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=${pname} %U'
+        --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=${pname} --no-sandbox %U'
 
       # Install icons
       for size in 16 32 48 64 128 256 512; do
