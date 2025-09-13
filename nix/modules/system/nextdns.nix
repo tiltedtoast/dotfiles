@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  currentUsername,
   ...
 }:
 
@@ -15,28 +14,28 @@ in
     enable = mkEnableOption "NextDNS via systemd-resolved";
 
     configFile = mkOption {
-      type = types.str;
-      defaultText = "/home/${currentUsername}/.config/nextdns/resolved.conf";
-      description = "Absolute path to the systemd-resolved config file for NextDNS.";
-    };
-
-    hostName = mkOption {
-      type = types.str;
-      defaultText = "NixOS--PC";
-      description = "The hostname to use for NextDNS (-- for spaces)";
+      type = types.path;
+      defaultText = "config.age.secrets.nextdns-config.path";
+      description = "Path to the systemd-resolved config file for NextDNS.";
     };
   };
 
   config = mkIf cfg.enable {
 
-    services.resolved = {
-      enable = true;
-
-      # TODO: agenix? sops-nix?
-      extraConfig = lib.replaceStrings [ "HOSTNAME" ] [ cfg.hostName ] (
-        builtins.readFile cfg.configFile
-      );
+    systemd.services.nextdns-activate = {
+      script = ''
+        /run/current-system/sw/bin/nextdns activate
+      '';
+      after = [ "nextdns.service" ];
+      wantedBy = [ "multi-user.target" ];
     };
 
+    services.nextdns = {
+      enable = true;
+      arguments = [
+        "-config-file"
+        cfg.configFile
+      ];
+    };
   };
 }

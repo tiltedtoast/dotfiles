@@ -2,6 +2,7 @@
   pkgs,
   currentUsername,
   config,
+  inputs,
   ...
 }:
 
@@ -110,8 +111,7 @@
 
   nextdns = {
     enable = true;
-    configFile = "/home/${currentUsername}/.config/nextdns/resolved.conf";
-    hostName = "NixOS--PC";
+    configFile = config.age.secrets.nextdns-config.path;
   };
 
   vpn-run = {
@@ -206,12 +206,19 @@
 
   programs.thunderbird.enable = true;
 
+  age.secrets = {
+    nextdns-config.file = ../../secrets/nextdns-config.age;
+  };
+
   environment.systemPackages = with pkgs; [
     ghostty
     vscode-fhs
     librewolf
     btrfs-progs
     mpv
+    nextdns
+
+    inputs.agenix.packages."${pkgs.system}".default
 
     libratbag
     piper

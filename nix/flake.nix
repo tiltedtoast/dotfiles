@@ -26,12 +26,16 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       self,
+      agenix,
       nixpkgs,
       nixos-wsl,
       home-manager,
@@ -47,6 +51,7 @@
       };
 
       commonModules = [
+        agenix.nixosModules.default
         nix-index-database.nixosModules.nix-index
         {
           config._module.args = globalArgs;

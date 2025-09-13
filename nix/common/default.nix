@@ -17,6 +17,11 @@
     ];
   };
 
+  age.identityPaths = [
+    "/home/${currentUsername}/.config/age/key"
+    "/root/.config/age/key"
+  ];
+
   nix.settings = {
     substituters = [
       "https://cache.nixos.org"
@@ -55,6 +60,7 @@
     initialPassword = "password"; # Obviously change this asap
   };
 
+
   time.timeZone = "Europe/Berlin";
 
   environment.variables = {
@@ -66,11 +72,11 @@
   environment.shellAliases = {
     nix-shell = "nix-shell --command zsh";
 
-    nixos-switch = "nh os switch -- --impure";
-    nixos-boot = "nh os boot -- --impure";
+    nixos-switch = "nh os switch";
+    nixos-boot = "nh os boot";
 
     flake-update = "sudo nix flake update --flake $NH_FLAKE";
-    update = "nh os switch --update -- --impure";
+    update = "nh os switch --update";
   };
 
   environment.interactiveShellInit = ''
