@@ -263,14 +263,13 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = [ vpnRunScript ];
 
-    security.wrappers = mkIf (cfg.allowedUsers != [ ]) {
-      vpn-run = {
-        source = "${vpnRunScript}/bin/vpn-run";
-        owner = "root";
-        group = "vpn-run";
-        permissions = "u+rxs,g+rx";
-        setuid = true;
-      };
+    security.wrappers.vpn-run = mkIf (cfg.allowedUsers != [ ]) {
+      source = "${vpnRunScript}/bin/vpn-run";
+      owner = "root";
+      group = "vpn-run";
+      permissions = "u+rxs,g+rx";
+      setuid = true;
+
     };
 
     security.sudo.extraRules = mkIf (cfg.allowedUsers != [ ]) [
@@ -293,10 +292,8 @@ in
       }
     ];
 
-    users.groups = mkIf (cfg.allowedUsers != [ ]) {
-      vpn-run = {
-        members = cfg.allowedUsers;
-      };
+    users.groupsv.vpn-run = mkIf (cfg.allowedUsers != [ ]) {
+      members = cfg.allowedUsers;
     };
   };
 }
