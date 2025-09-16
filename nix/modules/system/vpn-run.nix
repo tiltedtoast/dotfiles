@@ -258,6 +258,12 @@ in
         "bob"
       ];
     };
+
+    shellAlias = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Whether to create a shell alias for vpn-run";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -272,21 +278,34 @@ in
 
     };
 
+    environment.shellAliases = {
+      vpn-run = mkIf cfg.shellAlias "sudo -E vpn-run";
+    };
+
     security.sudo.extraRules = mkIf (cfg.allowedUsers != [ ]) [
       {
         users = cfg.allowedUsers;
         commands = [
           {
             command = "${vpnRunScript}/bin/vpn-run";
-            options = [ "NOPASSWD" "SETENV"];
+            options = [
+              "NOPASSWD"
+              "SETENV"
+            ];
           }
           {
             command = "/run/current-system/sw/bin/vpn-run";
-            options = [ "NOPASSWD" "SETENV"];
+            options = [
+              "NOPASSWD"
+              "SETENV"
+            ];
           }
           {
             command = "/run/wrappers/bin/vpn-run";
-            options = [ "NOPASSWD" "SETENV"];
+            options = [
+              "NOPASSWD"
+              "SETENV"
+            ];
           }
         ];
       }
