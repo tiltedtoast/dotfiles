@@ -56,10 +56,16 @@
       "render"
       "input"
       "gamemode"
+      "wireshark"
     ];
     initialPassword = "password"; # Obviously change this asap
   };
 
+  programs.wireshark = {
+    package = pkgs.wireshark-qt;
+    enable = true;
+    usbmon.enable = true;
+  };
 
   time.timeZone = "Europe/Berlin";
 
