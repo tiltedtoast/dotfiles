@@ -1,6 +1,7 @@
 {
   pkgs,
   currentUsername,
+  config,
   ...
 }:
 
@@ -45,6 +46,10 @@
     ];
   };
 
+  age.secrets = {
+    hashed-password.file = ../secrets/hashed-password.age;
+  };
+
   users.users.${currentUsername} = {
     isNormalUser = true;
     extraGroups = [
@@ -58,7 +63,7 @@
       "gamemode"
       "wireshark"
     ];
-    initialPassword = "password"; # Obviously change this asap
+    hashedPasswordFile = config.age.secrets.hashed-password.path;
   };
 
   programs.wireshark = {
