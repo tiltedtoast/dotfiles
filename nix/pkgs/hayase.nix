@@ -7,11 +7,11 @@
 
 appimageTools.wrapType2 rec {
   pname = "hayase";
-  version = "6.4.29";
+  version = "6.4.32";
 
   src = fetchurl {
     url = "https://github.com/hayase-app/ui/releases/download/v${version}/linux-${pname}-${version}-linux.AppImage";
-    sha256 = "sha256-w/+asNfLGZEyg+nI3aFjrCphLGkaXEHuobg6Se1jHR8=";
+    sha256 = "sha256-so6yVHIG1NONZ8AFEuGQqgJPOw266Pz8cBT+Afp+Tuo=";
   };
 
   extraInstallCommands =
