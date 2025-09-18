@@ -357,7 +357,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     vec3 col = vec3(0.);
 
     // Modify the colors to be darker by multiplying with a small factor
-    vec3 darkFactor = vec3(.5); // This makes everything 50% as bright
+    vec3 darkFactor = vec3(.1); // This makes everything 50% as bright
 
     // Get the original colors but make them darker
     col = drawBelt(p, col, size) * darkFactor;
