@@ -45,7 +45,7 @@ appimageTools.wrapType2 rec {
   meta = with lib; {
     description = "Formerly Miru. Torrent streaming made simple. Watch anime torrents, real-time with no waiting for downloads";
     homepage = "https://hayase.watch/";
-    license = licenses.unfree;
+    license = licenses.bsl11;
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
