@@ -76,7 +76,6 @@ let
       setup_namespace() {
           log "Setting up namespace '$NAMESPACE'"
 
-          # Create namespace if it doesn't exist
           if ! ip netns list | grep -q "^$NAMESPACE\$"; then
               ip netns add "$NAMESPACE"
           fi
@@ -91,17 +90,13 @@ let
 
           log "VPN IP: $VPN_CIDR"
 
-          # Move interface to namespace
           ip link set "$INTERFACE" netns "$NAMESPACE"
 
-          # Configure interface in namespace
           ip netns exec "$NAMESPACE" ip link set lo up
           ip netns exec "$NAMESPACE" ip link set "$INTERFACE" up
 
-          # Restore IP configuration
           ip netns exec "$NAMESPACE" ip addr add "$VPN_CIDR" dev "$INTERFACE"
 
-          # Set up routing - try to detect and preserve existing routes
           local gateway=""
           local existing_routes=""
 
@@ -112,7 +107,6 @@ let
               gateway=$(echo "$existing_routes" | grep -oP 'via \K[0-9.]+' | head -n1 || true)
           fi
 
-          # Set default route
           if [[ -n "$gateway" ]]; then
               log "Using detected gateway: $gateway"
               ip netns exec "$NAMESPACE" ip route add default via "$gateway" dev "$INTERFACE"
@@ -121,7 +115,6 @@ let
               ip netns exec "$NAMESPACE" ip route add default dev "$INTERFACE"
           fi
 
-          # Setup DNS
           mkdir -p "/etc/netns/$NAMESPACE"
 
           cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
@@ -137,12 +130,10 @@ let
       restore_interface() {
           log "Restoring interface '$INTERFACE' to main namespace"
 
-          # Get current config before moving
           local current_config=""
           if ip netns exec "$NAMESPACE" ip link show "$INTERFACE" >/dev/null 2>&1; then
               current_config=$(ip netns exec "$NAMESPACE" ip addr show "$INTERFACE" 2>/dev/null | grep "inet " | awk '{print $2}' || true)
 
-              # Move interface back to main namespace
               ip netns exec "$NAMESPACE" ip link set "$INTERFACE" netns 1
 
               # Restore basic configuration
@@ -152,7 +143,7 @@ let
               fi
           fi
 
-          log "Interface restored. Note: You may need to restart your VPN to fully restore routing."
+          log "Interface restored"
       }
 
       run_in_namespace() {
@@ -163,10 +154,8 @@ let
           local orig_user=""
 
           if [[ -n "''${SUDO_USER:-}" ]]; then
-              # Running via sudo
               orig_user="$SUDO_USER"
           elif [[ $EUID -eq 0 ]]; then
-              # Running as root directly - use root
               orig_user="root"
           else
               # Running as regular user (shouldn't happen with current setup, but handle it)
@@ -214,14 +203,12 @@ let
               error "No command specified. Use -h for help."
           fi
 
-          # Check if we're running as root (required for namespace operations)
           if [[ $EUID -ne 0 ]]; then
               error "This script must be run with elevated privileges. If you're in the vpn-run group, the setuid wrapper should handle this automatically."
           fi
 
           check_interface
 
-          # Set up cleanup trap
           trap 'restore_interface; cleanup_namespace' EXIT INT TERM
 
           setup_namespace
