@@ -29,7 +29,7 @@ in
     networking.networkmanager.dns = "systemd-resolved";
     services.resolved = {
       enable = true;
-      extraConfig = lib.replaceStrings [ "HOSTNAME" ] [ cfg.hostName ] (builtins.readFile cfg.configFile);
+      extraConfig = lib.replaceString "HOSTNAME" cfg.hostName (builtins.readFile cfg.configFile);
     };
 
   };
