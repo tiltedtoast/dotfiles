@@ -68,11 +68,11 @@
       nix-init
       trashy
 
-      llvmPackages_20.clang-tools
-      llvmPackages_20.clang-manpages
-      llvmPackages_20.openmp
-      llvmPackages_20.clangUseLLVM
-      llvmPackages_20.bintools
+      llvmPackages_21.clang-tools
+      llvmPackages_21.clang-manpages
+      llvmPackages_21.openmp
+      llvmPackages_21.clangUseLLVM
+      llvmPackages_21.bintools
 
       bear
       tokei

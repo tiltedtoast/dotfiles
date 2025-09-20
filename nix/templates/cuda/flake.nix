@@ -12,7 +12,7 @@
         config.allowUnfree = true;
       };
       cudaPkgs = pkgs.cudaPackages;
-      llvm = pkgs.llvmPackages_20;
+      llvm = pkgs.llvmPackages_21;
 
       cuda = {
         arch = "1200";

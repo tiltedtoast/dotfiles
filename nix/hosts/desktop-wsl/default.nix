@@ -25,8 +25,8 @@
 
     LD_LIBRARY_PATH = [
       "${pkgs.stdenv.cc.cc.lib}/lib"
-      "${pkgs.llvmPackages_20.libcxx}/lib"
-      "${pkgs.llvmPackages_20.libunwind}/lib"
+      "${pkgs.llvmPackages_21.libcxx}/lib"
+      "${pkgs.llvmPackages_21.libunwind}/lib"
     ];
 
     CPATH = [

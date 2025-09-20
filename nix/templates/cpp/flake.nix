@@ -11,7 +11,7 @@
         system = system;
         config.allowUnfree = true;
       };
-      llvm = pkgs.llvmPackages_20;
+      llvm = pkgs.llvmPackages_21;
     in
     {
       devShells.${system}.default = pkgs.mkShell.override { stdenv = llvm.stdenv; } {
