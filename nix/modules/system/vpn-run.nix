@@ -32,7 +32,7 @@ let
       VERBOSE=false
       DOH_CONFIG_FILE="${cfg.dohConfigFile}"
       USE_CLOUDFLARED="${if cfg.useCloudflared then "true" else "false"}"
-      CLOUDFLARED_PORT="${toString cfg.cloudflaredPort}"
+      CLOUDFLARED_PORT="53"
 
       usage() {
           echo "Usage: $(basename "$0") [OPTIONS] COMMAND [ARGS...]"
@@ -46,7 +46,7 @@ let
           echo "  -v,  --verbose           Verbose output"
           echo "  -d,  --doh-config FILE   DoH config file path (default: ${cfg.dohConfigFile})"
           echo "  -c,  --cloudflared       Force enable cloudflared DoH proxy"
-          echo "  -nc, --no-cloudflared    Disable cloudflared DoH proxy"
+          echo "  -nc, --no-cloudflared    Force disable cloudflared DoH proxy"
           echo "  -h,  --help              Show this help"
           echo ""
           echo "Examples:"
@@ -377,13 +377,6 @@ in
       type = types.str;
       description = "Path to file containing DoH URL configuration";
       example = "/etc/vpn-run/doh.conf";
-    };
-
-    cloudflaredPort = mkOption {
-      type = types.port;
-      default = 53;
-      description = "Port for cloudflared DNS proxy to listen on";
-      example = 53;
     };
   };
 
