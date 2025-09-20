@@ -118,6 +118,7 @@
   vpn-run = {
     enable = true;
     defaultInterface = "wg0";
+    dohConfigFile = "/home/${currentUsername}/.config/nextdns/doh.conf";
     allowedUsers = [ currentUsername ];
   };
 

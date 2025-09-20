@@ -18,6 +18,9 @@ let
       pkgs.gnugrep
       pkgs.gawk
       pkgs.util-linux
+      pkgs.cloudflared
+      pkgs.procps
+      pkgs.netcat
     ];
 
     text = ''
@@ -27,6 +30,9 @@ let
       NAMESPACE="vpn-run-ns"
       CLEANUP_ON_EXIT=true
       VERBOSE=false
+      DOH_CONFIG_FILE="${cfg.dohConfigFile}"
+      USE_CLOUDFLARED="${if cfg.useCloudflared then "true" else "false"}"
+      CLOUDFLARED_PORT="${toString cfg.cloudflaredPort}"
 
       usage() {
           echo "Usage: $(basename "$0") [OPTIONS] COMMAND [ARGS...]"
@@ -34,15 +40,18 @@ let
           echo "Run a command in a network namespace with only VPN access"
           echo ""
           echo "Options:"
-          echo "  -i, --interface NAME    VPN interface name (default: ${cfg.defaultInterface})"
-          echo "  -n, --namespace NAME    Namespace name (default: vpn-run-ns)"
-          echo "  -k, --keep-namespace    Don't cleanup namespace on exit"
-          echo "  -v, --verbose           Verbose output"
-          echo "  -h, --help              Show this help"
+          echo "  -i,  --interface NAME    VPN interface name (default: ${cfg.defaultInterface})"
+          echo "  -n,  --namespace NAME    Namespace name (default: vpn-run-ns)"
+          echo "  -k,  --keep-namespace    Don't cleanup namespace on exit"
+          echo "  -v,  --verbose           Verbose output"
+          echo "  -d,  --doh-config FILE   DoH config file path (default: ${cfg.dohConfigFile})"
+          echo "  -c,  --cloudflared       Force enable cloudflared DoH proxy"
+          echo "  -nc, --no-cloudflared    Disable cloudflared DoH proxy"
+          echo "  -h,  --help              Show this help"
           echo ""
           echo "Examples:"
           echo "  $(basename "$0") firefox"
-          echo "  $(basename "$0") -i wg1 curl https://ipinfo.io"
+          echo "  $(basename "$0") -i wg1 curl ifconfig.me"
           echo "  $(basename "$0") -n my-vpn-ns transmission-gtk"
           exit 1
       }
@@ -64,10 +73,89 @@ let
           fi
       }
 
+      read_doh_config() {
+          local doh_url=""
+
+          if [[ -f "$DOH_CONFIG_FILE" ]]; then
+              # Read the first non-empty, non-comment line
+              doh_url=$(grep -v '^#' "$DOH_CONFIG_FILE" | grep -v '^[[:space:]]*$' | head -n1 | xargs)
+              log "Read DoH URL from config: $doh_url"
+          fi
+
+          echo "$doh_url"
+      }
+
+      start_cloudflared() {
+          local doh_url="$1"
+
+          if [[ -z "$doh_url" ]]; then
+              log "No DoH URL provided, using Cloudflare's default (1.1.1.1)"
+              doh_url="https://1.1.1.1/dns-query"
+          fi
+
+          log "Starting cloudflared DNS proxy with DoH URL: $doh_url"
+
+          ip netns exec "$NAMESPACE" cloudflared proxy-dns \
+              --address "127.0.0.1" \
+              --port "$CLOUDFLARED_PORT" \
+              --upstream "$doh_url" \
+              2> /dev/null &
+
+          local cloudflared_pid=$!
+          echo "$cloudflared_pid" > "/tmp/vpn-run-cloudflared-$NAMESPACE.pid"
+
+            for _ in {1..50}; do
+              if ip netns exec "$NAMESPACE" nc -z 127.0.0.1 "$CLOUDFLARED_PORT" 2>/dev/null; then
+                log "cloudflared is ready"
+                break
+              fi
+              sleep 0.1
+            done
+
+          if ! kill -0 "$cloudflared_pid" 2>/dev/null; then
+              error "Failed to start cloudflared DNS proxy"
+          fi
+
+          log "Cloudflared started with PID: $cloudflared_pid"
+      }
+
+      stop_cloudflared() {
+          local pid_file="/tmp/vpn-run-cloudflared-$NAMESPACE.pid"
+
+          if [[ -f "$pid_file" ]]; then
+              local cloudflared_pid
+              cloudflared_pid=$(cat "$pid_file")
+
+              if kill -0 "$cloudflared_pid" 2>/dev/null; then
+                  log "Stopping cloudflared (PID: $cloudflared_pid)"
+                  kill "$cloudflared_pid" 2>/dev/null || true
+
+                  # Wait for graceful shutdown
+                  local count=0
+                  while kill -0 "$cloudflared_pid" 2>/dev/null && [[ $count -lt 10 ]]; do
+                      sleep 1
+                      ((count++))
+                  done
+
+                  # Force kill if still running
+                  if kill -0 "$cloudflared_pid" 2>/dev/null; then
+                      log "Force killing cloudflared"
+                      kill -9 "$cloudflared_pid" 2>/dev/null || true
+                  fi
+              fi
+
+              rm -f "$pid_file"
+          fi
+      }
+
       cleanup_namespace() {
           if [[ "$CLEANUP_ON_EXIT" == "true" ]]; then
               log "Cleaning up namespace '$NAMESPACE'"
               ip netns del "$NAMESPACE" 2>/dev/null || true
+
+              stop_cloudflared
+
+              rm -f "/etc/netns/$NAMESPACE/nsswitch.conf" 2>/dev/null || true
               rm -f "/etc/netns/$NAMESPACE/resolv.conf" 2>/dev/null || true
               rmdir "/etc/netns/$NAMESPACE" 2>/dev/null || true
           fi
@@ -117,12 +205,32 @@ let
 
           mkdir -p "/etc/netns/$NAMESPACE"
 
-          cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
+          cat > "/etc/netns/$NAMESPACE/nsswitch.conf" << EOF
+      # Use traditional DNS and local files for host resolution, bypassing systemd-resolved.
+      hosts:      files dns
+      EOF
+          log "Created custom nsswitch.conf to bypass systemd-resolved"
+
+          if [[ "$USE_CLOUDFLARED" == "true" ]]; then
+              local doh_url
+              doh_url=$(read_doh_config)
+
+              start_cloudflared "$doh_url"
+
+              cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
+      nameserver 127.0.0.1
+      options edns0
+      EOF
+              log "DNS configured to use cloudflared proxy on 127.0.0.1:$CLOUDFLARED_PORT"
+          else
+              cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
       nameserver 1.1.1.1
       nameserver 8.8.8.8
       nameserver 1.0.0.1
       nameserver 8.8.4.4
       EOF
+              log "DNS configured with fallback servers"
+          fi
 
           log "Namespace setup complete"
       }
@@ -136,7 +244,6 @@ let
 
               ip netns exec "$NAMESPACE" ip link set "$INTERFACE" netns 1
 
-              # Restore basic configuration
               if [[ -n "$current_config" ]]; then
                   ip addr add "$current_config" dev "$INTERFACE" 2>/dev/null || true
                   ip link set "$INTERFACE" up 2>/dev/null || true
@@ -185,6 +292,18 @@ let
                       ;;
                   -v|--verbose)
                       VERBOSE=true
+                      shift
+                      ;;
+                  -d|--doh-config)
+                      DOH_CONFIG_FILE="$2"
+                      shift 2
+                      ;;
+                  -c|--cloudflared)
+                      USE_CLOUDFLARED=true
+                      shift
+                      ;;
+                  -nc|--no-cloudflared)
+                      USE_CLOUDFLARED=false
                       shift
                       ;;
                   -h|--help)
@@ -247,6 +366,25 @@ in
       default = true;
       description = "Whether to create a shell alias for vpn-run";
     };
+
+    useCloudflared = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Whether to use cloudflared as DoH proxy for DNS resolution";
+    };
+
+    dohConfigFile = mkOption {
+      type = types.str;
+      description = "Path to file containing DoH URL configuration";
+      example = "/etc/vpn-run/doh.conf";
+    };
+
+    cloudflaredPort = mkOption {
+      type = types.port;
+      default = 53;
+      description = "Port for cloudflared DNS proxy to listen on";
+      example = 53;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -258,7 +396,6 @@ in
       group = "vpn-run";
       permissions = "u+rxs,g+rx";
       setuid = true;
-
     };
 
     environment.shellAliases = {
