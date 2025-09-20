@@ -124,14 +124,11 @@ let
           # Setup DNS
           mkdir -p "/etc/netns/$NAMESPACE"
 
-          # Try to use system DNS first, fall back to public DNS
-          if [[ -f /etc/resolv.conf ]]; then
-              cp /etc/resolv.conf "/etc/netns/$NAMESPACE/resolv.conf"
-          else
-              cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
+          cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
       nameserver 1.1.1.1
-      nameserver 1.0.0.1
       nameserver 8.8.8.8
+      nameserver 1.0.0.1
+      nameserver 8.8.4.4
       EOF
           fi
 
