@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }:
@@ -9,7 +10,7 @@ with lib;
 let
   cfg = config.disableWakeFromHibernate;
   script = ''
-    #!/bin/sh
+    #!${pkgs.bash}/bin/bash
 
     case "$1" in
       pre)

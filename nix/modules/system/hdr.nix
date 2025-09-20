@@ -10,132 +10,141 @@ with lib;
 let
   cfg = config.hdr;
 
-  hdr-toggle-script = pkgs.writeShellScriptBin "hdr-toggle" ''
-    DEFAULT_OUTPUT="${cfg.defaultOutput}"
-    DEFAULT_ICC_PROFILE="${cfg.defaultIccProfile}"
+  hdr-toggle-script = pkgs.writeShellApplication {
+    name = "hdr-toggle";
 
-    TOGGLE="''${1:-toggle}"
-    OUTPUT="''${2:-$DEFAULT_OUTPUT}"
+    runtimeInputs = with pkgs; [
+      kdePackages.libkscreen
+      jq
+    ];
 
-    # Variable juggling to make sure the default ICC profile is only applied
-    # to the default output in cases where multiple monitors are present.
-    declare ICCPROF_''${DEFAULT_OUTPUT//-/_}="''${DEFAULT_ICC_PROFILE}"
-    ICCPROF=ICCPROF_''${OUTPUT//-/_}
+    text = ''
+      DEFAULT_OUTPUT="${cfg.defaultOutput}"
+      DEFAULT_ICC_PROFILE="${cfg.defaultIccProfile}"
 
-    # Pre-flight checks
-    if [[ ! $DESKTOP_SESSION == "plasma" ]] || [[ $DISABLE_HDR_TOGGLING == "true" ]]; then
-      echo "Plasma desktop not active or DISABLE_HDR_TOGGLING has been set to true. Bailing."
-      exit 0
-    fi
-    if ! command -v kscreen-doctor &> /dev/null; then
-      echo "Error: kscreen-doctor could not be found. Bailing."
-      exit 1
-    fi
+      TOGGLE="''${1:-toggle}"
+      OUTPUT="''${2:-$DEFAULT_OUTPUT}"
 
-    OUTPUT_HDR_STATE=$(kscreen-doctor -j | jq -r --arg name "$OUTPUT" '
-      ( .outputs[] | select(.name == $name) |
-        if has("hdr") then
-          if .hdr then "enabled" else "disabled" end
-        else
-          "incapable"
-        end
-      ) // "incapable"
-    ')
+      # Variable juggling to make sure the default ICC profile is only applied
+      # to the default output in cases where multiple monitors are present.
+      declare ICCPROF_''${DEFAULT_OUTPUT//-/_}="''${DEFAULT_ICC_PROFILE}"
+      ICCPROF=ICCPROF_''${OUTPUT//-/_}
 
-    if [[ $OUTPUT_HDR_STATE == "incapable" ]]; then
-      echo "Output $OUTPUT reports HDR is incapable. Quitting..."
-      exit 1
-    fi
-    if [[ -z "$OUTPUT_HDR_STATE" ]]; then
-      echo "Output $OUTPUT not found or HDR status could not be determined. See 'kscreen-doctor -o'. Quitting..."
-      exit 1
-    fi
-
-    function hdr_disable() {
-      echo "$OUTPUT: Toggling HDR off"
-      local ICCPROF_
-      if [[ -n "$3" ]]; then
-        ICCPROF_=$3
-      else
-        ICCPROF_=''${!ICCPROF}
+      # This is KDE Plasma only for now
+      if [[ ! $DESKTOP_SESSION == "plasma" ]] || [[ "''${DISABLE_HDR_TOGGLING:-false}"  == "true" ]]; then
+        echo "Plasma desktop not active or DISABLE_HDR_TOGGLING has been set to true. Bailing."
+        exit 0
       fi
-      kscreen-doctor output.$OUTPUT.hdr.disable output.$OUTPUT.wcg.disable output.$OUTPUT.iccprofile."$ICCPROF_" >/dev/null 2>&1
-    }
 
-    function hdr_enable() {
-      echo "$OUTPUT: Toggling HDR on"
-      kscreen-doctor output.$OUTPUT.hdr.enable output.$OUTPUT.wcg.enable >/dev/null 2>&1
-    }
+      OUTPUT_HDR_STATE=$(kscreen-doctor -j | jq -r --arg name "$OUTPUT" '
+        ( .outputs[] | select(.name == $name) |
+          if has("hdr") then
+            if .hdr then "enabled" else "disabled" end
+          else
+            "incapable"
+          end
+        ) // "incapable"
+      ')
 
-    show_usage() {
-        cat << EOF
-    Usage:
-    $(basename $0) [enable|disable|toggle|help] [output] [ICC profile]
+      if [[ $OUTPUT_HDR_STATE == "incapable" ]]; then
+        echo "Output $OUTPUT reports HDR is incapable or not supported.. Quitting..."
+        exit 1
+      fi
 
-    KDE Plasma desktop HDR toggler. Utilises kscreen-doctor.
-    To be used with launch wrapper scripts or command lines such as Steam or Lutris.
-
-    Steam:
-    '$(basename $0) enable; %command%; $(basename $0) disable'
-
-    Lutris:
-    Pre-launch script: '$(basename $0) enable'
-    Post-exit script: '$(basename $0) disable'
-
-    See 'kscreen-doctor -o' to list available outputs.
-    To disable this script globally, run: 'export DISABLE_HDR_TOGGLING=true'.
-    EOF
-    }
-
-    case $TOGGLE in
-      toggle)
-        case $OUTPUT_HDR_STATE in
-          enabled)
-            hdr_disable
-            ;;
-          disabled)
-            hdr_enable
-            ;;
-          *)
-            echo "OUTPUT_HDR_STATE: '$OUTPUT_HDR_STATE' - Unexpected value. Bailing..."
-            exit 2
-            ;;
-        esac
-        ;;
-      enable)
-        if [[ "$OUTPUT_HDR_STATE" != "enabled" ]]; then
-            hdr_enable
+      function hdr_disable() {
+        echo "$OUTPUT: Toggling HDR off"
+        local ICCPROF_
+        if [[ -n "''${3:-}" ]]; then
+          ICCPROF_=$3
         else
-            echo "$OUTPUT: HDR is already enabled."
+          ICCPROF_=''${!ICCPROF}
         fi
-        ;;
-      disable)
-        if [[ "$OUTPUT_HDR_STATE" == "enabled" ]]; then
-            hdr_disable
-        else
-            echo "$OUTPUT: HDR is already disabled."
-        fi
-        ;;
-      help|h|-h|--help)
-        show_usage
-        ;;
-      *)
-        echo "Unknown command: $1."
-        show_usage
-        exit 2
-        ;;
-    esac
+        kscreen-doctor output."$OUTPUT".hdr.disable output."$OUTPUT".wcg.disable output."$OUTPUT".iccprofile."$ICCPROF_" >/dev/null 2>&1
+      }
 
-    exit 0
-  '';
+      function hdr_enable() {
+        echo "$OUTPUT: Toggling HDR on"
+        kscreen-doctor output."$OUTPUT".hdr.enable output."$OUTPUT".wcg.enable >/dev/null 2>&1
+      }
 
-  hdr-enable-script = pkgs.writeShellScriptBin "hdr-enable" ''
-    exec ${hdr-toggle-script}/bin/hdr-toggle enable "$@"
-  '';
+      show_usage() {
+          cat << EOF
+      Usage:
+      $(basename "$0") [enable|disable|toggle|help] [output] [ICC profile]
 
-  hdr-disable-script = pkgs.writeShellScriptBin "hdr-disable" ''
-    exec ${hdr-toggle-script}/bin/hdr-toggle disable "$@"
-  '';
+      KDE Plasma desktop HDR toggler. Utilises kscreen-doctor.
+      To be used with launch wrapper scripts or command lines such as Steam or Lutris.
+
+      Steam:
+      '$(basename "$0") enable; %command%; $(basename "$0") disable'
+
+      Lutris:
+      Pre-launch script: '$(basename "$0") enable'
+      Post-exit script: '$(basename "$0") disable'
+
+      See 'kscreen-doctor -o' to list available outputs.
+      To disable this script globally, run: 'export DISABLE_HDR_TOGGLING=true'.
+      EOF
+      }
+
+      case $TOGGLE in
+        toggle)
+          case $OUTPUT_HDR_STATE in
+            enabled)
+              hdr_disable "$@"
+              ;;
+            disabled)
+              hdr_enable "$@"
+              ;;
+            *)
+              echo "OUTPUT_HDR_STATE: '$OUTPUT_HDR_STATE' - Unexpected value. Bailing..."
+              exit 2
+              ;;
+          esac
+          ;;
+        enable)
+          if [[ "$OUTPUT_HDR_STATE" == "disabled" ]]; then
+              hdr_enable "$@"
+          else
+              echo "$OUTPUT: HDR is already enabled."
+          fi
+          ;;
+        disable)
+          if [[ "$OUTPUT_HDR_STATE" == "enabled" ]]; then
+              hdr_disable "$@"
+          else
+              echo "$OUTPUT: HDR is already disabled."
+          fi
+          ;;
+        help|h|-h|--help)
+          show_usage
+          ;;
+        *)
+          printf "Unknown command: %s\n\n" "$1"
+          show_usage
+          exit 2
+          ;;
+      esac
+
+      exit 0
+    '';
+  };
+
+  hdr-enable-script = pkgs.writeShellApplication {
+    name = "hdr-enable";
+    runtimeInputs = [ hdr-toggle-script ];
+    text = ''
+      exec hdr-toggle enable "$@"
+    '';
+  };
+
+  hdr-disable-script = pkgs.writeShellApplication {
+    name = "hdr-disable";
+    runtimeInputs = [ hdr-toggle-script ];
+    text = ''
+      exec hdr-toggle disable "$@"
+    '';
+  };
 in
 
 {
@@ -185,15 +194,30 @@ in
     ]
     ++ (
       let
-        mpv-hdr-script = pkgs.writeShellScriptBin "mpv-hdr" ''
-          ENABLE_HDR_WSI=1 mpv --vo=gpu-next --target-colorspace-hint --gpu-api=vulkan --gpu-context=waylandvk "$@"
-        '';
+        mpv-hdr-script = pkgs.writeShellApplication {
+          name = "mpv-hdr";
+          runtimeInputs = [ pkgs.mpv ];
+          text = ''
+            ENABLE_HDR_WSI=1 mpv           \
+              --vo=gpu-next                \
+              --target-colorspace-hint     \
+              --gpu-api=vulkan             \
+              --gpu-context=waylandvk "$@"
+          '';
+        };
 
-        mpv-hdr-auto-script = pkgs.writeShellScriptBin "mpv-hdr-auto" ''
-          hdr-toggle enable
-          ${mpv-hdr-script}/bin/mpv-hdr "$@"
-          hdr-toggle disable
-        '';
+        mpv-hdr-auto-script = pkgs.writeShellApplication {
+          name = "mpv-hdr-auto";
+          runtimeInputs = [
+            hdr-toggle-script
+            mpv-hdr-script
+          ];
+          text = ''
+            hdr-toggle enable
+            mpv-hdr "$@"
+            hdr-toggle disable
+          '';
+        };
       in
       [
         mpv-hdr-script

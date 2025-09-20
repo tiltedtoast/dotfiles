@@ -1,13 +1,20 @@
 { pkgs, ... }:
 let
-  no-rgb = pkgs.writeScriptBin "no-rgb" ''
-    #!/bin/sh
-    NUM_DEVICES=$(${pkgs.openrgb}/bin/openrgb --noautoconnect --list-devices | grep -E '^[0-9]+: ' | wc -l)
+  no-rgb = pkgs.writeShellApplication {
+    name = "no-rgb";
+    runtimeInputs = with pkgs; [
+      openrgb
+      gnugrep
+      coreutils
+    ];
+    text = ''
+      NUM_DEVICES=$(openrgb --noautoconnect --list-devices | grep -cE '^[0-9]+: ')
 
-    for i in $(seq 0 $(($NUM_DEVICES - 1))); do
-      ${pkgs.openrgb}/bin/openrgb --noautoconnect --device $i --mode static --color 000000
-    done
-  '';
+      for i in $(seq 0 $((NUM_DEVICES - 1))); do
+        openrgb --noautoconnect --device "$i" --mode static --color 000000
+      done
+    '';
+  };
 in
 {
   services.udev.packages = [ pkgs.openrgb ];

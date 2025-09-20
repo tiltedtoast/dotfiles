@@ -11,12 +11,12 @@ let
 in
 {
   options.nextdns = {
-    enable = mkEnableOption "NextDNS via systemd-resolved";
+    enable = mkEnableOption "NextDNS CLI config";
 
     configFile = mkOption {
       type = types.path;
       defaultText = "config.age.secrets.nextdns-config.path";
-      description = "Path to the systemd-resolved config file for NextDNS.";
+      description = "Path to NextDNS config file.";
     };
   };
 
