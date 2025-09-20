@@ -130,7 +130,6 @@ let
       nameserver 1.0.0.1
       nameserver 8.8.4.4
       EOF
-          fi
 
           log "Namespace setup complete"
       }
