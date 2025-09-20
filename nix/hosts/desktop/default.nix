@@ -111,7 +111,8 @@
 
   nextdns = {
     enable = true;
-    configFile = config.age.secrets.nextdns-config.path;
+    configFile = "/home/${currentUsername}/.config/nextdns/resolved.conf";
+    hostName = "NixOS--PC";
   };
 
   vpn-run = {
@@ -205,10 +206,6 @@
   services.ratbagd.enable = true;
 
   programs.thunderbird.enable = true;
-
-  age.secrets = {
-    nextdns-config.file = ../../secrets/nextdns-config.age;
-  };
 
   environment.systemPackages = with pkgs; [
     ghostty

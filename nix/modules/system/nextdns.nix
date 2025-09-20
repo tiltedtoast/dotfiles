@@ -11,31 +11,26 @@ let
 in
 {
   options.nextdns = {
-    enable = mkEnableOption "NextDNS CLI config";
+    enable = mkEnableOption "NextDNS via systemd-resolved";
 
     configFile = mkOption {
-      type = types.path;
-      defaultText = "config.age.secrets.nextdns-config.path";
-      description = "Path to NextDNS config file.";
+      type = types.str;
+      description = "Absolute path to the systemd-resolved config file for NextDNS.";
+    };
+
+    hostName = mkOption {
+      type = types.str;
+      defaultText = "NixOS--PC";
+      description = "The hostname to use for NextDNS (-- for spaces)";
     };
   };
 
   config = mkIf cfg.enable {
-
-    systemd.services.nextdns-activate = {
-      script = ''
-        /run/current-system/sw/bin/nextdns activate
-      '';
-      after = [ "nextdns.service" ];
-      wantedBy = [ "multi-user.target" ];
-    };
-
-    services.nextdns = {
+    networking.networkmanager.dns = "systemd-resolved";
+    services.resolved = {
       enable = true;
-      arguments = [
-        "-config-file"
-        cfg.configFile
-      ];
+      extraConfig = lib.replaceStrings [ "HOSTNAME" ] [ cfg.hostName ] (builtins.readFile cfg.configFile);
     };
+
   };
 }
