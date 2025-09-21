@@ -26,7 +26,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.networkmanager.dns = "systemd-resolved";
+    networking.networkmanager = {
+      dns = "systemd-resolved";
+      settings."global-dns-domain-*".servers = "127.0.0.53";
+    };
+
     services.resolved = {
       enable = true;
       extraConfig =
@@ -34,6 +38,11 @@ in
         + lib.optionalString (config.services.avahi.enable) ''
           [Resolve]
           MulticastDNS=no
+        ''
+        # Use systemd-resolved for all domains
+        + ''
+          [Resolve]
+          Domains=~.
         '';
     };
 
