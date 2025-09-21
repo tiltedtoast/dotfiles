@@ -39,6 +39,8 @@
     extraScripts = true;
   };
 
+  systemd.package = inputs.systemd-nixpkgs.legacyPackages.x86_64-linux.systemd;
+
   services.avahi = {
     enable = true;
     nssmdns4 = true;
