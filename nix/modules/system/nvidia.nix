@@ -69,16 +69,20 @@ in
         ];
       })
 
-      # CUDA configuration
-      (lib.mkIf cfg.cuda.enable {
+      (lib.mkIf (cfg.cuda.enable && !cfg.driver.enable) {
         hardware.graphics.extraPackages = [
           pocl-cuda
         ];
 
         environment.variables = {
           OCL_ICD_FILENAMES = "${pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
-          CUDA_PATH = "${cfg.cuda.packages.cudatoolkit}";
         };
+      })
+
+      # CUDA configuration
+      (lib.mkIf cfg.cuda.enable {
+
+        environment.variables.CUDA_PATH = "${cfg.cuda.packages.cudatoolkit}";
 
         environment.systemPackages = [
           cfg.cuda.packages.cudatoolkit
