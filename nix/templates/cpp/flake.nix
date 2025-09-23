@@ -18,6 +18,7 @@
         buildInputs = with pkgs; [
           llvm.openmp
           openmpi
+          stdenv.cc.cc.lib
         ];
 
         packages = with pkgs; [
