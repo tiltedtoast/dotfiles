@@ -67,6 +67,8 @@
       nix-output-monitor
       nix-init
       trashy
+      zip
+      gdb
 
       llvmPackages_21.clang-tools
       llvmPackages_21.clang-manpages

@@ -56,7 +56,6 @@ in
       prettyLyrics
       fixMainViewWidth
       roundedImages
-      removeConnectBar
     ];
 
     theme = spicePkgs.themes.lucid;
