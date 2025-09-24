@@ -1,11 +1,20 @@
 {
+  inputs,
   pkgs,
   ...
 }:
 
 {
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      kdePackages = inputs.kde-nixpkgs.legacyPackages.x86_64-linux.kdePackages;
+    })
+  ];
+
   services = {
     desktopManager.plasma6.enable = true;
+    desktopManager.plasma6.enableQt5Integration = false;
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;

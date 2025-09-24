@@ -226,7 +226,7 @@
     libnotify
     ghidra
     teams-for-linux
-    libreoffice-qt6
+    inputs.kde-nixpkgs.legacyPackages.x86_64-linux.libreoffice-qt6
     nheko
 
     xdg-utils

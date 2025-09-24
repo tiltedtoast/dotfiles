@@ -122,6 +122,22 @@
         "type": "github"
       }
     },
+    "kde-nixpkgs": {
+      "locked": {
+        "lastModified": 1754421877,
+        "narHash": "sha256-rnD9bIuafi9ejh52eEjRVAEAMQ+j5exQzpz6IArj6Mw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ee9c359b5aae154fbdbda28e243e51ca170f2bb3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ee9c359b5aae154fbdbda28e243e51ca170f2bb3",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -208,6 +224,7 @@
         "agenix": "agenix",
         "disko": "disko",
         "home-manager": "home-manager_2",
+        "kde-nixpkgs": "kde-nixpkgs",
         "nix-index-database": "nix-index-database",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
