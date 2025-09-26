@@ -104,6 +104,9 @@
       volta
       python3
       pixi
+
+      man-pages
+      man-pages-posix
     ]
     ++ [ (if config.nvidia.driver.enable then pkgs.btop-cuda else pkgs.btop) ];
 }
