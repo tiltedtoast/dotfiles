@@ -39,6 +39,8 @@
           llvm.lldb
         ];
 
+        CUDA_PATH = cuda.path;
+
         CPATH = pkgs.lib.makeIncludePath [
           cudaPkgs.cudatoolkit
         ];
