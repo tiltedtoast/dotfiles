@@ -58,6 +58,14 @@
                 {
                     "style": "diamond",
                     "trailing_diamond": "\ue0b0",
+                    "foreground": "#100e23",
+                    "background": "#0077c2",
+                    "template": " {{ if ne .Type \"unknown\" }}nix-shell{{ end }} ",
+                    "type": "nix-shell"
+                },
+                {
+                    "style": "diamond",
+                    "trailing_diamond": "\ue0b0",
                     "template": " \ue235 {{ .Full }} ",
                     "foreground": "#100e23",
                     "background": "#8d75d6",
