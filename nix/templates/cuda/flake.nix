@@ -10,6 +10,7 @@
       pkgs = import nixpkgs {
         system = system;
         config.allowUnfree = true;
+        config.cudaSupport = true;
       };
       cudaPkgs = pkgs.cudaPackages;
       llvm = pkgs.llvmPackages_21;
