@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    kde-nixpkgs.url = "github:NixOS/nixpkgs/ee9c359b5aae154fbdbda28e243e51ca170f2bb3";
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";

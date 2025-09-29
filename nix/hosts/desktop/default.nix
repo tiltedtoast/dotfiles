@@ -33,6 +33,9 @@
     };
   };
 
+  # Use EGL backend for now since the direct one seems to be broken for some things
+  environment.variables.NVD_BACKEND = "egl";
+
   hdr = {
     enable = true;
     defaultOutput = "DP-3";
@@ -226,7 +229,7 @@
     libnotify
     ghidra
     teams-for-linux
-    inputs.kde-nixpkgs.legacyPackages.x86_64-linux.libreoffice-qt6
+    libreoffice-qt6
     nheko
 
     xdg-utils
