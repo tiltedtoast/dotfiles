@@ -21,10 +21,14 @@
       lookAndFeel = "org.kde.breezedark.desktop";
       wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/MilkyWay/contents/images/5120x2880.png";
 
-      enableMiddleClickPaste = true;
+      enableMiddleClickPaste = false;
 
       tooltipDelay = 5;
     };
+
+    # For some reason the workspace setting does not apply this setting
+    # so we write it directly into the config file (disable middle click paste)
+    configFile.kwinrc.Wayland.EnablePrimarySelection = false;
 
     kscreenlocker = {
       autoLock = false;
@@ -136,14 +140,14 @@
     startup.startupScript = {
       discord = {
         text = ''
-          setsid discord &
+          setsid discord --enable-blink-features=MiddleClickAutoscroll &
         '';
         runAlways = true;
       };
 
       spotify = {
         text = ''
-          setsid spotify &
+          setsid spotify --enable-blink-features=MiddleClickAutoscroll &
         '';
         runAlways = true;
       };
