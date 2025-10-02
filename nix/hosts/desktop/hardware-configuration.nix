@@ -18,12 +18,16 @@
   boot.kernelModules = [
     "kvm-amd"
     "hid-logitech-dj"
+    "zenpower"
   ];
-  boot.extraModulePackages = [ ];
+
+  boot.blacklistedKernelModules = [ "k10temp" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.zenpower ];
 
   boot.kernelParams = [
     "resume_offset=33307031"
     "drm.edid_firmware=DP-3:edid/odyssey-g7-8bpc.bin"
+    "amd_pstate=active"
   ];
   boot.resumeDevice = "/dev/disk/by-partlabel/disk-primary-root";
 
