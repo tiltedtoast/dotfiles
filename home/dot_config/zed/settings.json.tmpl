@@ -68,7 +68,7 @@
             }
         },
         "Nix": {
-            "language_servers": [ "nixd" ]
+            "language_servers": ["nixd"]
         }
     },
     "lsp": {
@@ -148,10 +148,32 @@
                 },
                 "rustfmt": {}
             }
+        },
+        "clangd": {
+            "binary": {
+                "arguments": [
+                    "--function-arg-placeholders=0",
+                    // Breaks stuff without compile_commands.json as of clangd 21 i think
+                    // "--experimental-modules-support",
+                    "--background-index",
+                    "--all-scopes-completion",
+                    "--header-insertion-decorators=0"
+                ]
+            }
         }
     },
     "formatter": "auto",
     "tab_bar": {
         "show": false
+    },
+    "code_actions_on_format": {
+        "source.fixAll": true,
+        "source.fixAll.biome": true,
+        "quickfix.biome": true,
+        "source.sortImports": true,
+        "source.addMissingImports.ts": true,
+        "source.removeUnusedImports": true,
+        "source.organizeImports.biome": true,
+        "source.addMissingImports": true
     }
 }
