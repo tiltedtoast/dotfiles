@@ -216,6 +216,7 @@
   environment.systemPackages = with pkgs; [
     ghostty
     vscode-fhs
+    zed-editor-fhs
     librewolf
     btrfs-progs
     mpv
