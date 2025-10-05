@@ -168,6 +168,7 @@
         limitThreshold = -12.0;
         appNames = [
           "spotify"
+          "foobar2000 Application"
         ];
       };
       Discord.appNames = [
