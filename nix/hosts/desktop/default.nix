@@ -33,9 +33,6 @@
     };
   };
 
-  # Use EGL backend for now since the direct one seems to be broken for some things
-  environment.variables.NVD_BACKEND = "egl";
-
   hdr = {
     enable = true;
     defaultOutput = "DP-3";
@@ -218,7 +215,7 @@
     ghostty
     vscode-fhs
     zed-editor-fhs
-    librewolf
+    inputs.nixpkgs-librewolf.legacyPackages.${pkgs.system}.librewolf
     btrfs-progs
     mpv
     nextdns
