@@ -152,6 +152,13 @@
         runAlways = true;
       };
 
+      nheko = {
+        text = ''
+          setsid nheko &
+        '';
+        runAlways = true;
+      };
+
       steam = {
         text = ''
           setsid steam -silent &
