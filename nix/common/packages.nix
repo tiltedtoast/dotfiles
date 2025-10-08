@@ -23,7 +23,7 @@
       imagemagick
       gifsicle
       openssh
-      openssl
+      openssl.out
       oh-my-posh
       fzf
       atuin
