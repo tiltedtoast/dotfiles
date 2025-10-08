@@ -31,9 +31,6 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    systemd-nixpkgs = {
-      url = "github:TiltedToast/nixpkgs";
-    };
   };
 
   outputs =
