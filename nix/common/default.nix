@@ -78,7 +78,6 @@
 
   environment.variables = {
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
-    PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
   };
 
   environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles/nix";

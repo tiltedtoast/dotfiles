@@ -27,6 +27,7 @@ export ZVM_INSTALL="$HOME/.zvm/self"
 export PATH="$HOME/.zvm/bin:$PATH"
 export PATH="$ZVM_INSTALL/:$PATH"
 export PATH="$HOME/3rd-party/depot_tools:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
