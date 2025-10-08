@@ -35,13 +35,6 @@
 
   hardware.nvidia.powerManagement.enable = true;
 
-  swapDevices = [
-    {
-      device = "/swap/swapfile";
-      size = 70 * 1024; # 70GB
-    }
-  ];
-
   hardware.firmware = [
     (pkgs.runCommandNoCC "firmware-custom-edid" { } ''
       mkdir -p $out/lib/firmware/edid/
