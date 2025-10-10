@@ -22,8 +22,13 @@
     ../../modules/system/openrgb.nix
     ../../modules/system/vpn-run.nix
     ../../modules/system/hdr.nix
+    ../../modules/system/backup.nix
     ./disko.nix
   ];
+
+  age.secrets = {
+    restic-password.file = ../../secrets/restic-password.age;
+  };
 
   nvidia = {
     cuda.enable = true;
@@ -37,6 +42,38 @@
     enable = true;
     defaultOutput = "DP-3";
     extraScripts = true;
+  };
+
+  gdriveBackup = {
+    enable = true;
+    paths = [
+      "/home/${currentUsername}/Documents"
+      "/home/${currentUsername}/Pictures"
+      "/home/${currentUsername}/Videos"
+      "/home/${currentUsername}/Music"
+      "/var/lib/sonarr/.config/NzbDrone/Backups"
+      "/var/lib/private/prowlarr/Backups"
+    ];
+    exclude = [
+      "*.tmp"
+      ".cache"
+      "*.log"
+      "node_modules"
+      "/home/${currentUsername}/Documents/NVIDIA Nsight Compute"
+      "/home/${currentUsername}/Documents/NVIDIA Nsight Systems"
+    ];
+    pruneOpts = [
+      "--keep-daily 4"
+      "--keep-weekly 3"
+      "--keep-monthly 2"
+    ];
+    passwordFile = "/run/agenix/restic-password";
+    rcloneRemoteName = "gdrive";
+    rcloneConfigFile = "/home/${currentUsername}/.config/rclone/rclone.conf";
+    rcloneOptions = {
+      drive-use-trash = false;
+    };
+    backupPath = "backups/desktop";
   };
 
   services.avahi = {
@@ -216,7 +253,6 @@
     inputs.nixpkgs-librewolf.legacyPackages.${pkgs.system}.librewolf
     btrfs-progs
     mpv
-    nextdns
 
     inputs.agenix.packages."${pkgs.system}".default
 

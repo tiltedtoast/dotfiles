@@ -3,4 +3,5 @@ let
 in
 {
   "hashed-password.age".publicKeys = [ pubKey ];
+  "restic-password.age".publicKeys = [ pubKey ];
 }
