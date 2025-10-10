@@ -56,7 +56,6 @@ Checks:
     cert-err52-cpp,
     cert-err60-cpp,
     cert-flp30-c,
-    cert-msc50-cpp,
     cert-msc51-cpp,
     cert-str34-c,
     cppcoreguidelines-interfaces-global-init,
