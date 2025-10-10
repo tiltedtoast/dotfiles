@@ -241,6 +241,9 @@
 
   nixpkgs.overlays = [
     (import ../../overlays/rtl8761b-firmware.nix)
+    (final: prev: {
+      librewolf = inputs.nixpkgs-librewolf.legacyPackages.${pkgs.system}.librewolf;
+    })
   ];
 
   hardware.firmware = with pkgs; [
@@ -255,9 +258,9 @@
     ghostty
     vscode-fhs
     zed-editor-fhs
-    inputs.nixpkgs-librewolf.legacyPackages.${pkgs.system}.librewolf
     btrfs-progs
     mpv
+    librewolf
 
     inputs.agenix.packages."${pkgs.system}".default
 
