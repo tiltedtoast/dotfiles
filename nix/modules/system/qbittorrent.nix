@@ -65,6 +65,10 @@ in
           AddExtensionToIncompleteFiles = true;
           AnonymousModeEnabled = true;
 
+          MaxActiveDownloads = 6;
+          MaxActiveUploads = 6;
+          MaxActiveTorrents = 6;
+
           GlobalMaxRatio = 2;
           MaxConnections = -1;
           MaxConnectionsPerTorrent = -1;
