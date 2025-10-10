@@ -3,6 +3,7 @@
   currentUsername,
   config,
   inputs,
+  lib,
   ...
 }:
 
@@ -22,7 +23,6 @@
     ../../modules/system/openrgb.nix
     ../../modules/system/vpn-run.nix
     ../../modules/system/hdr.nix
-    ../../modules/system/backup.nix
     ./disko.nix
   ];
 
@@ -44,8 +44,10 @@
     extraScripts = true;
   };
 
-  gdriveBackup = {
-    enable = true;
+  services.restic.backups.gdrive = {
+    repository = "rclone:gdrive:backups/desktop";
+    passwordFile = "/run/agenix/restic-password";
+
     paths = [
       "/home/${currentUsername}/Documents"
       "/home/${currentUsername}/Pictures"
@@ -67,18 +69,40 @@
       "/home/${currentUsername}/Documents/NVIDIA Nsight Compute"
       "/home/${currentUsername}/Documents/NVIDIA Nsight Systems"
     ];
+
+    environmentFile = toString (
+      pkgs.writeText "gdrive-rclone-env" ''
+        RCLONE_CONFIG=/home/${currentUsername}/.config/rclone/rclone.conf
+      ''
+    );
+
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true;
+    };
+
     pruneOpts = [
       "--keep-daily 4"
       "--keep-weekly 3"
       "--keep-monthly 2"
     ];
-    passwordFile = "/run/agenix/restic-password";
-    rcloneRemoteName = "gdrive";
-    rcloneConfigFile = "/home/${currentUsername}/.config/rclone/rclone.conf";
+
+    initialize = true;
+
     rcloneOptions = {
       drive-use-trash = false;
     };
-    backupPath = "backups/desktop";
+
+    createWrapper = true;
+
+    backupPrepareCommand = ''
+      echo "Starting Google Drive backup at $(date)"
+      echo "Backing up paths: ${lib.concatStringsSep ", " config.services.restic.backups.gdrive.paths}"
+    '';
+
+    backupCleanupCommand = ''
+      echo "Google Drive backup completed at $(date)"
+    '';
   };
 
   services.avahi = {
