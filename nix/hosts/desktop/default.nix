@@ -51,6 +51,11 @@
       "/home/${currentUsername}/Pictures"
       "/home/${currentUsername}/Videos"
       "/home/${currentUsername}/Music"
+      "/home/${currentUsername}/.librewolf/f9ugjznf.default/user.js"
+      "/home/${currentUsername}/.librewolf/f9ugjznf.default/cookies.sqlite"
+      "/home/${currentUsername}/.librewolf/f9ugjznf.default/cookies.sqlite-wal"
+      "/home/${currentUsername}/.librewolf/f9ugjznf.default/places.sqlite"
+      "/home/${currentUsername}/.librewolf/f9ugjznf.default/chrome"
       "/var/lib/sonarr/.config/NzbDrone/Backups"
       "/var/lib/private/prowlarr/Backups"
     ];
