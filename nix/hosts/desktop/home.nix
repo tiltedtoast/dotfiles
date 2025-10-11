@@ -26,10 +26,6 @@
       tooltipDelay = 5;
     };
 
-    # For some reason the workspace setting does not apply this setting
-    # so we write it directly into the config file (disable middle click paste)
-    configFile.kwinrc.Wayland.EnablePrimarySelection = false;
-
     kscreenlocker = {
       autoLock = false;
       appearance.showMediaControls = false;
@@ -128,6 +124,15 @@
         XftAntialias = true;
         XftHintStyle = "hintslight";
         XftSubPixel = "rgb";
+      };
+
+      kwinrc = {
+        # For some reason the workspace setting does not persist this setting
+        # so we write it directly into the config file (disable middle click paste)
+        Wayland.EnablePrimarySelection = false;
+
+        # Disable overview when moving to top left corner
+        "Effect-overview".BorderActivate = 9;
       };
 
       kded5rc.Module-browserintegrationreminder.autoload = false;
