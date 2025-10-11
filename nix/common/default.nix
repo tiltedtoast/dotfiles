@@ -49,10 +49,6 @@
     ];
   };
 
-  age.secrets = {
-    hashed-password.file = ../secrets/hashed-password.age;
-  };
-
   users.users.${currentUsername} = {
     isNormalUser = true;
     extraGroups = [
@@ -68,7 +64,7 @@
       "kvm"
       "libvirtd"
     ];
-    hashedPasswordFile = config.age.secrets.hashed-password.path;
+    initialPassword = "password";
   };
 
   programs.wireshark = {
