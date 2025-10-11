@@ -28,13 +28,16 @@
 
   age.secrets = {
     restic-password.file = ../../secrets/restic-password.age;
+    "nextdns-resolved.conf".file = ../../secrets/nextdns-resolved.conf.age;
+    "nextdns-doh.conf".file = ../../secrets/nextdns-doh.conf.age;
   };
 
-  environment.etc."age/key" = {
-    source = /home/${currentUsername}/.config/age/key;
-    mode = "0400";
-    user = "root";
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
   };
+
+  programs.virt-manager.enable = true;
 
   nvidia = {
     cuda.enable = true;
@@ -52,7 +55,7 @@
 
   services.restic.backups.gdrive = {
     repository = "rclone:gdrive:backups/desktop";
-    passwordFile = "/run/agenix/restic-password";
+    passwordFile = config.age.secrets.restic-password.path;
 
     paths = [
       "/home/${currentUsername}/Documents"
@@ -183,14 +186,14 @@
 
   nextdns = {
     enable = true;
-    configFile = "/home/${currentUsername}/.config/nextdns/resolved.conf";
+    configFile = config.age.secrets."nextdns-resolved.conf".path;
     hostName = "NixOS--PC";
   };
 
   vpn-run = {
     enable = true;
     defaultInterface = "wg0";
-    dohConfigFile = "/home/${currentUsername}/.config/nextdns/doh.conf";
+    dohConfigFile = config.age.secrets."nextdns-doh.conf".path;
     allowedUsers = [ currentUsername ];
   };
 

@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -14,8 +15,8 @@ in
     enable = mkEnableOption "NextDNS via systemd-resolved";
 
     configFile = mkOption {
-      type = types.str;
-      description = "Absolute path to the systemd-resolved config file for NextDNS.";
+      type = types.path;
+      description = "Path to the systemd-resolved config file for NextDNS.";
     };
 
     hostName = mkOption {
@@ -34,17 +35,31 @@ in
     services.resolved = {
       enable = true;
       extraConfig =
-        lib.replaceString "HOSTNAME" cfg.hostName (builtins.readFile cfg.configFile)
-        + lib.optionalString (config.services.avahi.enable) ''
+        lib.optionalString (config.services.avahi.enable) ''
           [Resolve]
           MulticastDNS=no
         ''
-        # Use systemd-resolved for all domains
         + ''
           [Resolve]
           Domains=~.
         '';
     };
 
+    systemd.services.nextdns-config-generator = {
+      description = "Generate NextDNS config for systemd-resolved";
+      before = [ "systemd-resolved.service" ];
+      wantedBy = [ "systemd-resolved.service" ];
+
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+
+      script = ''
+        mkdir -p /run/systemd/resolved.conf.d
+
+        ${pkgs.gnused}/bin/sed 's/HOSTNAME/${cfg.hostName}/g' ${cfg.configFile} > /run/systemd/resolved.conf.d/99-nextdns.conf
+      '';
+    };
   };
 }

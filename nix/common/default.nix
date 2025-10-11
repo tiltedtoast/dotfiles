@@ -65,6 +65,8 @@
       "input"
       "gamemode"
       "wireshark"
+      "kvm"
+      "libvirtd"
     ];
     hashedPasswordFile = config.age.secrets.hashed-password.path;
   };
@@ -86,11 +88,11 @@
   environment.shellAliases = {
     nix-shell = "nix-shell --command zsh";
 
-    nixos-switch = "nh os switch -- --impure";
-    nixos-boot = "nh os boot -- --impure";
+    nixos-switch = "nh os switch";
+    nixos-boot = "nh os boot";
 
     flake-update = "sudo nix flake update --flake $NH_FLAKE";
-    update = "nh os switch --update -- --impure";
+    update = "nh os switch --update";
   };
 
   environment.interactiveShellInit = ''
