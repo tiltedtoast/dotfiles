@@ -69,6 +69,7 @@
       "/home/${currentUsername}/.librewolf/f9ugjznf.default/chrome"
       "/var/lib/sonarr/.config/NzbDrone/Backups"
       "/var/lib/private/prowlarr/Backups"
+      "/home/${currentUsername}/.var/app/com.core447.StreamController"
     ];
     exclude = [
       "*.tmp"
