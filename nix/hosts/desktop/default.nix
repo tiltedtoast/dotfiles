@@ -30,6 +30,12 @@
     restic-password.file = ../../secrets/restic-password.age;
   };
 
+  environment.etc."age/key" = {
+    source = /home/${currentUsername}/.config/age/key;
+    mode = "0400";
+    user = "root";
+  };
+
   nvidia = {
     cuda.enable = true;
     driver = {

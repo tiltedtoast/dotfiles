@@ -21,6 +21,7 @@
   age.identityPaths = [
     "/home/${currentUsername}/.config/age/key"
     "/root/.config/age/key"
+    "/etc/age/key"
   ];
 
   nix.settings = {
