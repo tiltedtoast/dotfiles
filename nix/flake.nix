@@ -31,21 +31,19 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-flatpak.url = "github:gmodena/nix-flatpak/latest";
   };
 
   outputs =
     {
       self,
-      disko,
       agenix,
       nixpkgs,
       nixos-wsl,
-      nix-flatpak,
       home-manager,
       spicetify-nix,
       plasma-manager,
       nix-index-database,
+      disko,
       ...
     }@inputs:
     let
@@ -56,7 +54,6 @@
       commonModules = [
         agenix.nixosModules.default
         nix-index-database.nixosModules.nix-index
-        nix-flatpak.nixosModules.nix-flatpak
         {
           config._module.args = globalArgs;
         }

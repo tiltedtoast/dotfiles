@@ -39,18 +39,6 @@
 
   programs.virt-manager.enable = true;
 
-  services.flatpak = {
-    enable = true;
-    packages = [
-      "com.surfshark.Surfshark"
-    ];
-  };
-  services.flatpak.update.onActivation = true;
-
-  environment.sessionVariables.XDG_DATA_DIRS = [
-    "/var/lib/flatpak/exports/share"
-  ];
-
   nvidia = {
     cuda.enable = true;
     driver = {
