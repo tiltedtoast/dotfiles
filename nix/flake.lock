@@ -180,22 +180,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-librewolf": {
-      "locked": {
-        "lastModified": 1756476879,
-        "narHash": "sha256-BBeJBs4HUbq0OIRwGFkVXxmYwPWBC+BLnQchvXchgik=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a5ae7b9504471317986edeaab080b5e608c08a5a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a5ae7b9504471317986edeaab080b5e608c08a5a",
-        "type": "github"
-      }
-    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -227,7 +211,6 @@
         "nix-index-database": "nix-index-database",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-librewolf": "nixpkgs-librewolf",
         "plasma-manager": "plasma-manager",
         "spicetify-nix": "spicetify-nix"
       }
