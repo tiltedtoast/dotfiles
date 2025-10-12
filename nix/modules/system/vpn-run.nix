@@ -21,6 +21,9 @@ let
       pkgs.cloudflared
       pkgs.procps
       pkgs.netcat
+      pkgs.iptables
+      pkgs.coreutils
+      pkgs.socat
     ];
 
     text = ''
@@ -30,308 +33,359 @@ let
       NAMESPACE="vpn-run-ns"
       CLEANUP_ON_EXIT=true
       VERBOSE=false
-      DOH_CONFIG_FILE="${cfg.dohConfigFile}"
-      USE_CLOUDFLARED="${if cfg.useCloudflared then "true" else "false"}"
-      CLOUDFLARED_PORT="53"
+
+      # veth pair addressing
+      VETH_HOST_CIDR="${cfg.vethHostAddress}"
+      VETH_NS_CIDR="${cfg.vethNsAddress}"
+
+      DISABLE_IPV6="${if cfg.disableIPv6 then "true" else "false"}"
+      DROP_NON_VPN="${if cfg.dropNonVpnForward then "true" else "false"}"
+
+      VETH_HOST_IP="''${VETH_HOST_CIDR%/*}"
+      VETH_NS_IP="''${VETH_NS_CIDR%/*}"
+
+      HOST_DNS_TARGET="''${VPN_RUN_HOST_DNS_TARGET:-}"
+
+      # State
+      ROUTE_TABLE_ID=""
+      RULE_PRIORITY=""
+      NAT_CHAIN=""
+      FWD_CHAIN=""
+      DNS_IN_CHAIN=""
+      VETH_HOST=""
+      VETH_NS=""
+      DNS_TCP_PID=""
+      DNS_UDP_PID=""
+      SOCAT_LOG_DIR="/run/vpn-run-logs"
+      SOCAT_TCP_LOG=""
+      SOCAT_UDP_LOG=""
 
       usage() {
-          echo "Usage: $(basename "$0") [OPTIONS] COMMAND [ARGS...]"
-          echo ""
-          echo "Run a command in a network namespace with only VPN access"
-          echo ""
-          echo "Options:"
-          echo "  -i,  --interface NAME    VPN interface name (default: ${cfg.defaultInterface})"
-          echo "  -n,  --namespace NAME    Namespace name (default: vpn-run-ns)"
-          echo "  -k,  --keep-namespace    Don't cleanup namespace on exit"
-          echo "  -v,  --verbose           Verbose output"
-          echo "  -d,  --doh-config FILE   DoH config file path (default: ${cfg.dohConfigFile})"
-          echo "  -c,  --cloudflared       Force enable cloudflared DoH proxy"
-          echo "  -nc, --no-cloudflared    Force disable cloudflared DoH proxy"
-          echo "  -h,  --help              Show this help"
-          echo ""
-          echo "Examples:"
-          echo "  $(basename "$0") firefox"
-          echo "  $(basename "$0") -i wg1 curl ifconfig.me"
-          echo "  $(basename "$0") -n my-vpn-ns transmission-gtk"
-          exit 1
+        echo "Usage: $(basename "$0") [OPTIONS] COMMAND [ARGS...]"
+        echo ""
+        echo "Run a command in an isolated network namespace that only egresses via a specific interface"
+        echo "DNS inside the namespace is bridged to the host's resolver"
+        echo ""
+        echo "Options:"
+        echo "  -i,  --interface NAME    VPN interface (default: ${cfg.defaultInterface})"
+        echo "  -n,  --namespace NAME    Namespace name (default: vpn-run-ns)"
+        echo "  -k,  --keep-namespace    Don't cleanup namespace on exit"
+        echo "  -v,  --verbose           Verbose output"
+        echo "  -h,  --help              Show this help"
+        exit 1
       }
 
-      log() {
-          if [[ "$VERBOSE" == "true" ]]; then
-              echo "[vpn-run] $*" >&2
-          fi
+      log()   {
+        if [[ "$VERBOSE" == "true" ]]; then
+          echo "[vpn-run] $*" >&2 || true
+        fi
       }
 
       error() {
-          echo "[vpn-run] ERROR: $*" >&2
-          exit 1
+        echo "[vpn-run] ERROR: $*" >&2
+        exit 1
+      }
+
+      require_root() {
+        if [[ ! $EUID -eq 0 ]]; then
+          error "Run as root"
+        fi
       }
 
       check_interface() {
-          if ! ip link show "$INTERFACE" >/dev/null 2>&1; then
-              error "Interface '$INTERFACE' not found. Make sure your VPN is running."
-          fi
+        ip link show "$INTERFACE" >/dev/null 2>&1 || error "Interface '$INTERFACE' not found.";
       }
 
-      read_doh_config() {
-          local doh_url=""
-
-          if [[ -f "$DOH_CONFIG_FILE" ]]; then
-              # Read the first non-empty, non-comment line
-              doh_url=$(grep -v '^#' "$DOH_CONFIG_FILE" | grep -v '^[[:space:]]*$' | head -n1 | xargs)
-              log "Read DoH URL from config: $doh_url"
-          fi
-
-          echo "$doh_url"
+      # Interface names must be <= 15 chars
+      gen_suffix() {
+        printf "%04x" "$((RANDOM % 65536))"
       }
 
-      start_cloudflared() {
-          local doh_url="$1"
-
-          if [[ -z "$doh_url" ]]; then
-              log "No DoH URL provided, using Cloudflare's default (1.1.1.1)"
-              doh_url="https://1.1.1.1/dns-query"
-          fi
-
-          log "Starting cloudflared DNS proxy with DoH URL: $doh_url"
-
-          ip netns exec "$NAMESPACE" cloudflared proxy-dns \
-              --address "127.0.0.1" \
-              --port "$CLOUDFLARED_PORT" \
-              --upstream "$doh_url" \
-              2> /dev/null &
-
-          local cloudflared_pid=$!
-          echo "$cloudflared_pid" > "/tmp/vpn-run-cloudflared-$NAMESPACE.pid"
-
-            for _ in {1..50}; do
-              if ip netns exec "$NAMESPACE" nc -z 127.0.0.1 "$CLOUDFLARED_PORT" 2>/dev/null; then
-                log "cloudflared is ready"
-                break
-              fi
-              sleep 0.1
-            done
-
-          if ! kill -0 "$cloudflared_pid" 2>/dev/null; then
-              error "Failed to start cloudflared DNS proxy"
-          fi
-
-          log "Cloudflared started with PID: $cloudflared_pid"
+      ipt_add_once() {
+        local table="$1"; shift;
+        local chain="$1"; shift;
+        iptables -t "$table" -C "$chain" "$@" 2>/dev/null || iptables -t "$table" -A "$chain" "$@"
       }
 
-      stop_cloudflared() {
-          local pid_file="/tmp/vpn-run-cloudflared-$NAMESPACE.pid"
+      ipt_insert_once() {
+        local table="$1"; shift;
+        local chain="$1"; shift;
+        iptables -t "$table" -C "$chain" "$@" 2>/dev/null || iptables -t "$table" -I "$chain" "$@"
+      }
 
-          if [[ -f "$pid_file" ]]; then
-              local cloudflared_pid
-              cloudflared_pid=$(cat "$pid_file")
+      detect_host_dns_target() {
+        if [[ -n "$HOST_DNS_TARGET" ]]; then
+          return
+        fi
 
-              if kill -0 "$cloudflared_pid" 2>/dev/null; then
-                  log "Stopping cloudflared (PID: $cloudflared_pid)"
-                  kill "$cloudflared_pid" 2>/dev/null || true
+        if command -v systemctl >/dev/null 2>&1 && systemctl -q is-active systemd-resolved; then
+          HOST_DNS_TARGET="127.0.0.53:53"
+        else
+          HOST_DNS_TARGET="127.0.0.1:53"
+        fi
+      }
 
-                  # Wait for graceful shutdown
-                  local count=0
-                  while kill -0 "$cloudflared_pid" 2>/dev/null && [[ $count -lt 10 ]]; do
-                      sleep 1
-                      ((count++))
-                  done
+      start_dns_bridge() {
+        detect_host_dns_target
+        local t_ip="''${HOST_DNS_TARGET%:*}"
+        local t_port="''${HOST_DNS_TARGET#*:}"
 
-                  # Force kill if still running
-                  if kill -0 "$cloudflared_pid" 2>/dev/null; then
-                      log "Force killing cloudflared"
-                      kill -9 "$cloudflared_pid" 2>/dev/null || true
-                  fi
-              fi
+        log "Starting DNS bridge on $VETH_HOST_IP:53 -> $t_ip:$t_port (UDP+TCP) via socat"
 
-              rm -f "$pid_file"
+        mkdir -p "$SOCAT_LOG_DIR"
+        SOCAT_TCP_LOG="$SOCAT_LOG_DIR/socat-tcp-$NAMESPACE.log"
+        SOCAT_UDP_LOG="$SOCAT_LOG_DIR/socat-udp-$NAMESPACE.log"
+
+        # Explicitly allow DNS to the host on the veth INPUT path
+        local suffix; suffix=$(gen_suffix)
+        DNS_IN_CHAIN="VRN''${suffix}DNSI"
+
+        iptables -N "$DNS_IN_CHAIN" 2>/dev/null || true
+        iptables -C INPUT -i "$VETH_HOST" -j "$DNS_IN_CHAIN" 2>/dev/null || iptables -I INPUT -i "$VETH_HOST" -j "$DNS_IN_CHAIN"
+
+        ipt_add_once filter "$DNS_IN_CHAIN" -p udp --dport 53 -j ACCEPT
+        ipt_add_once filter "$DNS_IN_CHAIN" -p tcp --dport 53 -j ACCEPT
+
+        # TCP bridge
+        if [[ "$VERBOSE" == "true" ]]; then
+          socat -d -d TCP4-LISTEN:53,bind="$VETH_HOST_IP",fork,reuseaddr TCP4:"$t_ip":"$t_port" >>"$SOCAT_TCP_LOG" 2>&1 &
+        else
+          socat TCP4-LISTEN:53,bind="$VETH_HOST_IP",fork,reuseaddr TCP4:"$t_ip":"$t_port" 2>/dev/null &
+        fi
+        DNS_TCP_PID=$!
+
+        # UDP bridge (with timeout so forks GC if idle)
+        if [[ "$VERBOSE" == "true" ]]; then
+          socat -d -d -T60 UDP4-LISTEN:53,bind="$VETH_HOST_IP",fork,reuseaddr UDP4:"$t_ip":"$t_port" >>"$SOCAT_UDP_LOG" 2>&1 &
+        else
+          socat -T60 UDP4-LISTEN:53,bind="$VETH_HOST_IP",fork,reuseaddr UDP4:"$t_ip":"$t_port" 2>/dev/null &
+        fi
+        DNS_UDP_PID=$!
+
+        # Wait for TCP to be listening
+        for _ in {1..40}; do
+          if ss -lnpt 2>/dev/null | grep -qE "[[:space:]]$VETH_HOST_IP:53[[:space:]].*socat"; then
+            log "DNS TCP bridge is listening"
+            break
           fi
+          sleep 0.05
+        done
+      }
+
+      stop_dns_bridge() {
+        for pid in "$DNS_TCP_PID" "$DNS_UDP_PID"; do
+          [[ -n "''${pid:-}" ]] || continue
+          if kill -0 "$pid" 2>/dev/null; then
+            kill "$pid" 2>/dev/null || true
+            for _ in {1..10}; do kill -0 "$pid" 2>/dev/null || break; sleep 0.1; done
+            kill -9 "$pid" 2>/dev/null || true
+          fi
+        done
       }
 
       cleanup_namespace() {
-          if [[ "$CLEANUP_ON_EXIT" == "true" ]]; then
-              log "Cleaning up namespace '$NAMESPACE'"
-              ip netns del "$NAMESPACE" 2>/dev/null || true
+        log "Cleaning up (namespace: $NAMESPACE)"
 
-              stop_cloudflared
+        stop_dns_bridge
 
-              rm -f "/etc/netns/$NAMESPACE/nsswitch.conf" 2>/dev/null || true
-              rm -f "/etc/netns/$NAMESPACE/resolv.conf" 2>/dev/null || true
-              rmdir "/etc/netns/$NAMESPACE" 2>/dev/null || true
+        if [[ -f "/run/vpn-run-$NAMESPACE.state" ]]; then
+          # shellcheck disable=SC1090
+          . "/run/vpn-run-$NAMESPACE.state" || true
+
+          # iptables chains
+          if [[ -n "''${NAT_CHAIN:-}" ]]; then
+            iptables -t nat -D POSTROUTING -j "$NAT_CHAIN" 2>/dev/null || true
+            iptables -t nat -F "$NAT_CHAIN" 2>/dev/null || true
+            iptables -t nat -X "$NAT_CHAIN" 2>/dev/null || true
           fi
+
+          if [[ -n "''${FWD_CHAIN:-}" ]]; then
+            iptables -D FORWARD -j "$FWD_CHAIN" 2>/dev/null || true
+            iptables -F "$FWD_CHAIN" 2>/dev/null || true
+            iptables -X "$FWD_CHAIN" 2>/dev/null || true
+          fi
+
+          if [[ -n "''${DNS_IN_CHAIN:-}" ]]; then
+            iptables -D INPUT -i "$VETH_HOST" -j "$DNS_IN_CHAIN" 2>/dev/null || true
+            iptables -F "$DNS_IN_CHAIN" 2>/dev/null || true
+            iptables -X "$DNS_IN_CHAIN" 2>/dev/null || true
+          fi
+
+          # policy routing
+          if [[ -n "''${RULE_PRIORITY:-}" && -n "''${ROUTE_TABLE_ID:-}" ]]; then
+            ip rule del priority "$RULE_PRIORITY" 2>/dev/null || \
+            ip rule del from "$VETH_NS_IP/32" lookup "$ROUTE_TABLE_ID" 2>/dev/null || true
+            ip route flush table "$ROUTE_TABLE_ID" 2>/dev/null || true
+          fi
+
+          rm -f "/run/vpn-run-$NAMESPACE.state" 2>/dev/null || true
+        fi
+
+        # Drop veth pair
+        if [[ -n "''${VETH_HOST:-}" ]]; then
+          ip link del "$VETH_HOST" 2>/dev/null || true
+        fi
+
+        if [[ "$CLEANUP_ON_EXIT" == "true" ]]; then
+          ip netns del "$NAMESPACE" 2>/dev/null || true
+          rm -f "/etc/netns/$NAMESPACE/nsswitch.conf" "/etc/netns/$NAMESPACE/resolv.conf" 2>/dev/null || true
+          rmdir "/etc/netns/$NAMESPACE" 2>/dev/null || true
+        fi
+      }
+
+      configure_host_egress() {
+        log "Configuring host NAT, policy routing, and forwarding to '$INTERFACE'"
+
+        sysctl -q -w net.ipv4.ip_forward=1 || true
+        sysctl -q -w net.ipv4.conf.all.rp_filter=0 || true
+        sysctl -q -w net.ipv4.conf.default.rp_filter=0 || true
+        sysctl -q -w net.ipv4.conf."$INTERFACE".rp_filter=0 || true
+        sysctl -q -w net.ipv4.conf."$VETH_HOST".rp_filter=0 || true
+
+        local suffix; suffix=$(gen_suffix)
+        NAT_CHAIN="VRN''${suffix}NAT"
+        FWD_CHAIN="VRN''${suffix}FWD"
+
+        iptables -t nat -N "$NAT_CHAIN" 2>/dev/null || true
+        iptables -t filter -N "$FWD_CHAIN" 2>/dev/null || true
+
+        ipt_insert_once nat POSTROUTING -j "$NAT_CHAIN"
+        ipt_insert_once filter FORWARD -j "$FWD_CHAIN"
+
+        # NAT: only ns IP out the VPN interface
+        ipt_add_once nat "$NAT_CHAIN" -s "$VETH_NS_IP/32" -o "$INTERFACE" -j MASQUERADE
+
+        # Forwarding: allow ns->vpn and established return
+        ipt_add_once filter "$FWD_CHAIN" -i "$VETH_HOST" -o "$INTERFACE" -j ACCEPT
+        ipt_add_once filter "$FWD_CHAIN" -i "$INTERFACE" -o "$VETH_HOST" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+        # Prevent bypass DNS (force using host bridge)
+        ipt_add_once filter "$FWD_CHAIN" -i "$VETH_HOST" -p udp --dport 53 -j REJECT
+        ipt_add_once filter "$FWD_CHAIN" -i "$VETH_HOST" -p tcp --dport 53 -j REJECT
+
+        # Optionally drop any ns->non-VPN forwarding
+        if [[ "$DROP_NON_VPN" == "true" ]]; then
+          ipt_add_once filter "$FWD_CHAIN" -i "$VETH_HOST" ! -o "$INTERFACE" -j REJECT
+        fi
+
+        # Policy routing: force ns source out via VPN
+        ROUTE_TABLE_ID=$(( 10000 + (RANDOM % 5000) ))
+        RULE_PRIORITY=$(( 10000 + (RANDOM % 5000) ))
+
+        ip route add table "$ROUTE_TABLE_ID" default dev "$INTERFACE" 2>/dev/null \
+          || ip route replace table "$ROUTE_TABLE_ID" default dev "$INTERFACE"
+        ip rule add from "$VETH_NS_IP/32" table "$ROUTE_TABLE_ID" priority "$RULE_PRIORITY"
+
+        log "Policy routing: prio $RULE_PRIORITY from $VETH_NS_IP/32 -> table $ROUTE_TABLE_ID (default via $INTERFACE)"
       }
 
       setup_namespace() {
-          log "Setting up namespace '$NAMESPACE'"
+        log "Setting up namespace '$NAMESPACE' with veth pair"
 
-          if ! ip netns list | grep -q "^$NAMESPACE\$"; then
-              ip netns add "$NAMESPACE"
-          fi
+        ip netns list | grep -q "^$NAMESPACE$" || ip netns add "$NAMESPACE"
 
-          VPN_IP=$(ip addr show "$INTERFACE" | grep -oP 'inet \K[^/]+' | head -n1)
+        local suffix; suffix=$(gen_suffix)
+        VETH_HOST="vrnh-$suffix"
+        VETH_NS="vrnn-$suffix"
 
-          if [[ -z "$VPN_IP" ]]; then
-              error "Could not determine IP address for interface '$INTERFACE'. Is the VPN connected?"
-          fi
+        ip link add "$VETH_HOST" type veth peer name "$VETH_NS"
 
-          VPN_CIDR=$(ip addr show "$INTERFACE" | grep -oP 'inet \K[^[:space:]]+' | head -n1)
+        local mtu; mtu=$(cat "/sys/class/net/$INTERFACE/mtu" 2>/dev/null || echo 1420)
+        ip link set dev "$VETH_HOST" mtu "$mtu"
+        ip link set dev "$VETH_NS" mtu "$mtu"
 
-          log "VPN IP: $VPN_CIDR"
+        ip link set "$VETH_NS" netns "$NAMESPACE"
 
-          ip link set "$INTERFACE" netns "$NAMESPACE"
+        ip addr add "$VETH_HOST_CIDR" dev "$VETH_HOST"
+        ip link set "$VETH_HOST" up
 
-          ip netns exec "$NAMESPACE" ip link set lo up
-          ip netns exec "$NAMESPACE" ip link set "$INTERFACE" up
+        ip netns exec "$NAMESPACE" ip link set lo up
+        ip netns exec "$NAMESPACE" ip addr add "$VETH_NS_CIDR" dev "$VETH_NS"
+        ip netns exec "$NAMESPACE" ip link set "$VETH_NS" up
 
-          ip netns exec "$NAMESPACE" ip addr add "$VPN_CIDR" dev "$INTERFACE"
+        if [[ "$DISABLE_IPV6" == "true" ]]; then
+          log "Disabling IPv6 inside namespace"
+          ip netns exec "$NAMESPACE" sysctl -q -w net.ipv6.conf.all.disable_ipv6=1 || true
+          ip netns exec "$NAMESPACE" sysctl -q -w net.ipv6.conf.default.disable_ipv6=1 || true
+        fi
 
-          local gateway=""
-          local existing_routes=""
+        # Default route inside namespace via host-veth
+        ip netns exec "$NAMESPACE" ip route add default via "$VETH_HOST_IP" dev "$VETH_NS"
 
-          existing_routes=$(ip route show dev "$INTERFACE" 2>/dev/null | head -5 || true)
+        # Per-netns NSS/DNS
+        mkdir -p "/etc/netns/$NAMESPACE"
 
-          if [[ -n "$existing_routes" ]]; then
-              # Try to extract gateway from existing routes
-              gateway=$(echo "$existing_routes" | grep -oP 'via \K[0-9.]+' | head -n1 || true)
-          fi
-
-          if [[ -n "$gateway" ]]; then
-              log "Using detected gateway: $gateway"
-              ip netns exec "$NAMESPACE" ip route add default via "$gateway" dev "$INTERFACE"
-          else
-              log "Using direct routing via interface"
-              ip netns exec "$NAMESPACE" ip route add default dev "$INTERFACE"
-          fi
-
-          mkdir -p "/etc/netns/$NAMESPACE"
-
-          cat > "/etc/netns/$NAMESPACE/nsswitch.conf" << EOF
-      # Use traditional DNS and local files for host resolution, bypassing systemd-resolved.
-      hosts:      files dns
-      EOF
-          log "Created custom nsswitch.conf to bypass systemd-resolved"
-
-          if [[ "$USE_CLOUDFLARED" == "true" ]]; then
-              local doh_url
-              doh_url=$(read_doh_config)
-
-              start_cloudflared "$doh_url"
-
-              cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
-      nameserver 127.0.0.1
+        cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
+      nameserver $VETH_HOST_IP
       options edns0
       EOF
-              log "DNS configured to use cloudflared proxy on 127.0.0.1:$CLOUDFLARED_PORT"
-          else
-              cat > "/etc/netns/$NAMESPACE/resolv.conf" << EOF
-      nameserver 1.1.1.1
-      nameserver 8.8.8.8
-      nameserver 1.0.0.1
-      nameserver 8.8.4.4
-      EOF
-              log "DNS configured with fallback servers"
-          fi
+        log "DNS configured to use host via $VETH_HOST_IP"
 
-          log "Namespace setup complete"
-      }
+        configure_host_egress
+        start_dns_bridge
 
-      restore_interface() {
-          log "Restoring interface '$INTERFACE' to main namespace"
+        # Persist state
+        {
+          echo "NAT_CHAIN=$NAT_CHAIN"
+          echo "FWD_CHAIN=$FWD_CHAIN"
+          echo "DNS_IN_CHAIN=$DNS_IN_CHAIN"
+          echo "VETH_HOST=$VETH_HOST"
+          echo "VETH_NS=$VETH_NS"
+          echo "ROUTE_TABLE_ID=$ROUTE_TABLE_ID"
+          echo "RULE_PRIORITY=$RULE_PRIORITY"
+          echo "HOST_DNS_TARGET=$HOST_DNS_TARGET"
+          echo "DNS_TCP_PID=$DNS_TCP_PID"
+          echo "DNS_UDP_PID=$DNS_UDP_PID"
+        } > "/run/vpn-run-$NAMESPACE.state"
 
-          local current_config=""
-          if ip netns exec "$NAMESPACE" ip link show "$INTERFACE" >/dev/null 2>&1; then
-              current_config=$(ip netns exec "$NAMESPACE" ip addr show "$INTERFACE" 2>/dev/null | grep "inet " | awk '{print $2}' || true)
-
-              ip netns exec "$NAMESPACE" ip link set "$INTERFACE" netns 1
-
-              if [[ -n "$current_config" ]]; then
-                  ip addr add "$current_config" dev "$INTERFACE" 2>/dev/null || true
-                  ip link set "$INTERFACE" up 2>/dev/null || true
-              fi
-          fi
-
-          log "Interface restored"
+        log "Namespace setup complete"
+        if [[ "$VERBOSE" == "true" ]]; then
+          ss -lnptu | grep -E "$VETH_HOST_IP:53|127\.0\.0\.5[34]:53" || true
+          [[ -f "$SOCAT_TCP_LOG" ]] && tail -n +1 "$SOCAT_TCP_LOG" | sed 's/^/[socat-tcp] /' >&2 || true
+        fi
       }
 
       run_in_namespace() {
-          local cmd=("$@")
+        local cmd=("$@")
+        log "Running command in namespace: ''${cmd[*]}"
 
-          log "Running command in namespace: ''${cmd[*]}"
+        local orig_user=""
+        if [[ -n "''${SUDO_USER:-}" ]]; then
+          orig_user="$SUDO_USER"
+        elif [[ $EUID -eq 0 ]]; then
+          orig_user="root"
+        else
+          orig_user="$USER"
+        fi
 
-          local orig_user=""
-
-          if [[ -n "''${SUDO_USER:-}" ]]; then
-              orig_user="$SUDO_USER"
-          elif [[ $EUID -eq 0 ]]; then
-              orig_user="root"
-          else
-              # Running as regular user (shouldn't happen with current setup, but handle it)
-              orig_user="$USER"
-          fi
-
-          ip netns exec "$NAMESPACE" \
-              runuser -u "$orig_user" \
-              --preserve-environment -- \
-              "''${cmd[@]}"
+        ip netns exec "$NAMESPACE" \
+          runuser -u "$orig_user" \
+          --preserve-environment \
+          -- "''${cmd[@]}"
       }
 
       main() {
-          while [[ $# -gt 0 ]]; do
-              case $1 in
-                  -i|--interface)
-                      INTERFACE="$2"
-                      shift 2
-                      ;;
-                  -n|--namespace)
-                      NAMESPACE="$2"
-                      shift 2
-                      ;;
-                  -k|--keep-namespace)
-                      CLEANUP_ON_EXIT=false
-                      shift
-                      ;;
-                  -v|--verbose)
-                      VERBOSE=true
-                      shift
-                      ;;
-                  -d|--doh-config)
-                      DOH_CONFIG_FILE="$2"
-                      shift 2
-                      ;;
-                  -c|--cloudflared)
-                      USE_CLOUDFLARED=true
-                      shift
-                      ;;
-                  -nc|--no-cloudflared)
-                      USE_CLOUDFLARED=false
-                      shift
-                      ;;
-                  -h|--help)
-                      usage
-                      ;;
-                  -*)
-                      error "Unknown option: $1"
-                      ;;
-                  *)
-                      break
-                      ;;
-              esac
-          done
+        while [[ $# -gt 0 ]]; do
+          case $1 in
+            -i|--interface) INTERFACE="$2"; shift 2 ;;
+            -n|--namespace) NAMESPACE="$2"; shift 2 ;;
+            -k|--keep-namespace) CLEANUP_ON_EXIT=false; shift ;;
+            -v|--verbose) VERBOSE=true; shift ;;
+            -h|--help) usage ;;
+            -*) error "Unknown option: $1" ;;
+            *) break ;;
+          esac
+        done
 
-          if [[ $# -eq 0 ]]; then
-              error "No command specified. Use -h for help."
-          fi
+        [[ $# -gt 0 ]] || error "No command specified. Use -h for help."
 
-          if [[ $EUID -ne 0 ]]; then
-              error "This script must be run with elevated privileges. If you're in the vpn-run group, the setuid wrapper should handle this automatically."
-          fi
+        require_root
+        check_interface
 
-          check_interface
+        trap 'cleanup_namespace' EXIT INT TERM
 
-          trap 'restore_interface; cleanup_namespace' EXIT INT TERM
-
-          setup_namespace
-          run_in_namespace "$@"
+        setup_namespace
+        run_in_namespace "$@"
       }
 
       main "$@"
@@ -339,10 +393,9 @@ let
   };
 
 in
-
 {
   options.vpn-run = {
-    enable = mkEnableOption "vpn-run service for routing commands through specific interfaces";
+    enable = mkEnableOption "vpn-run service for routing commands through a specific interface via a veth-isolated namespace";
 
     defaultInterface = mkOption {
       type = types.str;
@@ -375,21 +428,40 @@ in
 
     dohConfigFile = mkOption {
       type = types.str;
+      default = "/etc/vpn-run/doh.conf";
       description = "Path to file containing DoH URL configuration";
       example = "/etc/vpn-run/doh.conf";
+    };
+
+    vethHostAddress = mkOption {
+      type = types.str;
+      default = "198.18.0.1/30";
+      description = "Host-side veth address (CIDR). Keep a /30 or /31 to avoid conflicts.";
+      example = "198.18.0.1/30";
+    };
+
+    vethNsAddress = mkOption {
+      type = types.str;
+      default = "198.18.0.2/30";
+      description = "Namespace-side veth address (CIDR). Must be in the same subnet as vethHostAddress.";
+      example = "198.18.0.2/30";
+    };
+
+    disableIPv6 = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Disable IPv6 inside the network namespace to avoid leaks.";
+    };
+
+    dropNonVpnForward = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Drop forwarding from the namespace to any interface other than the chosen VPN interface.";
     };
   };
 
   config = mkIf cfg.enable {
     environment.systemPackages = [ vpnRunScript ];
-
-    security.wrappers.vpn-run = mkIf (cfg.allowedUsers != [ ]) {
-      source = "${vpnRunScript}/bin/vpn-run";
-      owner = "root";
-      group = "vpn-run";
-      permissions = "u+rxs,g+rx";
-      setuid = true;
-    };
 
     environment.shellAliases = {
       vpn-run = mkIf cfg.shellAlias "sudo -E vpn-run";
@@ -408,13 +480,6 @@ in
           }
           {
             command = "/run/current-system/sw/bin/vpn-run";
-            options = [
-              "NOPASSWD"
-              "SETENV"
-            ];
-          }
-          {
-            command = "/run/wrappers/bin/vpn-run";
             options = [
               "NOPASSWD"
               "SETENV"
