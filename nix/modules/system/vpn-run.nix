@@ -418,12 +418,6 @@ in
       description = "Whether to create a shell alias for vpn-run";
     };
 
-    useCloudflared = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Whether to use cloudflared as DoH proxy for DNS resolution";
-    };
-
     dohConfigFile = mkOption {
       type = types.str;
       default = "/etc/vpn-run/doh.conf";
