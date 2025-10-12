@@ -275,9 +275,6 @@
 
   nixpkgs.overlays = [
     (import ../../overlays/rtl8761b-firmware.nix)
-    (final: prev: {
-      librewolf = inputs.nixpkgs-librewolf.legacyPackages.${pkgs.system}.librewolf;
-    })
   ];
 
   hardware.firmware = with pkgs; [
