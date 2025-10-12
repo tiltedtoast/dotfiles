@@ -16,9 +16,7 @@ let
     runtimeInputs = [
       pkgs.iproute2
       pkgs.gnugrep
-      pkgs.gawk
       pkgs.util-linux
-      pkgs.cloudflared
       pkgs.procps
       pkgs.netcat
       pkgs.iptables
