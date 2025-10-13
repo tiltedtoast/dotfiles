@@ -45,6 +45,7 @@
       nerd-fonts.jetbrains-mono
       nerd-fonts.caskaydia-mono
       noto-fonts-cjk-sans
+      corefonts
     ];
   };
 
