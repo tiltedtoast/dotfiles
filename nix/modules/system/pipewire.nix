@@ -214,15 +214,7 @@ in
           actions.update-props."node.target" = cfg.fallbackCategory;
         }
       ]
-      ++ (mkAppRoutingRules cfg.appCategories)
-      ++ [
-        {
-          matches = [
-            { "node.target" = "Mix_Stream"; }
-            { "node.target" = "MainEQ"; }
-          ];
-        }
-      ];
+      ++ (mkAppRoutingRules cfg.appCategories);
     };
 
     services.pipewire.extraConfig.pipewire."10-processing-and-linking" =
@@ -346,16 +338,6 @@ in
                 "playback.props"."node.target" = "MicRaw";
               };
             }
-            (mkIf (!cfg.micProcess.enable) {
-              name = "libpipewire-module-adapter";
-              args = {
-                "factory.name" = "support.null-audio-sink";
-                "node.name" = "MicFiltered";
-                "media.class" = "Audio/Source";
-              };
-            })
-
-            # --- Headphone EQ and Final Output  ---
             (
               if cfg.eq.enable then
                 {
