@@ -275,8 +275,6 @@ in
           appChains
           ++ mainLoopbacks
           ++ [
-
-            # --- Microphone Processing ---
             (
               if cfg.micProcess.enable then
                 {
@@ -284,10 +282,12 @@ in
                   args = {
                     "capture.props" = {
                       "node.name" = "MicRaw";
+                      "node.description" = "Virtual Mic Input (Raw)";
                       "media.class" = "Audio/Sink";
                     };
                     "playback.props" = {
-                      "node.name" = "MicFiltered";
+                      "node.name" = "VirtualMic";
+                      "node.description" = "Input: Processed Microphone";
                       "media.class" = "Audio/Source";
                     };
                     "filter.graph" = {
@@ -343,7 +343,7 @@ in
               args = {
                 "node.description" = "HW-Mic ➜ Mic Processing";
                 "capture.props"."node.target" = cfg.input;
-                "playback.props"."node.target" = if cfg.micProcess.enable then "MicRaw" else "MicFiltered";
+                "playback.props"."node.target" = "MicRaw";
               };
             }
             (mkIf (!cfg.micProcess.enable) {
@@ -399,42 +399,6 @@ in
                   };
                 }
             )
-
-            # --- Stream Mix and Virtual Mic ---
-            {
-              name = "libpipewire-module-adapter";
-              args = {
-                "factory.name" = "support.null-audio-sink";
-                "node.name" = "Mix_Stream";
-                "node.description" = "Stream Mix";
-                "media.class" = "Audio/Sink";
-                "audio.position" = "FL,FR";
-              };
-            }
-            {
-              name = "libpipewire-module-link-factory";
-              args = {
-                "factory.name" = "link-factory";
-                "link.output.node" = "MicFiltered";
-                "link.input.node" = "Mix_Stream";
-                "link.passive" = true;
-              };
-            }
-            {
-              name = "libpipewire-module-loopback";
-              args = {
-                "node.description" = "Stream Mix ➜ VirtualMic";
-                "capture.props" = {
-                  "node.target" = "Mix_Stream";
-                  "stream.monitor" = true;
-                };
-                "playback.props" = {
-                  "media.class" = "Audio/Source";
-                  "node.name" = "VirtualMic";
-                  "node.description" = "Input: Stream Mix";
-                };
-              };
-            }
           ];
       };
   };
