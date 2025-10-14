@@ -8,7 +8,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
-        system = system;
+        inherit system;
         config.allowUnfree = true;
       };
       llvm = pkgs.llvmPackages_21;
@@ -16,8 +16,6 @@
     {
       devShells.${system}.default = pkgs.mkShell.override { stdenv = llvm.stdenv; } {
         buildInputs = with pkgs; [
-          llvm.openmp
-          openmpi
           stdenv.cc.cc.lib
         ];
 
@@ -27,15 +25,9 @@
           gnumake
         ];
 
-        CPATH =
-          with pkgs;
-          lib.makeIncludePath [
-            openmpi
-            llvm.openmp
-          ];
+        CPATH = with pkgs; lib.makeIncludePath [ ];
 
-        LD_LIBRARY_PATH =
-          pkgs.lib.makeLibraryPath self.devShells.${system}.default.buildInputs;
+        LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath self.devShells.${system}.default.buildInputs;
       };
     };
 }

@@ -8,7 +8,7 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
-        system = system;
+        inherit system;
         config.allowUnfree = true;
         config.cudaSupport = true;
       };
@@ -24,7 +24,6 @@
           major = cudaPkgs.cudaMajorVersion;
           minor = nixpkgs.lib.lists.last (builtins.splitVersion cuda.version.complete);
         };
-
       };
     in
     {
