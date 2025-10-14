@@ -121,6 +121,10 @@
           path = ./templates/cpp;
           description = "C++ development environment using llvm";
         };
+        basic = {
+          path = ./templates/basic;
+          description = "Basic development environment";
+        };
       };
     };
 }
