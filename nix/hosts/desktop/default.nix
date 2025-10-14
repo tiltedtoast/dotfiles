@@ -263,7 +263,16 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    plugins = [
+      pkgs.networkmanager-strongswan
+    ];
+  };
+
+  environment.etc."strongswan.conf".text = ''
+    charon-nm { plugins { eap-peap { load = no } } }
+  '';
 
   services.libinput.enable = true;
 
