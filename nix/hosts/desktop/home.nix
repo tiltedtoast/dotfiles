@@ -138,8 +138,10 @@
       kded5rc.Module-browserintegrationreminder.autoload = false;
       kded6rc.PlasmaBrowserIntegration.shownCount = 1;
 
-      kwinrulesrc."a5f27bc3-c738-4dd0-9cef-ee580d3e981a".desktopfile =
-        "/run/current-system/sw/share/applications/StreamController.desktop";
+      kwinrulesrc."28f2a5bd-b708-4cde-b12e-cc2e3bc1def1" = {
+        desktopfile = "/run/current-system/sw/share/applications/StreamController.desktop";
+        desktopfilerule = 4;
+      };
     };
 
     startup.startupScript = {
