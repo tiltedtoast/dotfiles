@@ -153,6 +153,7 @@
       LC_IDENTIFICATION = "C.UTF-8";
     };
   };
+  services.dbus.implementation = "broker";
 
   programs.nix-index-database.comma.enable = true;
   programs.nix-index.enableBashIntegration = true;
