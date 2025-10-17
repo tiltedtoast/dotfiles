@@ -261,81 +261,112 @@ in
         appChains = mapAttrsToList mkAppChain cfg.appCategories;
         mainLoopbacks = map (name: mkMainLoopback name) (attrNames cfg.appCategories);
 
+        micProcessingSetup =
+          if cfg.micProcess.enable then
+            [
+              {
+                name = "libpipewire-module-filter-chain";
+                args = {
+                  "capture.props" = {
+                    "node.name" = "MicRaw";
+                    "node.description" = "HW Mic (Raw Input)";
+                    "media.class" = "Audio/Sink";
+                  };
+                  "playback.props" = {
+                    "node.name" = "MicProcessed";
+                    "node.description" = "HW Mic (Processed)";
+                    "media.class" = "Audio/Source";
+                  };
+                  "filter.graph" = {
+                    nodes = [
+                      {
+                        type = "ladspa";
+                        name = "rnnoise";
+                        plugin = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
+                        label = "noise_suppressor_stereo";
+                        control."VAD Threshold (%)" = cfg.micProcess.vadThreshold;
+                      }
+                      {
+                        type = "ladspa";
+                        plugin = "${pkgs.ladspaPlugins}/lib/ladspa/sc4_1882.so";
+                        name = "compressor";
+                        label = "sc4";
+                        control = with cfg.micProcess.compressor; {
+                          "Attack time (ms)" = attackTime;
+                          "Release time (ms)" = releaseTime;
+                          "Threshold level (dB)" = threshold;
+                          "Ratio (1:n)" = ratio;
+                          "Makeup gain (dB)" = makeupGain;
+                        };
+                      }
+                    ];
+                    links = [
+                      {
+                        output = "rnnoise:Output (L)";
+                        input = "compressor:Left input";
+                      }
+                      {
+                        output = "rnnoise:Output (R)";
+                        input = "compressor:Right input";
+                      }
+                    ];
+                  };
+                };
+              }
+              {
+                name = "libpipewire-module-loopback";
+                args = {
+                  "node.description" = "HW-Mic ➜ Processing Chain";
+                  "capture.props"."node.target" = cfg.input;
+                  "playback.props"."node.target" = "MicRaw";
+                };
+              }
+            ]
+          else
+            [
+              {
+                name = "libpipewire-module-loopback";
+                args = {
+                  "node.description" = "HW-Mic ➜ Passthrough";
+                  "capture.props"."node.target" = cfg.input;
+                  "playback.props" = {
+                    "node.name" = "MicProcessed";
+                    "node.description" = "Hardware Mic (Passthrough)";
+                    "media.class" = "Audio/Source";
+                  };
+                };
+              }
+            ];
+
       in
       {
         "context.modules" =
           appChains
           ++ mainLoopbacks
+          ++ micProcessingSetup
           ++ [
-            (
-              if cfg.micProcess.enable then
-                {
-                  name = "libpipewire-module-filter-chain";
-                  args = {
-                    "capture.props" = {
-                      "node.name" = "MicRaw";
-                      "node.description" = "Virtual Mic Input (Raw)";
-                      "media.class" = "Audio/Sink";
-                    };
-                    "playback.props" = {
-                      "node.name" = "VirtualMic";
-                      "node.description" = "Input: Processed Microphone";
-                      "media.class" = "Audio/Source";
-                    };
-                    "filter.graph" = {
-                      nodes = [
-                        {
-                          type = "ladspa";
-                          name = "rnnoise";
-                          plugin = "${pkgs.rnnoise-plugin}/lib/ladspa/librnnoise_ladspa.so";
-                          label = "noise_suppressor_stereo";
-                          control."VAD Threshold (%)" = cfg.micProcess.vadThreshold;
-                        }
-                        {
-                          type = "ladspa";
-                          plugin = "${pkgs.ladspaPlugins}/lib/ladspa/sc4_1882.so";
-                          name = "compressor";
-                          label = "sc4";
-                          control = with cfg.micProcess.compressor; {
-                            "Attack time (ms)" = attackTime;
-                            "Release time (ms)" = releaseTime;
-                            "Threshold level (dB)" = threshold;
-                            "Ratio (1:n)" = ratio;
-                            "Makeup gain (dB)" = makeupGain;
-                          };
-                        }
-                      ];
-
-                      links = [
-                        {
-                          output = "rnnoise:Output (L)";
-                          input = "compressor:Left input";
-                        }
-                        {
-                          output = "rnnoise:Output (R)";
-                          input = "compressor:Right input";
-                        }
-                      ];
-                    };
-                  };
-                }
-              else
-                {
-                  # If mic processing is off, create a simple pass-through virtual device
-                  name = "libpipewire-module-adapter";
-                  args = {
-                    "factory.name" = "support.null-audio-sink";
-                    "node.name" = "MicRaw";
-                    "media.class" = "Audio/Sink";
-                  };
-                }
-            )
             {
               name = "libpipewire-module-loopback";
               args = {
-                "node.description" = "HW-Mic ➜ Mic Processing";
-                "capture.props"."node.target" = cfg.input;
-                "playback.props"."node.target" = "MicRaw";
+                "node.description" = "Virtual Mic (Source & Mixer)";
+                "capture.props" = {
+                  "node.name" = "VirtualMicInput";
+                  "node.description" = "Virtual Mic Input (Mixer)";
+                  "media.class" = "Audio/Sink";
+                };
+                "playback.props" = {
+                  "node.name" = "VirtualMic";
+                  "node.description" = "Input: Virtual Microphone";
+                  "media.class" = "Audio/Source";
+                };
+              };
+            }
+            {
+              name = "libpipewire-module-loopback";
+              args = {
+                "node.description" = "Processed Mic ➜ Virtual Mic Mixer";
+                "capture.props"."node.target" = "MicProcessed";
+                "playback.props"."node.target" = "VirtualMicInput";
               };
             }
             (
@@ -345,7 +376,7 @@ in
                   args = {
                     "capture.props" = {
                       "node.name" = "MainEQ";
-                      "node.description" = "Main Mix (Post-EQ)";
+                      "node.description" = "Main Mix (Pre-EQ)";
                       "media.class" = "Audio/Sink";
                       "audio.position" = "FL,FR";
                     };
@@ -357,7 +388,6 @@ in
                         {
                           type = "builtin";
                           label = "param_eq";
-
                           config.filename = cfg.eq.file;
                         }
                       ];
@@ -366,7 +396,6 @@ in
                 }
               else
                 {
-                  # If EQ is disabled, create a simple sink that acts as the main mix and outputs directly to hardware.
                   name = "libpipewire-module-loopback";
                   args = {
                     "capture.props" = {
