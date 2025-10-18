@@ -4,5 +4,4 @@ in
 {
   "restic-password.age".publicKeys = [ pubKey ];
   "nextdns-resolved.conf.age".publicKeys = [ pubKey ];
-  "nextdns-doh.conf.age".publicKeys = [ pubKey ];
 }

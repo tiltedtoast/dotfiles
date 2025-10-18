@@ -29,7 +29,6 @@
   age.secrets = {
     restic-password.file = ../../secrets/restic-password.age;
     "nextdns-resolved.conf".file = ../../secrets/nextdns-resolved.conf.age;
-    "nextdns-doh.conf".file = ../../secrets/nextdns-doh.conf.age;
   };
 
   virtualisation.libvirtd = {
@@ -194,7 +193,6 @@
   vpn-run = {
     enable = true;
     defaultInterface = "wg0";
-    dohConfigFile = config.age.secrets."nextdns-doh.conf".path;
     allowedUsers = [ currentUsername ];
   };
 

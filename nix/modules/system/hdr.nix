@@ -30,10 +30,10 @@ let
       declare ICCPROF_''${DEFAULT_OUTPUT//-/_}="''${DEFAULT_ICC_PROFILE}"
       ICCPROF=ICCPROF_''${OUTPUT//-/_}
 
-      # This is KDE Plasma only for now
+      # This is KDE Plasma 6 only for now
       if [[ ! $DESKTOP_SESSION == "plasma" ]] || [[ "''${DISABLE_HDR_TOGGLING:-false}"  == "true" ]]; then
         echo "Plasma desktop not active or DISABLE_HDR_TOGGLING has been set to true. Bailing."
-        exit 0
+        exit 1
       fi
 
       OUTPUT_HDR_STATE=$(kscreen-doctor -j | jq -r --arg name "$OUTPUT" '

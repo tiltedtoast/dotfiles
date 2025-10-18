@@ -59,17 +59,19 @@ let
       SOCAT_UDP_LOG=""
 
       usage() {
-        echo "Usage: $(basename "$0") [OPTIONS] COMMAND [ARGS...]"
-        echo ""
-        echo "Run a command in an isolated network namespace that only egresses via a specific interface"
-        echo "DNS inside the namespace is bridged to the host's resolver"
-        echo ""
-        echo "Options:"
-        echo "  -i,  --interface NAME    VPN interface (default: ${cfg.defaultInterface})"
-        echo "  -n,  --namespace NAME    Namespace name (default: vpn-run-ns)"
-        echo "  -k,  --keep-namespace    Don't cleanup namespace on exit"
-        echo "  -v,  --verbose           Verbose output"
-        echo "  -h,  --help              Show this help"
+        cat << EOF
+        Usage: $(basename "$0") [OPTIONS] COMMAND [ARGS...]
+
+        Run a command in an isolated network namespace that only egresses via a specific interface
+        DNS inside the namespace is bridged to the host's resolver
+
+        Options:
+          -i,  --interface NAME    VPN interface (default: ${cfg.defaultInterface})
+          -n,  --namespace NAME    Namespace name (default: vpn-run-ns)
+          -k,  --keep-namespace    Don't cleanup namespace on exit
+          -v,  --verbose           Verbose output
+          -h,  --help              Show this help
+      EOF
         exit 1
       }
 
@@ -416,13 +418,6 @@ in
       type = types.bool;
       default = true;
       description = "Whether to create a shell alias for vpn-run";
-    };
-
-    dohConfigFile = mkOption {
-      type = types.str;
-      default = "/etc/vpn-run/doh.conf";
-      description = "Path to file containing DoH URL configuration";
-      example = "/etc/vpn-run/doh.conf";
     };
 
     vethHostAddress = mkOption {
