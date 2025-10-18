@@ -104,6 +104,7 @@
       volta
       python3
       pixi
+      rclone
 
       man-pages
       man-pages-posix

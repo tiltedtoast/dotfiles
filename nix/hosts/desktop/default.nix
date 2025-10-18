@@ -52,6 +52,19 @@
     extraScripts = true;
   };
 
+  fileSystems."/mnt/gdrive" = {
+    device = "gdrive:";
+    fsType = "rclone";
+    options = [
+      "nodev"
+      "nofail"
+      "allow_other"
+      "args2env"
+      "vfs-cache-mode=full"
+      "config=/home/${currentUsername}/.config/rclone/rclone.conf"
+    ];
+  };
+
   services.restic.backups.gdrive = {
     repository = "rclone:gdrive:backups/desktop";
     passwordFile = config.age.secrets.restic-password.path;
