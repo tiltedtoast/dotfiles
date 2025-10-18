@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  currentUsername,
   ...
 }:
 
@@ -41,6 +42,50 @@
       cp "${../../firmware/odyssey-g7-8bpc-edid.bin}" $out/lib/firmware/edid/odyssey-g7-8bpc.bin
     '')
   ];
+
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+
+    grub = {
+      enable = true;
+      devices = [ "nodev" ];
+      efiSupport = true;
+      font = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf";
+      fontSize = 24;
+    };
+  };
+
+  users.groups.media = { };
+
+  users.users.sonarr.extraGroups = [ "media" ];
+  users.users.qbittorrent.extraGroups = [ "media" ];
+  users.users.${currentUsername}.extraGroups = [ "media" ];
+
+  fileSystems."/mnt/shows" = {
+    device = "/dev/disk/by-uuid/206C11B36C1184A6";
+    fsType = "ntfs3";
+    options = [
+      "defaults"
+      "uid=1000"
+      "gid=media"
+      "umask=0002"
+      "rw"
+      "windows_names"
+    ];
+  };
+
+  fileSystems."/mnt/games" = {
+    device = "/dev/disk/by-uuid/1260ED5460ED3F5B";
+    fsType = "ntfs3";
+    options = [
+      "defaults"
+      "uid=1000"
+      "gid=media"
+      "umask=0002"
+      "rw"
+      "discard"
+    ];
+  };
 
   networking.useDHCP = lib.mkDefault true;
 
