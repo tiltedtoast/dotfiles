@@ -357,6 +357,8 @@
 
     NIXOS_OZONE_WL = "1";
 
+    # hardware acceleration results in a segfault + dmabuf/WL error
+    MOZ_ENABLE_WAYLAND = 0;
     MOZ_DISABLE_RDD_SANDBOX = 1;
     GHIDRA_ROOT = "${pkgs.ghidra}";
   };
