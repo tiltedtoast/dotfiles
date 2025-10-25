@@ -357,8 +357,9 @@
 
     NIXOS_OZONE_WL = "1";
 
-    # hardware acceleration results in a segfault + dmabuf/WL error
-    MOZ_ENABLE_WAYLAND = 0;
+    # Hopefully they fix the direct backend soon
+    NVD_BACKEND = "egl";
+    MOZ_ENABLE_WAYLAND = 1;
     MOZ_DISABLE_RDD_SANDBOX = 1;
     GHIDRA_ROOT = "${pkgs.ghidra}";
   };
