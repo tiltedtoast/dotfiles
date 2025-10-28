@@ -7,7 +7,7 @@
       cachix
       file
       gcc
-      moor
+      moar
       dust
       rm-improved
       wget
