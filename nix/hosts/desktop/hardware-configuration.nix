@@ -37,7 +37,7 @@
   hardware.nvidia.powerManagement.enable = true;
 
   hardware.firmware = [
-    (pkgs.runCommandNoCC "firmware-custom-edid" { } ''
+    (pkgs.runCommand "firmware-custom-edid" { } ''
       mkdir -p $out/lib/firmware/edid/
       cp "${../../firmware/odyssey-g7-8bpc-edid.bin}" $out/lib/firmware/edid/odyssey-g7-8bpc.bin
     '')

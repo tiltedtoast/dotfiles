@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-cuda.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,6 +39,7 @@
       agenix,
       nixpkgs,
       nixos-wsl,
+      nixpkgs-cuda,
       home-manager,
       spicetify-nix,
       plasma-manager,
@@ -49,6 +51,14 @@
       globalArgs = {
         currentUsername = "tim";
       };
+
+      pkgs-cuda = import nixpkgs-cuda {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+        config.cudaSupport = true;
+      };
+
+      specialArgs = { inherit inputs pkgs-cuda; };
 
       commonModules = [
         agenix.nixosModules.default
@@ -62,7 +72,7 @@
       nixosConfigurations = {
         nixos-wsl-pc = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          inherit specialArgs;
           modules = commonModules ++ [
             nixos-wsl.nixosModules.default
             ./hosts/desktop-wsl
@@ -71,7 +81,7 @@
 
         nixos-vm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          inherit specialArgs;
           modules = commonModules ++ [
             spicetify-nix.nixosModules.default
             home-manager.nixosModules.home-manager
@@ -91,7 +101,7 @@
 
         nixos-pc = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          inherit specialArgs;
           modules = commonModules ++ [
             spicetify-nix.nixosModules.default
             home-manager.nixosModules.home-manager

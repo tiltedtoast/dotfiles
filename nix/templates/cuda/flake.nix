@@ -59,7 +59,6 @@
               - -D__INTELLISENSE__
               - -D__CLANGD__
               - -I${cudaPkgs.cudatoolkit}/include
-              - -L${cudaPkgs.cudatoolkit}/lib
               - -I${toString ./.}/include
               - -D__LIBCUDAXX__STD_VER=${cuda.version.major}
               - -D__CUDACC_VER_MAJOR__=${cuda.version.major}
