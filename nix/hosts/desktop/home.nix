@@ -86,7 +86,8 @@
     };
 
     powerdevil.AC = {
-      powerButtonAction = "hibernate";
+      # FIXME: Change this back to "hibernate" once KDE fixes this
+      powerButtonAction = "nothing";
       autoSuspend.action = "nothing";
       whenSleepingEnter = "standbyThenHibernate";
       turnOffDisplay.idleTimeout = "never";
