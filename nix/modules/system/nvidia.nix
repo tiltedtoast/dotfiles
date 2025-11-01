@@ -52,9 +52,6 @@ in
       nsight_compute = pkgs.callPackage ../../overlays/nsight_compute.nix {
         cudaPkgs = cfg.cuda.packages;
       };
-      nsight_systems = pkgs.callPackage ../../overlays/nsight_systems.nix {
-        cudaPkgs = cfg.cuda.packages;
-      };
     in
     lib.mkMerge [
       (lib.mkIf (cfg.cuda.enable || cfg.driver.enable) {
@@ -88,7 +85,7 @@ in
         environment.systemPackages = [
           cfg.cuda.packages.cudatoolkit
           pkgs-cuda.nvtopPackages.nvidia
-          nsight_systems
+          cfg.cuda.packages.nsight_systems
           nsight_compute
         ];
       })
