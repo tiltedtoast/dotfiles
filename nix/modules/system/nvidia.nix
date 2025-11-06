@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-cuda,
   config,
   lib,
   ...
@@ -19,7 +18,7 @@ in
           enable = mkEnableOption "CUDA support";
           packages = mkOption {
             type = types.attrsOf types.package;
-            default = pkgs-cuda.cudaPackages;
+            default = pkgs.pkgsCuda.cudaPackages;
             description = "The CUDA packages to use. Defaults to the latest CUDA packages provided by Nixpkgs";
           };
         };
@@ -84,7 +83,7 @@ in
 
         environment.systemPackages = [
           cfg.cuda.packages.cudatoolkit
-          pkgs-cuda.nvtopPackages.nvidia
+          pkgs.pkgsCuda.nvtopPackages.nvidia
           cfg.cuda.packages.nsight_systems
           nsight_compute
         ];

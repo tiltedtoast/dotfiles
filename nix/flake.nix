@@ -50,19 +50,24 @@
         currentUsername = "tim";
       };
 
-      pkgs-cuda = import nixpkgs {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-        config.cudaSupport = true;
-      };
-
-      specialArgs = { inherit inputs pkgs-cuda; };
+      specialArgs = { inherit inputs; };
 
       commonModules = [
         agenix.nixosModules.default
         nix-index-database.nixosModules.nix-index
         {
           config._module.args = globalArgs;
+        }
+        {
+          nixpkgs.overlays = [
+            (self: prev: {
+              pkgsCuda = import nixpkgs {
+                system = "x86_64-linux";
+                config.allowUnfree = true;
+                config.cudaSupport = true;
+              };
+            })
+          ];
         }
       ];
     in
