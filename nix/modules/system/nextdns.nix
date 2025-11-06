@@ -47,8 +47,9 @@ in
 
     systemd.services.nextdns-config-generator = {
       description = "Generate NextDNS config for systemd-resolved";
-      before = [ "systemd-resolved.service" ];
-      wantedBy = [ "sysinit.target" ];
+      before = [ "systemd-resolved.service" "NetworkManager.service" ];
+      wantedBy = [ "multi-user.target" ];
+      after = [ "local-fs.target" ];      
 
       serviceConfig = {
         Type = "oneshot";
