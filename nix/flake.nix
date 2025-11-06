@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-cuda.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,7 +38,6 @@
       agenix,
       nixpkgs,
       nixos-wsl,
-      nixpkgs-cuda,
       home-manager,
       spicetify-nix,
       plasma-manager,
@@ -52,7 +50,7 @@
         currentUsername = "tim";
       };
 
-      pkgs-cuda = import nixpkgs-cuda {
+      pkgs-cuda = import nixpkgs {
         system = "x86_64-linux";
         config.allowUnfree = true;
         config.cudaSupport = true;
