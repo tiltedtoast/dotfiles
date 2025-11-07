@@ -62,6 +62,7 @@ Host sshgate
 Host monster?
     Hostname %h.informatik.uni-mainz.de
     IdentityFile ~/.ssh/mogon
+    ProxyJump hpcgate
     User {{ .uni_username }}
     IdentitiesOnly yes
     PubkeyAuthentication yes
