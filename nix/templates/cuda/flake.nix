@@ -24,22 +24,23 @@
           major = cudaPkgs.cudaMajorVersion;
           minor = nixpkgs.lib.lists.last (builtins.splitVersion cuda.version.complete);
         };
+
       };
     in
     {
-      devShells.${system}.default = pkgs.mkShell.override { stdenv = llvm.stdenv; } {
+      devShells.${system}.default = pkgs.mkShell {
         buildInputs = with cudaPkgs; [
           cudatoolkit
           cuda_cudart
+          cuda_cccl
           pkgs.stdenv.cc.cc.lib
         ];
 
         packages = with pkgs; [
           llvm.clang-tools
           llvm.lldb
+          meson
         ];
-
-        CUDA_PATH = cuda.path;
 
         CPATH = pkgs.lib.makeIncludePath [
           cudaPkgs.cudatoolkit
@@ -65,9 +66,11 @@
               - -D__CUDACC_VER_MINOR__=${cuda.version.minor}
               - -D__CUDA_ARCH__=${cuda.arch}
               - --cuda-gpu-arch=${cuda.sm_target}
+              - -D__CUDACC_EXTENDED_LAMBDA__
             Remove:
               - -Xcompiler=*
               - -G
+              - "-arch=*"
               - "-Xfatbin*"
               - "-gencode*"
               - "--generate-code*"
