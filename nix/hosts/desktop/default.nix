@@ -299,6 +299,9 @@
 
   nixpkgs.overlays = [
     (import ../../overlays/rtl8761b-firmware.nix)
+    (self: prev: {
+      pkgsCuda.ucx = prev.pkgsCuda.callPackage ../../pkgs/ucx.nix { };
+    })
   ];
 
   hardware.firmware = with pkgs; [
