@@ -339,7 +339,7 @@
       withVencord = true;
     })
 
-    (pkgs.callPackage ../../pkgs/hayase.nix { })
+    (pkgs.callPackage ../../pkgs/hayase.nix { vpnRun = config.vpn-run.package; })
   ];
 
   hardware.logitech.wireless = {

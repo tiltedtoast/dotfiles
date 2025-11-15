@@ -3,6 +3,7 @@
   appimageTools,
   fetchurl,
   python3,
+  vpnRun ? null,
 }:
 
 appimageTools.wrapType2 rec {
@@ -17,6 +18,7 @@ appimageTools.wrapType2 rec {
   extraInstallCommands =
     let
       appimageContents = appimageTools.extractType2 { inherit pname version src; };
+      exec = if vpnRun != null then "sudo -E ${vpnRun}/bin/vpn-run ${pname}" else "${pname}";
     in
     ''
       # Install desktop file
@@ -24,7 +26,7 @@ appimageTools.wrapType2 rec {
 
       # Fix desktop file to point to the wrapped binary
       substituteInPlace $out/share/applications/${pname}.desktop \
-        --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=${pname} --no-sandbox %U'
+        --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=${exec} --no-sandbox %U'
 
       # Install icons
       for size in 16 32 48 64 128 256 512; do
