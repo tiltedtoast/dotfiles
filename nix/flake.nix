@@ -30,6 +30,7 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
   outputs =
@@ -55,6 +56,7 @@
       commonModules = [
         agenix.nixosModules.default
         nix-index-database.nixosModules.nix-index
+        inputs.nix-flatpak.nixosModules.nix-flatpak
         {
           config._module.args = globalArgs;
         }

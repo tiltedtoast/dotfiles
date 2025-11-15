@@ -267,6 +267,15 @@
     fallbackCategory = "System";
   };
 
+  services.flatpak = {
+    enable = true;
+    packages = [ "com.surfshark.Surfshark" ];
+    update.auto = {
+      enable = true;
+      onCalendar = "weekly";
+    };
+  };
+
   networking.hostName = "nixos-pc";
 
   xdg.mime.defaultApplications = {
