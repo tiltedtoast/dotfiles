@@ -257,10 +257,13 @@
           "foobar2000 Application"
         ];
       };
-      Discord.appNames = [
-        "Discord.*"
-        "Slack.*"
-      ];
+      Discord = {
+        appNames = [
+          "Discord.*"
+          "Slack.*"
+        ];
+        binaries = [ ".Discord-wrapped" ];
+      };
       System = { };
     };
 
