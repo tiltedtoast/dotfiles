@@ -6,6 +6,7 @@
     [
       cachix
       file
+      shellcheck
       gcc
       moor
       dust
