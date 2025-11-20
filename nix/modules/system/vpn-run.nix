@@ -414,12 +414,6 @@ in
       ];
     };
 
-    package = mkOption {
-      type = types.package;
-      default = vpnRunScript;
-      description = "The vpn-run package to use";
-    };
-
     shellAlias = mkOption {
       type = types.bool;
       default = true;
@@ -454,7 +448,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ cfg.package ];
+    environment.systemPackages = [ vpnRunScript ];
 
     environment.shellAliases = {
       vpn-run = mkIf cfg.shellAlias "sudo -E vpn-run";
@@ -465,7 +459,7 @@ in
         users = cfg.allowedUsers;
         commands = [
           {
-            command = "${cfg.package}/bin/vpn-run";
+            command = "${vpnRunScript}/bin/vpn-run";
             options = [
               "NOPASSWD"
               "SETENV"
