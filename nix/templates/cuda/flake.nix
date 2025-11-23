@@ -4,13 +4,12 @@
   };
 
   outputs =
-    { nixpkgs, self }:
+    { nixpkgs, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        config.cudaSupport = true;
       };
       cudaPkgs = pkgs.cudaPackages;
       llvm = pkgs.llvmPackages_21;
@@ -26,28 +25,32 @@
         };
 
       };
+      buildInputs = with cudaPkgs; [
+        cudatoolkit
+        cuda_cudart
+        cuda_cccl
+      ];
+
+      nativeBuildInputs = with pkgs; [
+        llvm.clang-tools
+        llvm.lldb
+        meson
+        uv
+        pkg-config
+      ];
     in
     {
       devShells.${system}.default = pkgs.mkShell {
-        buildInputs = with cudaPkgs; [
-          cudatoolkit
-          cuda_cudart
-          cuda_cccl
-          pkgs.stdenv.cc.cc.lib
-        ];
 
-        packages = with pkgs; [
-          llvm.clang-tools
-          llvm.lldb
-          meson
-        ];
+        inherit buildInputs nativeBuildInputs;
 
         CPATH = pkgs.lib.makeIncludePath [
           cudaPkgs.cudatoolkit
         ];
 
-        LD_LIBRARY_PATH =
-          pkgs.lib.makeLibraryPath self.devShells.${system}.default.buildInputs + ":/run/opengl-driver/lib";
+        LD_LIBRARY_PATH = "${
+          pkgs.lib.makeLibraryPath (buildInputs ++ nativeBuildInputs)
+        }:/run/opengl-driver/lib";
 
         shellHook = ''
               if [ ! -e .clangd ]; then
@@ -60,7 +63,8 @@
               - -D__INTELLISENSE__
               - -D__CLANGD__
               - -I${cudaPkgs.cudatoolkit}/include
-              - -I${toString ./.}/include
+              - -I$(pwd)/include
+              - -I${cudaPkgs.nccl.dev}/include
               - -D__LIBCUDAXX__STD_VER=${cuda.version.major}
               - -D__CUDACC_VER_MAJOR__=${cuda.version.major}
               - -D__CUDACC_VER_MINOR__=${cuda.version.minor}

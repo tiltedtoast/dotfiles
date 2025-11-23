@@ -4,7 +4,7 @@
   };
 
   outputs =
-    { nixpkgs, self }:
+    { nixpkgs, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -12,22 +12,25 @@
         config.allowUnfree = true;
       };
       llvm = pkgs.llvmPackages_21;
+      buildInputs = with pkgs; [
+        stdenv.cc.cc.lib
+      ];
+
+      nativeBuildInputs = with pkgs; [
+        llvm.clang-tools
+        llvm.lldb
+        gnumake
+      ];
+
     in
     {
       devShells.${system}.default = pkgs.mkShell.override { stdenv = llvm.stdenv; } {
-        buildInputs = with pkgs; [
-          stdenv.cc.cc.lib
-        ];
 
-        packages = with pkgs; [
-          llvm.clang-tools
-          llvm.lldb
-          gnumake
-        ];
+        inherit buildInputs nativeBuildInputs;
 
         CPATH = with pkgs; lib.makeIncludePath [ ];
 
-        LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath self.devShells.${system}.default.buildInputs;
+        LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (buildInputs ++ nativeBuildInputs);
       };
     };
 }

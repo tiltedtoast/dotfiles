@@ -11,12 +11,15 @@
         inherit system;
         config.allowUnfree = true;
       };
+      buildInputs = [ ];
+      nativeBuildInputs = [ ];
     in
     {
       devShells.${system}.default = pkgs.mkShell {
-        buildInputs = [ ];
-        nativeBuildInputs = [ ];
+        inherit buildInputs nativeBuildInputs;
 
+        CPATH = with pkgs; lib.makeIncludePath [ ];
+        LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath (buildInputs ++ nativeBuildInputs);
       };
     };
 }
