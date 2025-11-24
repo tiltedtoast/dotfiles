@@ -373,8 +373,8 @@
 
     NIXOS_OZONE_WL = "1";
 
-    # Hopefully they fix the direct backend soon
-    NVD_BACKEND = "egl";
+    # Setting gfx.webrender.compositor.force-enabled to true breaks the direct backend
+    NVD_BACKEND = "direct";
     MOZ_ENABLE_WAYLAND = 1;
     MOZ_DISABLE_RDD_SANDBOX = 1;
     GHIDRA_ROOT = "${pkgs.ghidra}";
