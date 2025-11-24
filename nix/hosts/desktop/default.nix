@@ -328,6 +328,8 @@
     btrfs-progs
     mpv
     librewolf
+    antigravity-fhs
+    google-chrome # Used by antigravity
 
     inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
 
