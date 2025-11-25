@@ -366,6 +366,10 @@
     extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
   };
 
+  environment.shellAliases = {
+    agy = "${pkgs.antigravity-fhs}/bin/antigravity -r";
+  };
+
   environment.variables = {
     BROWSER = "${pkgs.librewolf}/bin/librewolf";
     DEFAULT_BROWSER = "${pkgs.librewolf}/bin/librewolf";
