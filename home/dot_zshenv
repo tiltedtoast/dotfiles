@@ -16,6 +16,9 @@ if [[ -f /etc/os-release ]]; then
         export JAVA_HOME="/usr/lib/jvm/default"
         export PATH="$JAVA_HOME/bin:$PATH"
         export GHIDRA_ROOT="/opt/ghidra"
+        export EDITOR="agy --wait"
+    else
+        export EDITOR='code --wait'
     fi
 fi
 
@@ -46,7 +49,6 @@ export PATH=$PATH:/usr/local/go/bin
 
 export PATH=$PATH:/usr/bin/FlameGraph
 
-export EDITOR='code --wait'
 
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$HOME/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
