@@ -16,12 +16,10 @@ if [[ -f /etc/os-release ]]; then
         export JAVA_HOME="/usr/lib/jvm/default"
         export PATH="$JAVA_HOME/bin:$PATH"
         export GHIDRA_ROOT="/opt/ghidra"
-        export EDITOR='code --wait'
-    else
-        export EDITOR="agy --wait"
     fi
 fi
 
+export EDITOR='code --wait'
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/go/bin:$PATH"
