@@ -28,11 +28,11 @@
       oh-my-posh
       fzf
       atuin
-      bun
+      pkgs.unstable.bun
       zoxide
       gh
       rustup
-      uv
+      pkgs.unstable.uv
       ookla-speedtest
       mold
       sqlite
@@ -61,8 +61,6 @@
       wl-clipboard
       hex
       nixfmt-rfc-style
-      mpi
-      mpi.dev
       age
       chezmoi
       nix-output-monitor

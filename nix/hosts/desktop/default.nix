@@ -322,7 +322,7 @@
   programs.thunderbird.enable = true;
 
   environment.systemPackages = with pkgs; [
-    ghostty
+    unstable.ghostty
     vscode-fhs
     zed-editor-fhs
     btrfs-progs

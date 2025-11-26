@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,6 +43,7 @@
       home-manager,
       spicetify-nix,
       plasma-manager,
+      nixpkgs-unstable,
       nix-index-database,
       disko,
       ...
@@ -63,10 +65,15 @@
         {
           nixpkgs.overlays = [
             (self: prev: {
-              pkgsCuda = import nixpkgs {
+              cuda = import nixpkgs {
                 system = "x86_64-linux";
                 config.allowUnfree = true;
                 config.cudaSupport = true;
+              };
+
+              unstable = import nixpkgs-unstable {
+                system = "x86_64-linux";
+                config.allowUnfree = true;
               };
             })
           ];
