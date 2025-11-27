@@ -368,7 +368,7 @@
   };
 
   environment.shellAliases = {
-    agy = "${pkgs.antigravity-fhs}/bin/antigravity -r";
+    agy = "pkill -f -9 antigravity && ${pkgs.antigravity-fhs}/bin/antigravity";
   };
 
   environment.variables = {
