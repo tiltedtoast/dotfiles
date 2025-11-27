@@ -32,8 +32,8 @@ alias where='which'
 alias e=explorer.exe
 alias watch=watch_mode
 alias code='code -r'
-alias suggest="gh copilot suggest"
-alias explain="gh copilot explain"
+alias gpt="copilot -s --model \"gpt-4.1\" -p"
+alias suggest="copilot -s --model \"gpt-4.1\" -p"
 alias cm=chezmoi
 
 

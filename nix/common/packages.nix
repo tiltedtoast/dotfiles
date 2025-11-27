@@ -68,6 +68,7 @@
       trashy
       zip
       gdb
+      nodejs
 
       llvmPackages_21.clang-tools
       llvmPackages_21.clang-manpages
