@@ -1,17 +1,68 @@
 {
+    "collaboration_panel": {
+        "button": true
+    },
+    "debugger": {
+        "dock": "left"
+    },
+    "outline_panel": {
+        "file_icons": true,
+        "button": true
+    },
+    "use_system_window_tabs": false,
+    "bottom_dock_layout": "contained",
+    "tabs": {
+        "file_icons": false,
+        "git_status": false
+    },
+    "title_bar": {
+        "show_menus": false,
+        "show_sign_in": true,
+        "show_branch_name": true,
+        "show_branch_icon": true
+    },
+    "diagnostics": {
+        "inline": {
+            "enabled": true
+        }
+    },
+    "middle_click_paste": false,
+    "inlay_hints": {
+        "enabled": false
+    },
+    "soft_wrap": "editor_width",
+    "toolbar": {
+        "code_actions": true,
+        "quick_actions": true,
+        "breadcrumbs": true
+    },
+    "minimap": {
+        "show": "never"
+    },
+    "relative_line_numbers": "disabled",
+    "auto_signature_help": false,
+    "sticky_scroll": {
+        "enabled": true
+    },
+    "rounded_selection": true,
     "project_panel": {
+        "hide_hidden": false,
+        "scrollbar": {
+            "show": "auto"
+        },
+        "indent_size": 20.0,
+        "folder_icons": true,
+        "dock": "left",
+        "button": true,
         "auto_reveal_entries": false
     },
-    "icon_theme": "VSCode Great Icons Theme",
+    "icon_theme": "VSCode Icons for Zed (Dark Official Icons)",
     "telemetry": {
         "metrics": false,
         "diagnostics": false
     },
     "agent": {
-        "default_model": {
-            "provider": "copilot_chat",
-            "model": "gpt-4o"
-        }
+        "button": true
     },
     "theme": "One Dark Pro Max",
     "ui_font_size": 18,
@@ -28,18 +79,20 @@
         }
     },
     "preferred_line_length": 100,
-    "hour_format": "hour24",
-    "ui_font_family": "{{ .monospace_font }}",
+    "ui_font_family": "ComicCodeLigatures Nerd Font Mono",
     "ui_font_weight": 200,
     "buffer_font_family": "{{ .monospace_font }}",
     "buffer_font_weight": 200,
     "terminal": {
+        "toolbar": {
+            "breadcrumbs": false
+        },
         "dock": "right",
         "shell": "system",
         "detect_venv": {
             "on": {
                 "directories": [".venv", "venv"],
-                "activate_script": "power_shell"
+                "activate_script": "default"
             }
         },
         "cursor_shape": "bar",
@@ -52,6 +105,7 @@
         "font_family": "{{ .monospace_font }}"
     },
     "indent_guides": {
+        "background_coloring": "disabled",
         "enabled": true,
         "coloring": "indent_aware"
     },
@@ -160,6 +214,8 @@
                     // "--experimental-modules-support",
                     "--background-index",
                     "--all-scopes-completion",
+                    "--clang-tidy",
+                    "--malloc-trim",
                     "--header-insertion-decorators=0"
                 ]
             }
