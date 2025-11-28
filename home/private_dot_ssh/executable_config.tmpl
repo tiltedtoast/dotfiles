@@ -80,3 +80,13 @@ Host dungeonkeeper
     PasswordAuthentication no
     SetEnv TERM=xterm-256color
     WarnWeakCrypto no
+
+Host gracehopper
+    Hostname gputest0901.zdv.uni-mainz.de
+    ProxyJump dungeonkeeper
+    User {{ .uni_username }}
+    IdentitiesOnly yes
+    PubkeyAuthentication yes
+    PasswordAuthentication no
+    SetEnv TERM=xterm-256color
+    WarnWeakCrypto no
