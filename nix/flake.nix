@@ -147,6 +147,10 @@
           path = ./templates/basic;
           description = "Basic development environment";
         };
+        shell = {
+          path = ./templates/shell;
+          description = "Shell environment";
+        };
       };
     };
 }
