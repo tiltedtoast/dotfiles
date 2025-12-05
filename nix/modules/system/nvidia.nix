@@ -93,7 +93,19 @@ in
         services.xserver.videoDrivers = [ "nvidia" ];
 
         hardware.nvidia = {
-          package = cfg.driver.package;
+          # FIXME: This is a workaround for https://github.com/NixOS/nixpkgs/issues/467814
+          # FIXME: Remove once the new driver version is released
+          package = cfg.driver.package // {
+            open = cfg.driver.package.open.overrideAttrs (old: {
+              patches = (old.patches or [ ]) ++ [
+                (pkgs.fetchpatch {
+                  name = "get_dev_pagemap.patch";
+                  url = "https://github.com/NVIDIA/open-gpu-kernel-modules/commit/3e230516034d29e84ca023fe95e284af5cd5a065.patch";
+                  hash = "sha256-BhL4mtuY5W+eLofwhHVnZnVf0msDj7XBxskZi8e6/k8=";
+                })
+              ];
+            });
+          };
           modesetting.enable = cfg.driver.enable;
           nvidiaSettings = cfg.driver.enable;
           open = cfg.driver.enable;
