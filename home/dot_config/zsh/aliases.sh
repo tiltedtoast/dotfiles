@@ -35,6 +35,7 @@ alias code='code -r'
 alias gpt="copilot -s --model \"gpt-4.1\" -p"
 alias suggest="copilot -s --model \"gpt-4.1\" -p"
 alias cm=chezmoi
+alias lg=lazygit
 
 
 # Encrypt a file using SSH key from 1Password via ssh-agent

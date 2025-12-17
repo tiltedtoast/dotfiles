@@ -57,6 +57,7 @@
       oha
       protobuf
       qemu
+      lazygit
       valgrind
       wl-clipboard
       hex
