@@ -319,6 +319,10 @@
 
   services.ratbagd.enable = true;
 
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+  programs.dconf.enable = true;
+
   programs.thunderbird.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -330,6 +334,10 @@
     librewolf
     antigravity-fhs
     google-chrome # Used by antigravity
+
+    gvfs
+    samba
+    glib
 
     inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
 
