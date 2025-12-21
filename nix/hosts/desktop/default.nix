@@ -363,6 +363,7 @@
 
     (pkgs.callPackage ../../pkgs/hayase.nix { })
     (pkgs.callPackage ../../pkgs/danbooru-rs.nix { })
+    (pkgs.callPackage ../../pkgs/gitbutler { })
   ];
 
   hardware.logitech.wireless = {
