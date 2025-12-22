@@ -56,7 +56,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
   # Deactivate the built-in updater
   postPatch = ''
     tauriConfRelease="crates/gitbutler-tauri/tauri.conf.release.json"
-    jq '.version = "${finalAttrs.version}" | .bundle.createUpdaterArtifacts = false | .bundle.externalBin = ["gitbutler-git-setsid", "gitbutler-git-askpass"]' "$tauriConfRelease" | sponge "$tauriConfRelease"
+    jq '.version = "${finalAttrs.version}" | .bundle.createUpdaterArtifacts = false | .bundle.externalBin = ["gitbutler-git-setsid", "gitbutler-git-askpass", "but"]' "$tauriConfRelease" | sponge "$tauriConfRelease"
 
     tomlq -ti 'del(.lints) | del(.workspace.lints)' "$cargoDepsCopy"/gix*/Cargo.toml
 
@@ -163,6 +163,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
         --replace-fail \
         'exports.compilerCommand = (() => {' \
         'exports.compilerCommand = (() => { return ["${dart-sass}/bin/sass"];'
+
+    # Build the "but" binary for use by Tauri
+    cargo build --release -p but
+
+    # Copy the "but" binary to where Tauri expects it (with platform-specific name)
+    cp target/release/but crates/gitbutler-tauri/but-${rust.envVars.rustHostPlatformSpec}
 
     turbo run --filter @gitbutler/svelte-comment-injector build
     pnpm build:desktop -- --mode production
