@@ -363,6 +363,7 @@
     })
 
     unstable.opencode
+    unstable.github-copilot-cli
 
     (pkgs.callPackage ../../pkgs/hayase.nix { })
     (pkgs.callPackage ../../pkgs/danbooru-rs.nix { })
