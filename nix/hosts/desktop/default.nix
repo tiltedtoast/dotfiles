@@ -362,6 +362,8 @@
       withVencord = true;
     })
 
+    unstable.opencode
+
     (pkgs.callPackage ../../pkgs/hayase.nix { })
     (pkgs.callPackage ../../pkgs/danbooru-rs.nix { })
     (pkgs.callPackage ../../pkgs/gitbutler { })
