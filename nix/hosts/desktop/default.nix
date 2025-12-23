@@ -338,6 +338,7 @@
     gvfs
     samba
     glib
+    gnome-keyring
 
     inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
 
