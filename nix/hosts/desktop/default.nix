@@ -21,8 +21,8 @@
     ../../modules/system/gaming.nix
     ../../modules/system/qbittorrent.nix
     ../../modules/system/openrgb.nix
-    ../../modules/system/vpn-run.nix
-    ../../modules/system/hdr.nix
+    ../../modules/system/vpn-run
+    ../../modules/system/hdr
     ./disko.nix
   ];
 
