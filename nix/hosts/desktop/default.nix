@@ -324,6 +324,7 @@
   programs.dconf.enable = true;
 
   programs.thunderbird.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   environment.systemPackages = with pkgs; [
     unstable.ghostty
@@ -338,7 +339,6 @@
     gvfs
     samba
     glib
-    gnome-keyring
 
     inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
 
