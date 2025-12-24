@@ -9,6 +9,21 @@
     polkitPolicyOwners = [ currentUsername ];
   };
 
+  # Idk if this is really worth it
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (
+        (
+          action.id == "com.1password.1Password.unlock" ||
+          action.id == "com.1password.1Password.authorizeSshAgent"
+        ) &&
+        subject.user == "${currentUsername}"
+      ) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
+
   environment.etc = {
     "1password/custom_allowed_browsers" = {
       text = ''
