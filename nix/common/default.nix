@@ -101,6 +101,7 @@
   users.defaultUserShell = pkgs.zsh;
 
   programs.nix-ld.enable = true;
+  programs.gnupg.agent.enable = true;
 
   nix.settings = {
     trusted-users = [
