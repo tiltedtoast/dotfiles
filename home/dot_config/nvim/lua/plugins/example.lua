@@ -113,6 +113,8 @@ return {
     end,
   },
 
+  { 'ThePrimeagen/vim-be-good' },
+
   -- or you can return new options to override all the defaults
   {
     "nvim-lualine/lualine.nvim",
