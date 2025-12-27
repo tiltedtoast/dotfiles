@@ -7,12 +7,6 @@
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-
-  {
-    "LazyVim/LazyVim",
-    opts = { colorscheme = "onedark_dark" },
-  },
-
   -- change trouble config
   {
     "folke/trouble.nvim",
