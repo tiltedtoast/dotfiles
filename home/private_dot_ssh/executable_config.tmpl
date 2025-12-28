@@ -26,68 +26,36 @@ Host gitlab.rlp.net
     HostName gitlab.rlp.net
     User git
 
-Host hpcgate
-    HostName hpcgate.zdv.uni-mainz.de
+Host hpcgate sshgate mogon mogon-nhr monster? dungeonkeeper gracehopper
     User {{ .uni_username }}
-    ForwardX11 yes
     IdentityFile ~/.ssh/mogon.pub
     IdentitiesOnly yes
+    WarnWeakCrypto no
+    PubkeyAuthentication yes
+    PasswordAuthentication no
     SetEnv TERM=xterm-256color
+
+Host mogon mogon-nhr monster? dungeonkeeper
+    ProxyJump hpcgate
+
+Host hpcgate
+    HostName hpcgate.zdv.uni-mainz.de
 
 Host mogon
     HostName mogon
-    User {{ .uni_username }}
-    ProxyJump hpcgate
-    ForwardX11 yes
-    IdentityFile ~/.ssh/mogon.pub
-    IdentitiesOnly yes
-    SetEnv TERM=xterm-256color
 
 Host mogon-nhr
     HostName mogon-nhr-01
-    User {{ .uni_username }}
-    ProxyJump hpcgate
-    ForwardX11 yes
-    IdentityFile ~/.ssh/mogon.pub
-    SetEnv TERM=xterm-256color
 
 Host sshgate
     Hostname sshgate.zdv.uni-mainz.de
-    User {{ .uni_username }}
-    IdentityFile ~/.ssh/mogon
-    IdentitiesOnly yes
-    PubkeyAuthentication yes
-    PasswordAuthentication no
 
 Host monster?
     Hostname %h.informatik.uni-mainz.de
-    IdentityFile ~/.ssh/mogon
-    ProxyJump hpcgate
-    User {{ .uni_username }}
-    IdentitiesOnly yes
-    PubkeyAuthentication yes
-    PasswordAuthentication no
-    SetEnv TERM=xterm-256color
-    WarnWeakCrypto no
 
 Host dungeonkeeper
     Hostname dungeonkeeper.informatik.uni-mainz.de
-    IdentityFile ~/.ssh/mogon
-    ProxyJump hpcgate
-    User {{ .uni_username }}
-    IdentitiesOnly yes
-    PubkeyAuthentication yes
-    PasswordAuthentication no
-    SetEnv TERM=xterm-256color
-    WarnWeakCrypto no
 
 Host gracehopper
     Hostname gputest0901.zdv.uni-mainz.de
-    IdentityFile ~/.ssh/mogon
     ProxyJump dungeonkeeper
-    User {{ .uni_username }}
-    IdentitiesOnly yes
-    PubkeyAuthentication yes
-    PasswordAuthentication no
-    SetEnv TERM=xterm-256color
-    WarnWeakCrypto no
