@@ -25,6 +25,8 @@ znap eval atuin "atuin init --disable-up-arrow zsh"
 source $ZSH/aliases.sh
 source $ZSH/hooks.sh
 
+command -v op >/dev/null && znap eval op "op completion zsh" && compdef _op op
+
 
 if [[ ! "$fpath" =~ .*"$ZSH/completions".* ]]; then
   fpath=($ZSH/completions $fpath)
