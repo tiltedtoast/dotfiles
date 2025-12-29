@@ -25,6 +25,6 @@ buildGoModule rec {
     description = "A bridge from WSL2 ssh client to Windows ssh-agent.exe service";
     homepage = "https://github.com/mame/wsl2-ssh-agent";
     license = licenses.mit;
-    maintainers = [ "Tim <57221600+TiltedToast@users.noreply.github.com>" ];
+    maintainers = [ ];
   };
 }
