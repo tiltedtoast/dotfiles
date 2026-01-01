@@ -1,0 +1,106 @@
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+
+let
+  cfg = config.nvidia;
+in
+{
+  options.nvidia = {
+    enable = lib.mkEnableOption "NVIDIA GPU support (enables either driver, CUDA, or both)";
+
+    cuda = lib.mkOption {
+      type = lib.types.submodule {
+        options = {
+          enable = lib.mkEnableOption "CUDA support";
+          packages = lib.mkOption {
+            type = lib.types.attrsOf lib.types.package;
+            default = pkgs.cuda.cudaPackages;
+            description = "The CUDA packages to use. Defaults to the latest CUDA packages provided by Nixpkgs";
+          };
+        };
+      };
+      default = { };
+      description = "CUDA configuration";
+    };
+
+    driver = lib.mkOption {
+      type = lib.types.submodule {
+        options = {
+          enable = lib.mkEnableOption "NVIDIA graphics driver";
+          package = lib.mkOption {
+            type = lib.types.package;
+            default = config.boot.kernelPackages.nvidiaPackages.stable;
+            description = "The NVIDIA driver package to use";
+          };
+        };
+      };
+      default = { };
+      description = "NVIDIA driver configuration";
+    };
+  };
+
+  config =
+    let
+      pocl-cuda = pkgs.callPackage ./packages/pocl-cuda.nix {
+        cudaPkgs = cfg.cuda.packages;
+      };
+      nsight_compute = pkgs.callPackage ./packages/nsight_compute.nix {
+        cudaPkgs = cfg.cuda.packages;
+      };
+    in
+    lib.mkMerge [
+      (lib.mkIf (cfg.cuda.enable || cfg.driver.enable) {
+        hardware.graphics = {
+          enable = true;
+        };
+      })
+
+      (lib.mkIf (cfg.cuda.enable && cfg.driver.enable) {
+        # https://developer.nvidia.com/nvidia-development-tools-solutions-err_nvgpuctrperm-permission-issue-performance-counters
+        boot.kernelParams = [
+          "nvidia.NVreg_RestrictProfilingToAdminUsers=0"
+        ];
+      })
+
+      (lib.mkIf (cfg.cuda.enable && !cfg.driver.enable) {
+        hardware.graphics.extraPackages = [
+          pocl-cuda
+        ];
+
+        environment.variables = {
+          OCL_ICD_FILENAMES = "${pocl-cuda}/etc/OpenCL/vendors/pocl.icd";
+        };
+      })
+
+      # CUDA configuration
+      (lib.mkIf cfg.cuda.enable {
+
+        environment.variables.CUDA_PATH = "${cfg.cuda.packages.cudatoolkit}";
+
+        environment.systemPackages = [
+          cfg.cuda.packages.cudatoolkit
+          pkgs.cuda.nvtopPackages.nvidia
+          cfg.cuda.packages.nsight_systems
+          nsight_compute
+        ];
+      })
+
+      (lib.mkIf cfg.driver.enable {
+        services.xserver.videoDrivers = [ "nvidia" ];
+
+        hardware.nvidia = {
+          package = cfg.driver.package;
+          modesetting.enable = cfg.driver.enable;
+          nvidiaSettings = cfg.driver.enable;
+          open = cfg.driver.enable;
+        };
+        environment.systemPackages = [
+          pkgs.nvidia-vaapi-driver
+        ];
+      })
+    ];
+}
