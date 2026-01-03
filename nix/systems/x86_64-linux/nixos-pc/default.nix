@@ -360,6 +360,7 @@
     custom.hayase
     custom.danbooru-rs
     custom.gitbutler
+    custom.shiru
   ];
 
   hardware.logitech.wireless = {
