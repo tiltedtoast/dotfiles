@@ -6,6 +6,6 @@
   outputs =
     { nixpkgs, ... }:
     {
-      packages.${builtins.currentSystem}.default = nixpkgs.lib.callPackage ./default.nix { };
+      packages.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.callPackage ./default.nix { };
     };
 }
