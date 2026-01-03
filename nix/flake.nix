@@ -83,26 +83,11 @@
       ];
 
       templates = {
-        cuda = {
-          path = ./templates/cuda;
-          description = "CUDA development environment";
-        };
-        cpp = {
-          path = ./templates/cpp;
-          description = "C++ development environment using llvm";
-        };
-        basic = {
-          path = ./templates/basic;
-          description = "Basic development environment";
-        };
-        shell = {
-          path = ./templates/shell;
-          description = "Shell environment";
-        };
-        package = {
-          path = ./templates/package;
-          description = "Package development environment";
-        };
+        cuda.description = "CUDA development environment";
+        cpp.description = "C++ development environment using llvm";
+        basic.description = "Basic development environment";
+        shell.description = "Shell environment";
+        package.description = "Package development environment";
       };
 
       outputs-builder = channels: {
