@@ -6,7 +6,6 @@
 {
   home.stateVersion = "25.11";
 
-  # Enable home modules
   onepassword.enable = true;
 
   programs.plasma = {

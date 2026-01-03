@@ -69,41 +69,10 @@
         nix-flatpak.nixosModules.nix-flatpak
         disko.nixosModules.disko
         spicetify-nix.nixosModules.default
+        home-manager.nixosModules.home-manager
       ];
 
       systems.hosts = {
-        nixos-pc.modules = with inputs; [
-          home-manager.nixosModules.home-manager
-          (
-            { ... }:
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "backup";
-                sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-                users.tim = ./systems/x86_64-linux/nixos-pc/home.nix;
-              };
-            }
-          )
-        ];
-
-        nixos-vm.modules = with inputs; [
-          home-manager.nixosModules.home-manager
-          (
-            { ... }:
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "backup";
-                sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-                users.tim = ./systems/x86_64-linux/nixos-vm/home.nix;
-              };
-            }
-          )
-        ];
-
         nixos-wsl-pc.modules = with inputs; [
           nixos-wsl.nixosModules.default
         ];
