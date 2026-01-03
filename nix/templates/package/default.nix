@@ -1,0 +1,39 @@
+{
+  lib,
+  stdenv,
+  fetchFromGithub,
+  ...
+}:
+
+stdenv.mkDerivation rec {
+  pname = "package";
+  version = "0.1.0";
+
+  src = fetchFromGithub {
+    owner = "tiltedtoast";
+    repo = "package";
+    rev = "v${version}";
+    hash = "";
+  };
+
+  buildInputs = [ ];
+  nativeBuildInputs = [ ];
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/bin
+    cp -r bin $out/bin
+
+    runHook postInstall
+  '';
+
+  meta = {
+    description = "Package";
+    homepage = "https://github.com/tiltedtoast/package";
+    license = lib.licenses.gpl3Only;
+    maintainers = [ ];
+    mainProgram = "package";
+    platforms = [ "x86_64-linux" ];
+  };
+}

@@ -130,6 +130,10 @@
           path = ./templates/shell;
           description = "Shell environment";
         };
+        package = {
+          path = ./templates/package;
+          description = "Package development environment";
+        };
       };
 
       outputs-builder = channels: {
