@@ -357,7 +357,6 @@
     unstable.opencode
     unstable.github-copilot-cli
 
-    custom.hayase
     custom.danbooru-rs
     custom.gitbutler
     custom.shiru
