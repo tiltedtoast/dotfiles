@@ -35,7 +35,7 @@ rustPlatform.buildRustPackage {
 
   meta = {
     description = "A cli tool to download images from danbooru";
-    homepage = "https://github.com/TiltedToast/danbooru-rs";
+    homepage = "https://github.com/tdortman/danbooru-rs";
     license = lib.licenses.mit;
     maintainers = [ ];
     mainProgram = "danbooru-rs";
