@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
   version = "0.1.0";
 
   src = fetchFromGithub {
-    owner = "tiltedtoast";
+    owner = "tdortman";
     repo = "package";
     rev = "v${version}";
     hash = "";
@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "Package";
-    homepage = "https://github.com/tiltedtoast/package";
+    homepage = "https://github.com/tdortman/package";
     license = lib.licenses.gpl3Only;
     maintainers = [ ];
     mainProgram = "package";

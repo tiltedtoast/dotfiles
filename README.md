@@ -79,7 +79,7 @@ bat cache --build
 ## Set up and apply the dotfiles
 
 ```shell
-chezmoi init --apply --source ~/dotfiles https://github.com/tiltedtoast/dotfiles
+chezmoi init --apply --source ~/dotfiles https://github.com/tdortman/dotfiles
 ```
 
 ### Last but not least, set the default shell to zsh and restart the terminal
