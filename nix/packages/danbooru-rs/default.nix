@@ -13,7 +13,7 @@ rustPlatform.buildRustPackage {
   version = "unstable-2024-01-24";
 
   src = fetchFromGitHub {
-    owner = "TiltedToast";
+    owner = "tdortman";
     repo = "danbooru-rs";
     rev = "8b87e5ce54df92eed1d7f5a3ab0dfe5bd83ff86c";
     hash = "sha256-0PG2lp1fSIrGstyNPxZ7ioD7iYxfdX2aMnSUbwegPjQ=";
