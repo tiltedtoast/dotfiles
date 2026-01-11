@@ -202,6 +202,8 @@
     openFirewall = true;
   };
 
+  services.lact.enable = true;
+
   services.printing = {
     enable = true;
     drivers = with pkgs; [
