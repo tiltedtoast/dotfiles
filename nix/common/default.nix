@@ -69,6 +69,8 @@
     usbmon.enable = true;
   };
 
+  hardware.enableRedistributableFirmware = true;
+
   time.timeZone = "Europe/Berlin";
 
   environment.variables = {
