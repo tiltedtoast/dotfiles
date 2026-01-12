@@ -13,6 +13,12 @@ in
     enable = lib.mkEnableOption "qbittorrent";
     package = lib.mkPackageOption pkgs "qbittorrent-nox" { };
 
+    port = lib.mkOption {
+      default = null;
+      type = lib.types.nullOr lib.types.int;
+      description = "BitTorrent port";
+    };
+
     wireguard = {
       interface = lib.mkOption {
         type = lib.types.str;
@@ -75,6 +81,9 @@ in
 
           Interface = cfg.wireguard.interface;
           InterfaceName = cfg.wireguard.interface;
+        }
+        // lib.optionalAttrs (cfg.port != null) {
+          Port = cfg.port;
         };
         Preferences = {
           General = {
@@ -104,10 +113,14 @@ in
     };
 
     networking.firewall = {
-      allowedUDPPorts = [ cfg.wireguard.listenPort ];
+      allowedUDPPorts = [
+        cfg.wireguard.listenPort
+        cfg.port
+      ];
       allowedTCPPorts = [
         cfg.webui.port
         cfg.wireguard.listenPort
+        cfg.port
       ];
       checkReversePath = "loose";
     };

@@ -4,4 +4,5 @@ in
 {
   "restic-password.age".publicKeys = [ pubKey ];
   "nextdns-resolved.conf.age".publicKeys = [ pubKey ];
+  "airvpn-privatekey.age".publicKeys = [ pubKey ];
 }

@@ -97,6 +97,7 @@
 
   qbittorrent = {
     enable = true;
+    port = 32882;
     wireguard.interface = "wg0";
     webui = {
       port = 8080;
@@ -108,6 +109,7 @@
   age.secrets = {
     restic-password.file = ../../../secrets/restic-password.age;
     "nextdns-resolved.conf".file = ../../../secrets/nextdns-resolved.conf.age;
+    "airvpn-privatekey".file = ../../../secrets/airvpn-privatekey.age;
   };
 
   virtualisation.libvirtd = {
@@ -233,6 +235,26 @@
         {
           publicKey = "fJDA+OA6jzQxfRcoHfC27xz7m3C8/590fRjpntzSpGo=";
           endpoint = "de-fra.prod.surfshark.com:51820";
+
+          allowedIPs = [
+            "0.0.0.0/0"
+            "::/0"
+          ];
+        }
+      ];
+    };
+
+    wg1 = {
+      privateKeyFile = toString config.age.secrets."airvpn-privatekey".path;
+      ips = [ "10.183.233.232/32" ];
+
+      allowedIPsAsRoutes = false;
+
+      peers = [
+        {
+          publicKey = "PyLCXAQT8KkM4T+dUsOQfn+Ub3pGxfGlxkIApuig+hk=";
+          endpoint = "de3.vpn.airdns.org:51820";
+          persistentKeepalive = 15;
 
           allowedIPs = [
             "0.0.0.0/0"
