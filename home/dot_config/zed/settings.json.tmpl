@@ -1,4 +1,5 @@
 {
+    "colorize_brackets": true,
     "collaboration_panel": {
         "button": true
     },
@@ -105,9 +106,9 @@
         "font_family": "{{ .monospace_font }}"
     },
     "indent_guides": {
+        "coloring": "fixed",
         "background_coloring": "disabled",
-        "enabled": true,
-        "coloring": "indent_aware"
+        "enabled": true
     },
     "tab_size": 4,
     "format_on_save": "off",
@@ -125,6 +126,7 @@
             }
         },
         "Nix": {
+            "tab_size": 2,
             "language_servers": ["nixd"]
         }
     },
