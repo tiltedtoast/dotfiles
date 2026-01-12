@@ -107,9 +107,10 @@
   };
 
   age.secrets = {
-    restic-password.file = ../../../secrets/restic-password.age;
+    "restic-password".file = ../../../secrets/restic-password.age;
     "nextdns-resolved.conf".file = ../../../secrets/nextdns-resolved.conf.age;
     "airvpn-privatekey".file = ../../../secrets/airvpn-privatekey.age;
+    "airvpn-presharedkey".file = ../../../secrets/airvpn-presharedkey.age;
   };
 
   virtualisation.libvirtd = {
@@ -253,6 +254,7 @@
       peers = [
         {
           publicKey = "PyLCXAQT8KkM4T+dUsOQfn+Ub3pGxfGlxkIApuig+hk=";
+          presharedKeyFile = toString config.age.secrets."airvpn-presharedkey".path;
           endpoint = "de3.vpn.airdns.org:51820";
           persistentKeepalive = 15;
 
