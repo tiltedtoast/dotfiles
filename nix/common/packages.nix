@@ -71,6 +71,7 @@
       zip
       gdb
       nodejs
+      unrar
 
       llvmPackages_21.clang-tools
       llvmPackages_21.clang-manpages
