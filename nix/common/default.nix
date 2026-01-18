@@ -6,13 +6,6 @@
     ./packages.nix
   ];
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    permittedInsecurePackages = [
-      "olm-3.2.16"
-    ];
-  };
-
   age.identityPaths = [
     "/home/${currentUsername}/.config/age/key"
     "/root/.config/age/key"
