@@ -5,7 +5,14 @@
 
   outputs =
     { nixpkgs, ... }:
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+    in
     {
-      packages.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.callPackage ./default.nix { };
+      packages.${system}.default = pkgs.callPackage ./default.nix { };
     };
 }
