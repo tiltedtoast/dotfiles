@@ -294,7 +294,10 @@
 
   services.flatpak = {
     enable = true;
-    packages = [ "com.surfshark.Surfshark" ];
+    packages = [
+      "com.surfshark.Surfshark"
+      "com.gitbutler.gitbutler"
+    ];
     update.auto = {
       enable = true;
       onCalendar = "weekly";
@@ -384,7 +387,6 @@
     unstable.github-copilot-cli
 
     custom.danbooru-rs
-    custom.gitbutler
     custom.shiru
   ];
 
