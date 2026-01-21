@@ -1,114 +1,130 @@
 {
     "colorize_brackets": true,
     "collaboration_panel": {
-        "button": true
+        "button": true,
     },
     "debugger": {
-        "dock": "left"
+        "dock": "left",
     },
     "outline_panel": {
         "file_icons": true,
-        "button": true
+        "button": true,
     },
     "use_system_window_tabs": false,
     "bottom_dock_layout": "contained",
     "tabs": {
         "file_icons": false,
-        "git_status": false
+        "git_status": false,
     },
     "title_bar": {
         "show_menus": false,
         "show_sign_in": true,
         "show_branch_name": true,
-        "show_branch_icon": true
+        "show_branch_icon": true,
     },
     "diagnostics": {
         "inline": {
-            "enabled": true
-        }
+            "enabled": true,
+        },
     },
     "middle_click_paste": false,
     "inlay_hints": {
-        "enabled": false
+        "enabled": false,
     },
     "soft_wrap": "editor_width",
     "toolbar": {
         "code_actions": true,
         "quick_actions": true,
-        "breadcrumbs": true
+        "breadcrumbs": true,
     },
     "minimap": {
-        "show": "never"
+        "show": "never",
     },
     "relative_line_numbers": "disabled",
     "auto_signature_help": false,
     "sticky_scroll": {
-        "enabled": true
+        "enabled": true,
     },
     "rounded_selection": true,
     "project_panel": {
         "hide_hidden": false,
         "scrollbar": {
-            "show": "auto"
+            "show": "auto",
         },
         "indent_size": 20.0,
         "folder_icons": true,
         "dock": "left",
         "button": true,
-        "auto_reveal_entries": false
+        "auto_reveal_entries": false,
     },
     "icon_theme": "VSCode Icons for Zed (Dark Official Icons)",
     "telemetry": {
         "metrics": false,
-        "diagnostics": false
+        "diagnostics": false,
     },
     "agent": {
-        "button": true
+        "button": true,
     },
     "theme": "One Dark Pro Max",
     "ui_font_size": 18,
     "buffer_font_size": 18,
     "buffer_font_features": {
-        "calt": true
+        "calt": true,
     },
     "features": {
-        "edit_prediction_provider": "supermaven"
+        "edit_prediction_provider": "supermaven",
     },
     "autosave": {
         "after_delay": {
-            "milliseconds": 200
-        }
+            "milliseconds": 200,
+        },
     },
     "preferred_line_length": 100,
-    "ui_font_family": "ComicCodeLigatures Nerd Font Mono",
+    "ui_font_family": "{{ .monospace_font }}",
     "ui_font_weight": 200,
     "buffer_font_family": "{{ .monospace_font }}",
     "buffer_font_weight": 200,
     "terminal": {
+        "minimum_contrast": 0,
         "toolbar": {
-            "breadcrumbs": false
+            "breadcrumbs": false,
         },
         "dock": "right",
-        "shell": "system",
+        "shell": {
+            "with_arguments": {
+                "program": "systemd-run",
+                "args": [
+                    "--user",
+                    "--pty",
+                    "--same-dir",
+                    "--wait",
+                    "--collect",
+                    "--service-type=exec",
+                    "--quiet",
+                    "zsh",
+                ],
+                "title_override": "HostShell",
+            },
+        },
         "detect_venv": {
             "on": {
                 "directories": [".venv", "venv"],
-                "activate_script": "default"
-            }
+                "activate_script": "default",
+            },
         },
         "cursor_shape": "bar",
         "copy_on_select": true,
-        "font_weight": 200,
+        "font_weight": 300,
         "font_features": {
             "calt": true,
-            "liga": true
+            "liga": true,
         },
-        "font_family": "{{ .monospace_font }}"
+        "font_family": "{{ .monospace_font }}",
     },
     "indent_guides": {
         "coloring": "fixed",
         "background_coloring": "disabled",
-        "enabled": true
+        "enabled": true,
     },
     "tab_size": 4,
     "format_on_save": "off",
@@ -117,37 +133,37 @@
             "code_actions_on_format": {
                 "source.organizeImports": true,
                 "source.fixAll.biome": true,
-                "source.organizeImports.biome": true
-            }
+                "source.organizeImports.biome": true,
+            },
         },
         "TSX": {
             "code_actions_on_format": {
-                "source.organizeImports": true
-            }
+                "source.organizeImports": true,
+            },
         },
         "Nix": {
             "tab_size": 2,
-            "language_servers": ["nixd"]
-        }
+            "language_servers": ["nixd"],
+        },
     },
     "lsp": {
         "nixd": {
             "settings": {
                 "formatting": {
-                    "command": ["nixfmt"]
+                    "command": ["nixfmt"],
                 },
                 "nixpkgs": {
-                    "expr": "import <nixpkgs> { }"
+                    "expr": "import <nixpkgs> { }",
                 },
                 "options": {
                     "nixos": {
-                        "expr": "(builtins.getFlake \"/home/tim/dotfiles/nix\").nixosConfigurations.nixos-pc.options"
+                        "expr": "(builtins.getFlake \"{{ .chezmoi.homeDir }}/dotfiles/nix\").nixosConfigurations.nixos-pc.options",
                     },
                     "home-manager": {
-                        "expr": "(builtins.getFlake \"/home/tim/dotfiles/nix\").nixosConfigurations.nixos-pc.options.home-manager.users.type.getSubOptions []"
-                    }
-                }
-            }
+                        "expr": "(builtins.getFlake \"{{ .chezmoi.homeDir }}/dotfiles/nix\").nixosConfigurations.nixos-pc.options.home-manager.users.type.getSubOptions []",
+                    },
+                },
+            },
         },
         "rust-analyzer": {
             "initialization_options": {
@@ -202,11 +218,11 @@
                         "-A",
                         "clippy::redundant-pub-crate",
                         "-A",
-                        "clippy::unnecessary-wraps"
-                    ]
+                        "clippy::unnecessary-wraps",
+                    ],
                 },
-                "rustfmt": {}
-            }
+                "rustfmt": {},
+            },
         },
         "clangd": {
             "binary": {
@@ -218,14 +234,14 @@
                     "--all-scopes-completion",
                     "--clang-tidy",
                     "--malloc-trim",
-                    "--header-insertion-decorators=0"
-                ]
-            }
-        }
+                    "--header-insertion-decorators=0",
+                ],
+            },
+        },
     },
     "formatter": "auto",
     "tab_bar": {
-        "show": false
+        "show": false,
     },
     "code_actions_on_format": {
         "source.fixAll": true,
@@ -235,6 +251,6 @@
         "source.addMissingImports.ts": true,
         "source.removeUnusedImports": true,
         "source.organizeImports.biome": true,
-        "source.addMissingImports": true
-    }
+        "source.addMissingImports": true,
+    },
 }
