@@ -31,6 +31,7 @@ alias ci='cargo install'
 alias where='which'
 alias e=explorer.exe
 alias code='code -r'
+alias zeditor='zeditor -r'
 alias gpt="copilot -s --model \"gpt-4.1\" -p"
 alias suggest="copilot -s --model \"gpt-4.1\" -p"
 alias cm=chezmoi
