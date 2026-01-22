@@ -129,6 +129,15 @@
     "tab_size": 4,
     "format_on_save": "off",
     "languages": {
+        "Python": {
+            "language_servers": [
+                // Disable basedpyright and enable ty, and otherwise
+                // use the default configuration.
+                "ty",
+                "!basedpyright",
+                "...",
+            ],
+        },
         "TypeScript": {
             "code_actions_on_format": {
                 "source.organizeImports": true,
