@@ -297,11 +297,37 @@
     packages = [
       "com.surfshark.Surfshark"
       "com.gitbutler.gitbutler"
+      "org.gtk.Gtk3theme.Breeze"
     ];
     update.auto = {
       enable = true;
       onCalendar = "weekly";
     };
+    overrides = {
+      global = {
+        Context = {
+          sockets = [
+            "wayland"
+            "!x11"
+            "!fallback-x11"
+          ];
+          filesystems = [
+            "xdg-config/gtk-2.0"
+            "xdg-config/gtk-3.0"
+            "xdg-config/gtk-4.0"
+          ];
+        };
+        Environment = {
+          GTK_THEME = "Breeze";
+        };
+      };
+      "com.gitbutler.gitbutler" = {
+        Environment = {
+          WEBKIT_DISABLE_DMABUF_RENDERER = "1";
+        };
+      };
+    };
+
   };
 
   networking.hostName = "nixos-pc";
