@@ -8,6 +8,12 @@
             "*.env": "deny",
             "*.env.*": "deny",
             "*.env.example": "allow"
-        }
+        },
+        "todowrite": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "todoread": "allow",
+        "lsp": "allow",
+        "task": "allow"
     }
 }
