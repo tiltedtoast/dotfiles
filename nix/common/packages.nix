@@ -47,6 +47,7 @@
       gtk4
       gtk3
       gtk2
+      kdePackages.breeze-gtk
       hyperfine
       jdk
       jq

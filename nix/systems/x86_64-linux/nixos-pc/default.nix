@@ -282,7 +282,10 @@
     openFirewall = true;
   };
 
-  programs.streamcontroller.enable = true;
+  programs.streamcontroller = {
+    enable = true;
+    package = pkgs.unstable.streamcontroller;
+  };
 
   services.udev.extraRules = ''
     # StreamController text input
@@ -297,7 +300,7 @@
     packages = [
       "com.surfshark.Surfshark"
       "com.gitbutler.gitbutler"
-      "org.gtk.Gtk3theme.Breeze"
+      "org.gtk.Gtk3theme.Breeze-Dark"
     ];
     update.auto = {
       enable = true;
@@ -312,13 +315,18 @@
             "!fallback-x11"
           ];
           filesystems = [
-            "xdg-config/gtk-2.0"
-            "xdg-config/gtk-3.0"
-            "xdg-config/gtk-4.0"
+            "xdg-config/fontconfig:ro"
+            "xdg-config/gtkrc:ro"
+            "xdg-config/gtkrc-2.0:ro"
+            "xdg-config/gtk-2.0:ro"
+            "xdg-config/gtk-3.0:ro"
+            "xdg-config/gtk-4.0:ro"
+            "xdg-data/themes:ro"
+            "xdg-data/icons:ro"
           ];
         };
         Environment = {
-          GTK_THEME = "Breeze";
+          GTK_THEME = "Breeze-Dark";
         };
       };
       "com.gitbutler.gitbutler" = {
