@@ -383,12 +383,12 @@
 
   environment.systemPackages = with pkgs; [
     unstable.ghostty
-    unstable.vscode-fhs
-    unstable.zed-editor-fhs
+    vscode-fhs
+    zed-editor-fhs
     btrfs-progs
     mpv
     librewolf
-    unstable.antigravity-fhs
+    antigravity-fhs
     google-chrome # Used by antigravity
 
     gvfs
@@ -435,7 +435,7 @@
   };
 
   environment.shellAliases = {
-    agy = "(pkill -f -9 antigravity || true) && ${pkgs.unstable.antigravity-fhs}/bin/antigravity";
+    agy = "(pkill -f -9 antigravity || true) && ${pkgs.antigravity-fhs}/bin/antigravity";
   };
 
   environment.variables = {
