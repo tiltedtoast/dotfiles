@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+SYSTEMD_RUN=(systemd-run --user --pty --quiet --same-dir --wait --service-type=exec --collect)
+
+if [ "$1" = "-c" ]; then
+    shift
+    exec "${SYSTEMD_RUN[@]}" zsh -c "$@"
+else
+    exec "${SYSTEMD_RUN[@]}" zsh "$@"
+fi
