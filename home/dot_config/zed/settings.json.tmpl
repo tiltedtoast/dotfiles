@@ -92,17 +92,8 @@
         "dock": "right",
         "shell": {
             "with_arguments": {
-                "program": "systemd-run",
-                "args": [
-                    "--user",
-                    "--pty",
-                    "--same-dir",
-                    "--wait",
-                    "--collect",
-                    "--service-type=exec",
-                    "--quiet",
-                    "zsh",
-                ],
+                "program": "antigravity-shell",
+                "args": [],
                 "title_override": "HostShell",
             },
         },
@@ -162,7 +153,7 @@
                     "command": ["nixfmt"],
                 },
                 "nixpkgs": {
-                    "expr": "import <nixpkgs> { }",
+                    "expr": "import (builtins.getFlake(toString ./.)).inputs.nixpkgs { }",
                 },
                 "options": {
                     "nixos": {
