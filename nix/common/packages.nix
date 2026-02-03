@@ -29,11 +29,11 @@
       oh-my-posh
       fzf
       atuin
-      pkgs.unstable.bun
+      bun
       zoxide
       gh
       rustup
-      pkgs.unstable.uv
+      uv
       ookla-speedtest
       mold
       sqlite
@@ -63,7 +63,7 @@
       valgrind
       wl-clipboard
       hex
-      nixfmt-rfc-style
+      nixfmt
       age
       chezmoi
       nix-output-monitor
@@ -73,6 +73,7 @@
       gdb
       nodejs
       unrar
+      hydra-check
 
       llvmPackages_21.clang-tools
       llvmPackages_21.clang-manpages

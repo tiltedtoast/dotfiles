@@ -282,10 +282,7 @@
     openFirewall = true;
   };
 
-  programs.streamcontroller = {
-    enable = true;
-    package = pkgs.unstable.streamcontroller;
-  };
+  programs.streamcontroller.enable = true;
 
   services.udev.extraRules = ''
     # StreamController text input
@@ -382,7 +379,7 @@
   services.gnome.gnome-keyring.enable = true;
 
   environment.systemPackages = with pkgs; [
-    unstable.ghostty
+    ghostty
     vscode-fhs
     zed-editor-fhs
     btrfs-progs
@@ -417,8 +414,8 @@
       withVencord = true;
     })
 
-    unstable.opencode
-    unstable.github-copilot-cli
+    opencode
+    github-copilot-cli
 
     custom.danbooru-rs
     custom.shiru

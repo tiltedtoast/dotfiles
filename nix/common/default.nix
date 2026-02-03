@@ -1,4 +1,9 @@
-{ pkgs, currentUsername, ... }:
+{
+  pkgs,
+  currentUsername,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -57,7 +62,7 @@
   };
 
   programs.wireshark = {
-    package = pkgs.wireshark-qt;
+    package = pkgs.wireshark;
     enable = true;
     usbmon.enable = true;
   };
@@ -80,6 +85,7 @@
 
     flake-update = "sudo nix flake update --flake $NH_FLAKE";
     update = "nh os switch --update";
+    hydra-check = "${lib.getExe pkgs.hydra-check} -c unstable -a x86_64-linux";
   };
 
   environment.interactiveShellInit = ''

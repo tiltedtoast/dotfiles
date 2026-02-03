@@ -32,15 +32,12 @@ in
 
     services.resolved = {
       enable = true;
-      extraConfig =
-        lib.optionalString (config.services.avahi.enable) ''
-          [Resolve]
-          MulticastDNS=no
-        ''
-        + ''
-          [Resolve]
-          Domains=~.
-        '';
+      settings.Resolve = {
+        Domains = [ "~." ];
+      }
+      // lib.optionalAttrs (config.services.avahi.enable) {
+        MulticastDNS = false;
+      };
     };
 
     systemd.services.nextdns-config-generator = {
