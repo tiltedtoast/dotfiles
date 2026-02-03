@@ -99,6 +99,11 @@
 
   programs.nix-ld.enable = true;
   programs.gnupg.agent.enable = true;
+  
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
 
   nix.settings = {
     trusted-users = [
