@@ -38,7 +38,7 @@ in
       description = "no-rgb";
       serviceConfig = {
         ExecStart = "${no-rgb}/bin/no-rgb";
-        Type = "oneshot";
+        Type = "idle";
       };
       wantedBy = [ "multi-user.target" ];
     };
