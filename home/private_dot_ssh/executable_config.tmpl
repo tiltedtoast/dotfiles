@@ -25,6 +25,8 @@ Host aur.archlinux.org
 Host gitlab.rlp.net
     HostName gitlab.rlp.net
     User git
+    IdentityFile ~/.ssh/git.pub
+    IdentitiesOnly yes
 
 Host hpcgate sshgate mogon mogon-nhr monster? dungeonkeeper gracehopper
     User {{ .uni_username }}
