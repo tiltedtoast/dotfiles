@@ -57,6 +57,7 @@
       "wireshark"
       "kvm"
       "libvirtd"
+      "plugdev"
     ];
     initialPassword = "password";
   };
@@ -99,7 +100,7 @@
 
   programs.nix-ld.enable = true;
   programs.gnupg.agent.enable = true;
-  
+
   programs.appimage = {
     enable = true;
     binfmt = true;
@@ -137,6 +138,8 @@
       set tabstospaces
     '';
   };
+
+  hardware.keyboard.qmk.enable = true;
 
   services.xserver.xkb = {
     layout = "us,de";
