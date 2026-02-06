@@ -32,8 +32,8 @@ alias where='which'
 alias e=explorer.exe
 alias code='code -r'
 alias zeditor='zeditor -r'
-alias gpt="copilot -s --model \"gpt-4.1\" -p"
-alias suggest="copilot -s --model \"gpt-4.1\" -p"
+alias gpt="copilot -s --model \"gpt-5-mini\" -p"
+alias suggest="copilot -s --model \"gpt-5-mini\" -p"
 alias cm=chezmoi
 alias lg=lazygit
 
