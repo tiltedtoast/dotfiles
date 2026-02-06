@@ -1,10 +1,5 @@
-{{- /* We need to make sure to trim the ANSI escape code for bold text from the version string. */ -}}
-{{- $version := (output "btop" "--version")
-       | splitList "\n"
-       | first
-       | splitList " "
-       | last
-       | replace "\033[1m" "" -}}
+{{- /* Extract just the numbers using regex, ignoring all text and formatting */ -}}
+{{- $version := (output "btop" "--version") | regexFind "[0-9]+\\.[0-9]+\\.[0-9]+" -}}
 
 #? Config file for btop v.{{ $version }}
 
