@@ -37,7 +37,6 @@ alias suggest="copilot -s --model \"gpt-4.1\" -p"
 alias cm=chezmoi
 alias lg=lazygit
 
-
 # Encrypt a file using SSH key from 1Password via ssh-agent
 # Usage: age-encrypt <input-file> [output-file]
 age-encrypt() {
@@ -88,7 +87,7 @@ age-decrypt() {
     fi
 
     # Decrypt the file
-    if age -d -i <(op read "op://Personal/Git/private key") "$encrypted_file" > "$output_file"; then
+    if age -d -i <(op read "op://Personal/Git/private key") "$encrypted_file" >"$output_file"; then
         echo "✅ Decrypted '$encrypted_file' to '$output_file'"
     else
         echo "❌ Failed to decrypt '$encrypted_file'" >&2
@@ -130,11 +129,29 @@ create_man_wrapper
 create_mold_wrapper() {
     local tool=$1
     local tool_path=$(command -v "$tool")
-    eval "
-    __mold_wrapped_$tool() {
-        mold -run '$tool_path' \"\$@\"
-    }
-    "
+    case "$tool" in
+    make)
+        eval "
+            __mold_wrapped_$tool() {
+                mold -run '$tool_path' \$MAKEFLAGS \"\$@\"
+            }
+            "
+        ;;
+    ninja)
+        eval "
+            __mold_wrapped_$tool() {
+                mold -run '$tool_path' \$NINJAFLAGS \"\$@\"
+            }
+            "
+        ;;
+    *)
+        eval "
+            __mold_wrapped_$tool() {
+                mold -run '$tool_path' \"\$@\"
+            }
+            "
+        ;;
+    esac
 }
 
 # Create wrappers for build tools
