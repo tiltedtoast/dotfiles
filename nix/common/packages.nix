@@ -35,7 +35,7 @@
       rustup
       uv
       ookla-speedtest
-      mold
+      mold-unwrapped
       sqlite
       containerd
       fastfetch
