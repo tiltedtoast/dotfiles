@@ -20,12 +20,12 @@
                     "foreground": "#26C6DA",
                     "background": "#546E7A",
                     "type": "os",
-                    "properties": {
+                    "options": {
                         "fedoraremix": ""
                     }
                 },
                 {
-                    "properties": {
+                    "options": {
                         "mapped_shell_names": {
                             "pwsh": "PS"
                         }
@@ -37,7 +37,7 @@
                     "type": "shell"
                 },
                 {
-                    "properties": {
+                    "options": {
                         "style": "unique"
                     },
                     "style": "diamond",
@@ -74,7 +74,7 @@
             ]
         }
     ],
-    "version": 3,
+    "version": 4,
     "auto_upgrade": true,
     "final_space": true
 }
