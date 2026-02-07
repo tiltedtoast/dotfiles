@@ -76,7 +76,7 @@
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
   };
 
-  environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles/nix";
+  environment.sessionVariables.NH_FLAKE = "$HOME/dotfiles";
 
   environment.shellAliases = {
     nix-shell = "nix-shell --command zsh";

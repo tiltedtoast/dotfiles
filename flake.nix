@@ -52,6 +52,7 @@
       inherit inputs;
       src = ./.;
 
+      snowfall.root = ./nix;
       snowfall.namespace = "custom";
 
       channels-config = {

@@ -157,10 +157,10 @@
                 },
                 "options": {
                     "nixos": {
-                        "expr": "(builtins.getFlake \"{{ .chezmoi.homeDir }}/dotfiles/nix\").nixosConfigurations.nixos-pc.options",
+                        "expr": "(builtins.getFlake \"{{ .chezmoi.homeDir }}/dotfiles\").nixosConfigurations.nixos-pc.options",
                     },
                     "home-manager": {
-                        "expr": "(builtins.getFlake \"{{ .chezmoi.homeDir }}/dotfiles/nix\").nixosConfigurations.nixos-pc.options.home-manager.users.type.getSubOptions []",
+                        "expr": "(builtins.getFlake \"{{ .chezmoi.homeDir }}/dotfiles\").nixosConfigurations.nixos-pc.options.home-manager.users.type.getSubOptions []",
                     },
                 },
             },

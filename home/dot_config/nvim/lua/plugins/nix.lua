@@ -15,11 +15,11 @@ return {
               },
               options = {
                 nixos = {
-                  expr = '(builtins.getFlake "/home/tim/dotfiles/nix").nixosConfigurations.nixos-pc.options',
+                  expr = '(builtins.getFlake "/home/tim/dotfiles").nixosConfigurations.nixos-pc.options',
                 },
                 ["home-manager"] = {
                   expr =
-                  '(builtins.getFlake "/home/tim/dotfiles/nix").nixosConfigurations.nixos-pc.options.home-manager.users.type.getSubOptions []',
+                  '(builtins.getFlake "/home/tim/dotfiles").nixosConfigurations.nixos-pc.options.home-manager.users.type.getSubOptions []',
                 },
               },
             },
