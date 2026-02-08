@@ -3,7 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     snowfall-lib = {
-      url = "github:snowfallorg/lib";
+      url = "github:anntnzrb/snowfall-lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
