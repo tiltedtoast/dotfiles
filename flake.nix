@@ -26,6 +26,7 @@
         disko.nixosModules.disko
         spicetify-nix.nixosModules.default
         home-manager.nixosModules.home-manager
+        solaar.nixosModules.default
       ];
 
       systems.hosts = {
@@ -92,6 +93,11 @@
 
     agenix = {
       url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    solaar = {
+      url = "github:Svenum/Solaar-Flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

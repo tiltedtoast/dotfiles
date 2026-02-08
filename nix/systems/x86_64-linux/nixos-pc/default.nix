@@ -421,9 +421,10 @@
     custom.shiru
   ];
 
-  hardware.logitech.wireless = {
+  services.solaar = {
     enable = true;
-    enableGraphical = true;
+    window = "hide";
+    extraArgs = "--restart-on-wake-up";
   };
 
   xdg.portal = {
