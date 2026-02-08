@@ -297,7 +297,6 @@
     packages = [
       "com.surfshark.Surfshark"
       "com.gitbutler.gitbutler"
-      "org.gtk.Gtk3theme.Breeze-Dark"
     ];
     update.auto = {
       enable = true;
@@ -323,7 +322,7 @@
           ];
         };
         Environment = {
-          GTK_THEME = "Breeze-Dark";
+          GTK_THEME = "Breeze";
         };
       };
       "com.gitbutler.gitbutler" = {
