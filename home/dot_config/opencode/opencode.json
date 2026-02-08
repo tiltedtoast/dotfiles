@@ -14,6 +14,17 @@
         "grep": "allow",
         "todoread": "allow",
         "lsp": "allow",
-        "task": "allow"
+        "task": "allow",
+        "bash": {
+            "find *": "allow",
+            "ls *": "allow",
+            "sort *": "allow",
+            "wc *": "allow",
+            "git *": "allow",
+            "git commit *": "deny",
+            "git push *": "deny",
+            "mkdir *": "allow",
+            "rm *": "deny"
+        }
     }
 }
