@@ -12,10 +12,12 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
-        inherit system;
+        system = system;
         config.allowUnfree = true;
       };
-      cudaPkgs = pkgs.cudaPackages;
+
+      # https://github.com/clangd/clangd/issues/2531
+      cudaPkgs = pkgs.cudaPackages_12_9;
       llvm = pkgs.llvmPackages_21;
 
       cuda = {
@@ -32,7 +34,7 @@
       buildInputs = with cudaPkgs; [
         cudatoolkit
         cuda_cudart
-        cuda_cccl
+        pkgs.stdenv.cc.cc.lib
       ];
 
       nativeBuildInputs = with pkgs; [
@@ -68,7 +70,6 @@
               - -D__CLANGD__
               - -I${cudaPkgs.cudatoolkit}/include
               - -I$(pwd)/include
-              - -I${cudaPkgs.nccl.dev}/include
               - -D__LIBCUDAXX__STD_VER=${cuda.version.major}
               - -D__CUDACC_VER_MAJOR__=${cuda.version.major}
               - -D__CUDACC_VER_MINOR__=${cuda.version.minor}
