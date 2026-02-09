@@ -305,11 +305,6 @@
     overrides = {
       global = {
         Context = {
-          sockets = [
-            "wayland"
-            "!x11"
-            "!fallback-x11"
-          ];
           filesystems = [
             "xdg-config/fontconfig:ro"
             "xdg-config/gtkrc:ro"
