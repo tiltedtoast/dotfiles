@@ -2,6 +2,7 @@
   pkgs,
   config,
   inputs,
+  system,
   currentUsername,
   ...
 }:
@@ -386,7 +387,7 @@
     samba
     glib
 
-    inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
+    inputs.agenix.packages."${system}".default
 
     libratbag
     piper
