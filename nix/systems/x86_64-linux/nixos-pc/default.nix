@@ -411,6 +411,7 @@
 
     opencode
     github-copilot-cli
+    codex
 
     custom.danbooru-rs
     custom.shiru
