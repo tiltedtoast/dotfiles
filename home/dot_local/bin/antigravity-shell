@@ -3,7 +3,8 @@ SYSTEMD_RUN=(systemd-run --user --pty --quiet --same-dir --wait --service-type=e
 
 if [ "$1" = "-c" ]; then
     shift
-    exec "${SYSTEMD_RUN[@]}" zsh -c "$*"
+    cmd="$*"
+    exec "${SYSTEMD_RUN[@]}" zsh -c "eval \"\$(direnv export zsh 2>/dev/null)\"; $cmd"
 else
-    exec "${SYSTEMD_RUN[@]}" zsh "$@"
+    exec "${SYSTEMD_RUN[@]}" zsh -c 'eval "$(direnv export zsh 2>/dev/null)"; exec zsh'
 fi
