@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+SYSTEMD_RUN=(systemd-run --user --pty --quiet --same-dir --wait --service-type=exec --collect)
+
+if [ "$1" = "-c" ]; then
+    shift
+    cmd="$*"
+    exec "${SYSTEMD_RUN[@]}" zsh -c "eval \"\$(direnv export zsh 2>/dev/null)\"; $cmd"
+else
+    exec "${SYSTEMD_RUN[@]}" zsh -c "eval \"\$(direnv export zsh 2>/dev/null)\"; exec zsh"
+fi
