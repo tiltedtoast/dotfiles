@@ -3,7 +3,7 @@ SYSTEMD_RUN=(systemd-run --user --pty --quiet --same-dir --wait --service-type=e
 
 if [ "$1" = "-c" ]; then
     shift
-    exec "${SYSTEMD_RUN[@]}" zsh -c "$@"
+    exec "${SYSTEMD_RUN[@]}" zsh -c "$*"
 else
     exec "${SYSTEMD_RUN[@]}" zsh "$@"
 fi
