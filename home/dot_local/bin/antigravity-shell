@@ -1,10 +1,23 @@
 #!/usr/bin/env bash
-SYSTEMD_RUN=(systemd-run --user --pty --quiet --same-dir --wait --service-type=exec --collect)
+
+SYSTEMD_RUN=(
+    systemd-run
+    --user
+    --pty
+    --quiet
+    --same-dir
+    --service-type=exec
+    --collect
+    --send-sighup
+    --expand-environment=no
+)
+
+# shellcheck disable=SC2016
+INIT_CMD='eval "$(direnv export zsh >/dev/null 2>&1)"; exec "$@"'
 
 if [ "$1" = "-c" ]; then
     shift
-    cmd="$*"
-    exec "${SYSTEMD_RUN[@]}" zsh -c "eval \"\$(direnv export zsh 2>/dev/null)\"; $cmd"
+    exec "${SYSTEMD_RUN[@]}" zsh -c "$INIT_CMD" -- zsh -c "$*"
 else
-    exec "${SYSTEMD_RUN[@]}" zsh -c 'eval "$(direnv export zsh 2>/dev/null)"; exec zsh'
+    exec "${SYSTEMD_RUN[@]}" zsh -c "$INIT_CMD" -- zsh
 fi
