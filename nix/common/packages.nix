@@ -43,6 +43,7 @@
       pkg-config
       direnv
       git-filter-repo
+      git-lfs
       go
       gtk4
       gtk3
