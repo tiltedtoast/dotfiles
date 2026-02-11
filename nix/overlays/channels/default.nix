@@ -6,6 +6,11 @@ final: prev: {
   #   config.allowUnfree = true;
   # };
 
+  temp = import inputs.nixpkgs-temp {
+    system = final.stdenv.hostPlatform.system;
+    config.allowUnfree = true;
+  };
+
   cuda = import inputs.nixpkgs {
     system = final.stdenv.hostPlatform.system;
     config.allowUnfree = true;

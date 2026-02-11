@@ -55,6 +55,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # vscode 1.109.2
+    nixpkgs-temp.url = "github:NixOS/nixpkgs/451e0185d87933e9122063b829ce37577d6a0df6";
+
     snowfall-lib = {
       url = "github:anntnzrb/snowfall-lib";
       inputs.nixpkgs.follows = "nixpkgs";
