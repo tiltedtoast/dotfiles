@@ -24,7 +24,8 @@
             "git commit *": "deny",
             "git push *": "deny",
             "mkdir *": "allow",
-            "rm *": "deny"
+            "rm *": "deny",
+            "head *": "allow"
         }
     }
 }
