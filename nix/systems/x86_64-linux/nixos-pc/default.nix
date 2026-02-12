@@ -62,7 +62,10 @@
           "Discord.*"
           "Slack.*"
         ];
-        binaries = [ ".Discord-wrapped" ];
+        binaries = [
+          ".Discord-wrapped"
+          "fluxer"
+        ];
       };
       System = { };
     };
@@ -415,6 +418,7 @@
 
     custom.danbooru-rs
     custom.shiru
+    custom.fluxer
   ];
 
   services.solaar = {
