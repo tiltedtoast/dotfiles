@@ -94,15 +94,15 @@ in
 
         hardware.nvidia = {
           package = cfg.driver.package // {
-            # open = cfg.driver.package.open.overrideAttrs (old: {
-            #   patches = (old.patches or [ ]) ++ [
-            #     (pkgs.fetchpatch {
-            #       name = "kernel-6.19";
-            #       url = "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/nvidia/nvidia-utils/kernel-6.19.patch";
-            #       hash = "sha256-YuJjSUXE6jYSuZySYGnWSNG5sfVei7vvxDcHx3K+IN4=";
-            #     })
-            #   ];
-            # });
+            open = cfg.driver.package.open.overrideAttrs (old: {
+              patches = (old.patches or [ ]) ++ [
+                (pkgs.fetchpatch {
+                  name = "kernel-6.19";
+                  url = "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/nvidia/nvidia-utils/kernel-6.19.patch";
+                  hash = "sha256-YuJjSUXE6jYSuZySYGnWSNG5sfVei7vvxDcHx3K+IN4=";
+                })
+              ];
+            });
           };
           modesetting.enable = cfg.driver.enable;
           nvidiaSettings = cfg.driver.enable;

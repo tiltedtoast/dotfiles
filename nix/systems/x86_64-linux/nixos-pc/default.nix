@@ -77,7 +77,7 @@
     cuda.enable = true;
     driver = {
       enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
     };
   };
 
@@ -342,7 +342,7 @@
     "x-scheme-handler/about" = "librewolf.desktop";
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_6_18;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.networkmanager = {
     enable = true;
