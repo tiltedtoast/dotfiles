@@ -36,7 +36,7 @@ appimageTools.wrapType2 {
     install -Dm444 ${appimageContents}/fluxer.desktop $out/share/applications/fluxer.desktop
 
     substituteInPlace $out/share/applications/fluxer.desktop \
-      --replace-fail "Exec=AppRun --no-sandbox %U" "Exec=fluxer --no-sandbox %U"
+      --replace-fail "Exec=AppRun --no-sandbox %U" "Exec=fluxer --no-sandbox --enable-blink-features=MiddleClickAutoscroll %U"
 
     mkdir -p $out/share/icons
     cp -r ${appimageContents}/usr/share/icons/hicolor $out/share/icons/
