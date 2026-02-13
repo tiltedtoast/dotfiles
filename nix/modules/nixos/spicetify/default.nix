@@ -19,6 +19,10 @@ in
     programs.spicetify = {
       enable = true;
 
+      spotifyLaunchFlags = "--enable-blink-features=MiddleClickAutoscroll";
+      experimentalFeatures = true;
+      alwaysEnableDevTools = true;
+
       enabledExtensions = with spicePkgs.extensions; [
         {
           src =
