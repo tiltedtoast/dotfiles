@@ -342,7 +342,7 @@
     "x-scheme-handler/about" = "librewolf.desktop";
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
 
   networking.networkmanager = {
     enable = true;
