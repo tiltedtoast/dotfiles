@@ -113,7 +113,7 @@
           selectedTimeZones = "America/Los_Angeles,Local,Asia/Tokyo";
         };
 
-      kcminputrc."Libinput/1133/50503/Logitech USB Receiver" = {
+      kcminputrc."Libinput/1133/16531/Logitech PRO X" = {
         PointerAccelerationProfile = 1;
         PointerAcceleration = 0.500;
         ScrollFactor = 1;
