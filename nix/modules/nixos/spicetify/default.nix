@@ -59,8 +59,8 @@ in
 
         {
           src = pkgs.fetchzip {
-            url = "https://github.com/harbassan/spicetify-apps/releases/download/stats-v1.1.2/spicetify-stats.release.zip";
-            hash = "sha256-lIWAJDO/2fZEzBmK79wdB9H78+4A1xOw90Zy4e4ql4s=";
+            url = "https://github.com/harbassan/spicetify-apps/releases/download/stats-v1.1.3/spicetify-stats.release.zip";
+            hash = "sha256-8CO5M0EM0n/aXD79Xsis0eiBpxj2zVLfu49/kbO+m+M=";
           };
           name = "index.js";
         }
