@@ -378,7 +378,7 @@
 
   environment.systemPackages = with pkgs; [
     ghostty
-    temp.vscode-fhs
+    vscode-fhs
     zed-editor-fhs
     btrfs-progs
     mpv
