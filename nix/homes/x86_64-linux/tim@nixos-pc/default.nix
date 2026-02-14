@@ -107,11 +107,16 @@
 
       plasmanotifyrc.Notifications.PopupTimeout = 15000;
 
-      "plasma-org.kde.plasma.desktop-appletsrc"."Containments/278/Applets/296/Configuration/Appearance" =
-        {
+      "plasma-org.kde.plasma.desktop-appletsrc" = {
+        "Containments/278/Applets/296/Configuration/Appearance" = {
           fontWeight = 400;
           selectedTimeZones = "America/Los_Angeles,Local,Asia/Tokyo";
         };
+        "Containments/662/Applets/681/Configuration/Appearance" = {
+          fontWeight = 400;
+          selectedTimeZones = "America/Los_Angeles,Local,Asia/Tokyo";
+        };
+      };
 
       kcminputrc."Libinput/1133/16531/Logitech PRO X" = {
         PointerAccelerationProfile = 1;
