@@ -1,9 +1,17 @@
 {
-	"servers": {
-		"excalidraw": {
-			"url": "https://excalidraw-mcp-app.vercel.app/mcp",
-			"type": "http"
-		}
-	},
-	"inputs": []
+    "servers": {
+        "excalidraw": {
+            "url": "https://excalidraw-mcp-app.vercel.app/mcp",
+            "type": "http"
+        },
+        "pdf-reader": {
+            "command": "bunx",
+            "args": ["@sylphx/pdf-reader-mcp"]
+        },
+        "cachebro": {
+            "command": "bunx",
+            "args": ["cachebro", "serve"]
+        }
+    },
+    "inputs": []
 }

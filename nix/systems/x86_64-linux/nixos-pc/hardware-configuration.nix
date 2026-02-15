@@ -33,8 +33,12 @@
   boot.resumeDevice = "/dev/disk/by-partlabel/disk-primary-root";
 
   powerManagement.enable = true;
-
   hardware.nvidia.powerManagement.enable = true;
+
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = 1048576;
+    "fs.inotify.max_user_instances" = 2048;
+  };
 
   hardware.firmware = [
     (pkgs.runCommand "firmware-custom-edid" { } ''
